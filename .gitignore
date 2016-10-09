@@ -1,0 +1,12 @@
+
+
+errorlog.txt
+
+__pycache__
+
+*.pyc
+*.pyo
+
+venv
+
+img
