@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}REMAP - {{ vol.name }}{% endblock %}
+
+{% block page_content %}
+  <div class="container-fluid">
+
+
+    <div class="row">
+      <h1 class="text-center">{{ vol.name }}</h1>
+    </div>
+
+    <div class="row">
+       <div class="col-md-3">
+        <img class="img-responsive" src="{{ vol.gravatar(size=300) }}" height="300" width="300" >
+        </div>
+
+        <div class="col-md-6">
+        <div class="panel panel-default">
+
+          <div class="panel-heading"><h4></h4></div>
+
+
+          <table class="table">
+
+            <tr>
+                <th>Address:</th>
+                <td class="text-center"> {{vol.address}}</td>
+            </tr>
+            <tr>
+                <th>Postcode:</th>
+                <td class="text-center"> {{vol.postcode}}</td>
+            </tr>
+            <tr>
+                <th>Telephone:</th>
+                <td class="text-center"> {{vol.tel}}</td>
+            </tr>
+            <tr>
+                <th>Mobile:</th>
+                <td class="text-center"> {{vol.mob}}</td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td class="text-center"><a href="mailto:{{ vol.email }}">{{ vol.email }}</td>
+            </tr>
+          </table>
+        </div>
+        </div>
+
+
+        </div>
+
+        <br>
+        <br>
+
+
+
+    <div class="row">
+      <div class="col-md-8">
+          <a class="btn btn-danger" href="{{ url_for('.edit_profile_admin', id=vol.id)}}"> Edit Profile</a>
+      </div>
+    </div>
+
+
+    {% if vol.project.first() %}
+      <div class="row">
+        <div class="col-md-10">
+          <h3> Projects </h3>
+            <table class="table">
+              <tr class='active'>
+                <th>Project Number<th>
+                <th>Timestamp</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>End Date <th>
+              </tr>
+            {% for pro in vol.project.all() | sort (attribute='id', reverse= True)%}
+              <tr>
+                {%if current_user.type == 'volunteers'%}
+                <td><a href="{{url_for('main.project_single', number=pro.id)}}" class="btn btn-primary ">{{pro.id}}</a><td>
+                {% else%}
+                <td>{{pro.id}}<td>
+                {% endif%}
+                <td>{{ moment(pro.timestamp).format('MMMM Do YYYY')}}</td>
+                <td>{{pro.request_title}}</td>
+                <td>{{pro.status}}</td>
+                {% if pro.end_date == None %}
+                <td></td>
+                {%else%}
+                <td>{{moment(pro.end_date).format('MMMM Do YYYY')}}</td>
+                {% endif %}
+              </tr>
+            {% endfor%}
+            </table>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+
+
+{% endblock %}

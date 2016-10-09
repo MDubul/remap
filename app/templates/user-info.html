@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %} REMAP {% endblock %}
+
+{% block page_content %}
+<div class='container-fluid'>
+  <div class="row">
+
+    <div class='col-md-4'>
+      <h1> User Information </h1>
+
+      <table class="table table-hover">
+          <tr>
+            <td>Age Range</td>
+            <td>{{ clie.age_range }}</td>
+          </tr>
+          <tr>
+            <td>Name</td>
+            <td>{{ clie.name}}</td>
+          </tr>
+          <tr>
+            <td>Post code</td>
+            <td>{{ clie.postcode }}</td>
+          </tr>
+          <tr>
+            <td>Address</td>
+            <td>{{ clie.address }}</td>
+          </tr>
+          <tr>
+            <td>Telephone</td>
+            <td>{{ clie.tel }}</td>
+          </tr>
+          <tr>
+            <td>Mobile</td>
+            <td>{{ clie.mob }}</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td><a href="mailto:{{ clie.email }}">{{ clie.email }}</td>
+          </tr>
+          {% if referee %}
+            <tr>
+              <td>Initial Contact</td>
+              <td>{{ clie.intial_contact }}</td>
+            </tr>
+        {% endif %}
+      </table>
+    </div>
+    
+    {% if referee %}
+      <div class='col-md-6'>
+        <h1> Referee Information </h1>
+        <table class="table table-hover">
+          <tr>
+            <td>Name</td>
+            <td>{{referee.name }}</td>
+          </tr>
+          <tr>
+            <td>Telephone</td>
+            <td>{{referee.tel }}</td>
+          </tr>
+          <tr>
+            <td>Mobile</td>
+            <td>{{ referee.mob }}</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td><a href="mailto:{{ clie.email }}">{{ referee.email }}</td>
+          </tr>
+          <tr>
+            <td>relationship to End User</td>
+            <td>{{ clie.relation }}</td>
+          </tr>
+        </table>
+      </div>
+    {% endif %}
+
+  </div>
+
+
+</div>
+
+{% endblock %}

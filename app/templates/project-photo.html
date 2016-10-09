@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}REMAP - {% endblock %}
+
+{% block page_content %}
+<div class="container-fluid">
+
+
+
+<form action="" method="post" name="image" enctype="multipart/form-data">
+  <div class="form-group">
+    <label >File input</label>
+    <input type=file name="filesToUpload[]"multiple="">
+    <p class="help-block">Select single or multiple images</p>
+  </div>
+
+  <textarea class="form-control" rows="2" name="cappy">
+
+  </textarea>
+
+  <p class="help-block"> Add caption if neccessary </p>
+  <input type=submit  class="btn btn-primary" value=Upload>
+</div>
+
+{% endblock %}

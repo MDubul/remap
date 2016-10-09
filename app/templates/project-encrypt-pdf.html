@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Project PDF {% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+  <h1> PDF Encryption </h1>
+</div>
+
+<div class="col-md-4">
+  <div class="row">
+    {{ wtf.quick_form(form, button_map={'submit':'danger'})}}
+  </div>
+  <div class="row">
+  </div>
+ </div>
+
+{% endblock %}

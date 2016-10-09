@@ -1,0 +1,29 @@
+{% for pro in pro_all | sort(attribute='timestamp', reverse = True)%}
+
+    {% if pro.status == 'Awaiting Volunteer' %}
+      {% set stat = 'danger'%}
+    {% elif pro.status == 'Ongoing' %}
+      {% set stat = '' %}
+    {% elif pro.status == 'Finished' or 'Closed' %}
+      {% set stat = 'success'%}
+    {% endif %}
+
+<tr class="{{stat}}">
+  <td><a href="{{url_for('main.project_single',number=pro.id)}}" class="btn btn-primary ">{{pro.id}}</a></td>
+  {% if pro.volunteer.first()== None %}
+    <td ></td>
+  {% else %}
+    <td >{{pro.volunteer.first().name}}</td>
+  {% endif %}
+    <td >{{pro.user.first().postcode}}</td>
+    <td >{{moment(pro.timestamp).format('MMMM Do YYYY')}}</td>
+    <td >{{pro.request_title}}</td>
+    <td >{{pro.status}}</td>
+  {% if pro.end_date == None %}
+    <td></td>
+  {% else%}
+    <td>{{moment(pro.end_date).format('MMMM Do YYYY')}}</td>
+  {% endif %}
+  <td class="text-right"><a href="{{url_for('main.detailed_pdf', number=pro.id)}}" class="btn btn-danger">PDF</a></td>
+</tr>
+{% endfor%}

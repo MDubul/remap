@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}REMAP - Submit Project  {% endblock %}
+
+
+{% block page_content %}
+
+
+<div class="page-header">
+    <h1>Submit Project </h1>
+</div>
+
+<div class="col-md-12">
+
+  <form method="post" role="form">
+
+    <div id="selection-button" class="row">
+      <div class="col-md-4">
+        {{ wtf.form_field(form.age_range) }}
+      </div>
+      <div class="col-md-4">
+          {{ wtf.form_field(form.refered) }}
+      </div>
+      <div class="col-md-4">
+          <a href="#" class="btn btn-primary">Repeat User</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
+
+        {{ wtf.form_field(form.name) }}
+        {{ wtf.form_field(form.address) }}
+        {{ wtf.form_field(form.postcode) }}
+        {{ wtf.form_field(form.tel) }}
+        {{ wtf.form_field(form.mob) }}
+        {{ wtf.form_field(form.email) }}
+        {{ wtf.form_field(form.initial_contact) }}
+        {{ wtf.form_field(form.how_find) }}
+      </div>
+      <div id="form2" class="col-md-4">
+
+        {{ wtf.form_field(form.name2) }}
+        {{ wtf.form_field(form.tel2) }}
+        {{ wtf.form_field(form.mob2) }}
+        {{ wtf.form_field(form.email2) }}
+        {{ wtf.form_field(form.relation) }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        {{ wtf.form_field(form.request_title) }}
+      </div>
+    </div>
+      <div class="row">
+      <div class="col-md-8">
+        {{ wtf.form_field(form.request_body, rows=5, cols=5)}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        {{ wtf.form_field(form.donation_discussed) }}
+        {{ wtf.form_field(form.donation_outcome) }}
+      </div>
+      <div class="col-md-4">
+        {{ wtf.form_field(form.data_protection) }}
+        {{ wtf.form_field(form.dat_protection_outcome) }}
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <input class="btn btn-primary btn-lg" type="submit"  value="Submit">
+    </div>
+  </div>
+
+  </form>
+
+  <br>
+  <br>
+  <br>
+
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+  </div>
+
+</div>
+
+
+{% endblock%}
+
+{% block scripts %}
+{{ super() }}
+{% endblock %}

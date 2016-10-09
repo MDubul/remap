@@ -1,0 +1,175 @@
+
+
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+
+  <link rel="stylesheet" type="text/css" href={{bootstrap_css}}>
+
+
+ <style>
+ .navbar {
+   width: 100%;
+   height:170px;
+   border-radius: 0;
+   background-color: white;
+ }
+
+</style>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  {{ moment.include_moment() }}
+
+</head>
+<body>
+  <div class="container">
+
+    <div class="navbar">
+      <a class="navbar-brand" href="/"><img src="C:/Users/abdirahman/projects/remap2/app/static/img/remap-logo2.png", height='150', width='243'></a>
+      <h1 class="text-right"> Remap South London</h1>
+    </div>
+
+
+  <div class="row">
+    <h2 class="text-center"> INITIAL CONTACT LOG SHEET </h2>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <table class="table table-bordered">
+        <tr>
+          <th class="active">Project Number Allocated</th>
+          <th class="active">{{ pro.id }} </th>
+        <tr>
+        <tr>
+          <th>Date of Initial Contact</th>
+          <td>{{moment(pro.timestamp).format('MMMM Do YYYY')}}</td>
+        </tr>
+        <tr>
+          <th>Client Age Group</th>
+          <td>{{pro.user.first().age_range}}</td>
+        </tr>
+      </table>
+
+      <table class="table table-bordered">
+        <tr>
+          {% if referee %}
+            <th class="active"></th>
+          {% endif %}
+            <th class="active">Initiator’s Contact Details</th>
+          {% if referee %}
+            <th class="active">Service User’s Contact Details</th>
+          {% else %}
+            <th class="active"></th>
+          {% endif %}
+          </tr>
+        <tr>
+          <th>Name</th>
+          <td>{{cli.name}}</td>
+          {% if referee %}
+          <td>{{referee.name}}</td>
+          {% endif %}
+        </tr>
+        <tr>
+          <th>Address</th>
+          <td>{{cli.address}}</td>
+          {% if referee %}
+          <td></td>
+          {% endif %}
+        </tr>
+        <tr>
+          <th>Telephone</th>
+          <td>{{cli.tel}}</td>
+          {% if referee %}
+          <td>{{referee.tel}}</td>
+          {% endif %}
+        </tr>
+        <tr>
+          <th>Mobile</th>
+          <td>{{cli.mob}}</td>
+          {% if referee %}
+          <td>{{referee.mob}}</td>
+          {% endif %}
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>{{cli.email}}</td>
+          {% if referee %}
+          <td>{{referee.email}}</td>
+          {% endif %}
+        </tr>
+      {% if referee %}
+        <tr>
+          <th> Relationship to end user?</th>
+          <td> {{cli.relation}} </td>
+          <td></td>
+      {% endif %}
+        </tr>
+
+      </table>
+
+      <table class="table table-bordered">
+        <tr class="active">
+          <th>Project Request:</th>
+        </tr>
+        <tr>
+          <td>{{pro.request_body}}</td>
+        </tr>
+
+      </table>
+
+      <table class="table table-bordered">
+        <tr>
+          <th class="active"> Initial Contact and useful info</th>
+        </tr>
+        <tr>
+          <td>{{cli.initial_contact}}</td>
+        </tr>
+      </table>
+
+      <table class="table table-bordered">
+        <tr>
+          <th class="active"> How did they find us?</th>
+        </tr>
+        <tr>
+          <td>{{cli.how_find}}</td>
+        </tr>
+      </table>
+
+      <table class="table table-bordered">
+        <tr>
+          <th class="active">Was donation or discussed?</th>
+          <th class="active">Outcome</th>
+        </tr>
+        <tr>
+          <td>{{pro.Donation_discussed}}</td>
+          <td>{{pro.donation_outcome}}</td>
+        </tr>
+        <tr>
+          <th class="active">Was Data Protection Discussed?</th>
+          <th class="active">Outcome</th>
+        </tr>
+        <tr>
+          <td>{{pro.data_protection}}</td>
+          <td>{{pro.dat_protection_outcome}}</td>
+        </tr>
+        {% set day = now.day%}
+        {% set month = now.month%}
+        {% set year = now.year%}
+        <tr>
+          <th class="active">Date Printed:</th>
+          <th class="active" class="text-right"> {{day}}/{{month}}/{{year}}</th>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+
+
+</div>
+</body>
+</html>

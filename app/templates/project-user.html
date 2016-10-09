@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}REMAP - Project  {% endblock %}
+
+{% block page_content %}
+
+<div class="container-fluid">
+
+  <h1>Project Number : {{pro.id}}</h1>
+    <a href="{{url_for('main.edit_project', number=pro.id)}}"><span class="label label-danger">Edit Submission</span></a>
+
+  <div class="row">
+    <div class='col-md-8'>
+      <table class="table table-hover">
+        <tr>
+          <td>Location</td>
+          <td>{{pro.user.first().postcode}}</td>
+        </tr>
+        <tr>
+          <td>Date Recieved</td>
+          <td>{{moment(pro.timestamp).format('MMMM Do YYYY')}}</td>
+        </tr>
+        <tr>
+          <td>Project Title</td>
+          <td>{{ pro.request_title}}</td>
+        </tr>
+        <tr>
+          <td>Project Request</td>
+          <td>{{pro.request_body}}</td>
+        </tr>
+        <tr>
+          <td>Status</td>
+          <td>{{pro.status}}</td>
+        </tr>
+        <tr>
+          <td>Assigned Volunteer</td>
+          {% if pro.volunteer%}
+          <td> {{pro.volunteer.first().name}} </td>
+          {% else%}
+          <td>Open<td>
+          {% endif %}
+        </tr>
+        <tr>
+          <td>Closed Date</td>
+          {% if pro.end_date == None%}
+          <td></td>
+          {% else%}
+          <td>{{pro.end_date}}</td>
+          {% endif %}
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class='col-md-8'>
+      {% if pro.photos.first() %}
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#photos">Show/Hide Project Photos</button>
+      {% endif %}
+      <a href="{{url_for('main.project_photos', number=pro.id)}}" class="btn btn-primary">Submit Photos</a>
+      {% if pro.photos.first() != None %}
+        <a href="{{ url_for('main.delete_project_photo',number=pro.id )}}" class="btn btn-danger">Delete Photos</a>
+      {% endif %}
+    </div>
+  </div>
+<br>
+
+  {% if pro.photos and pro_folder_items!= None %}
+    <div id="photos" class="collapse in">
+      <div class="row">
+        {% for x in pro.photos %}
+          {% set item = pro_folder_items[loop.index0] | string%}
+          {% set num = pro.id | string %}
+          {% set numx = '/'+ num %}
+          {% set folder = 'img/projectPhotos' + numx %}
+          {% set path = folder + '/' + item %}
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+              <img class="img-responsive" src="{{url_for('static', filename=path)}}" height='350', width='350' >
+              {% if loop.first %}
+                <div class="caption">
+                  <p> {{x.caption}} </p>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

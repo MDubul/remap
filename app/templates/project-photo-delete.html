@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}REMAP - Profile Picture {% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+  <div class="row">
+    {% for x in pro.photos %}
+      {% set item = pro_folder_items[loop.index0] | string%}
+      {% set num = pro.id | string %}
+      {% set numx = '/'+ num %}
+      {% set folder = 'img/projectPhotos' + numx %}
+      {% set path = folder + '/' + item %}
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <img class="img-responsive" src="{{url_for('static', filename=path)}}" height='350', width='350' >
+          {% if loop.first%}
+            <div class="caption">
+              <p> {{x.caption}} </p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+  {% endfor %}
+  </div>
+
+</div>
+<div class="col-md-4">
+      {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}

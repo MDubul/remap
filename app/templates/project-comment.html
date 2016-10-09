@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}REMAP - Project Communication {% endblock %}
+
+{% block page_content %}
+
+<h1> Project Number: {{project.id}} </h1>
+
+
+<div class='comment-box'>
+    {{ wtf.quick_form(form, button_map={'submit':'primary'}) }}
+</div>
+
+
+{% for comment in commentlist |sort(attribute='timestamp',reverse=True)%}
+<div class="media">
+  <div class="media-left">
+      <img class="media-object" src="{{ comment.author.gravatar(size=350) }}" height='50', width='50'>
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading">{{comment.author.name}}</h4>
+           {{comment.body}}
+
+        <h6>{{moment(comment.timestamp).format('LLL')}}
+
+
+        {% if comment.author == current_user %}
+          {% if not current_user.is_admin() %}
+            <a href="{{url_for('main.edit_comment', id=comment.id, number=project.id)}}"><span class="label label-primary">Edit</span> </a>
+          {% endif %}
+          <a href="{{url_for('main.delete_comment', id=comment.id)}}"><span class="label label-danger">Delete</span> </a>
+        {% endif %}
+
+        {% if current_user.is_admin() %}
+          <a href="{{url_for('main.edit_comment_admin', id=comment.id, number=project.id)}}"><span class="label label-danger">Edit</span> </a>
+        {% endif %}
+
+    </div>
+  </div>
+{% endfor %}
+
+
+{% endblock %}
