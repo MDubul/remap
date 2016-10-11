@@ -26,6 +26,7 @@ def make_async_pdf(template,app, prefix):
     with app.app_context():
         year, month, day,rand = get_time_date()
         filename = '{}-({}-{}-{})-{}.pdf'.format(prefix,day,month,year,rand)
+        print('making PDF + ', filename)
         pdf = pdfkit.from_string(template,filename, configuration=config_wkthmltopdf())
 
 def prepare_pdf_for_list(prefix,pro):
@@ -38,12 +39,14 @@ def prepare_pdf_for_list(prefix,pro):
 def prepare_pdf_for_detailed(prefix,pro,cli,referee):
         app = current_app._get_current_object()
         bootstrap_css = current_app.config['BOOTSTRAP_CSS']
+        logo = current_app.config['LOGO']
         template = render_template('project-detailed-pdf.html',
                                     pro=pro,
                                     cli=cli,
                                     referee=referee,
                                     now=datetime.utcnow(),
-                                    bootstrap_css=bootstrap_css)
+                                    bootstrap_css=bootstrap_css,
+                                    logo=logo)
 
         thr = Thread(target=make_async_pdf, args=[template,app, prefix])
         thr.start()
@@ -98,7 +101,6 @@ def make_detailed_pdf(number):
     except AttributeError:
         referee = None
     prepare_pdf_for_detailed(prefix, pro, cli, referee)
-    print('prepare_pdf_for_detailed')
 
 def pdf_encryption(file):
     pass

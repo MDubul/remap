@@ -151,7 +151,6 @@ def project_single(number):
     proj = Project.query.filter_by(id=number).first()
     #try
     cli_location = geolocator.geocode(proj.user.first().postcode,  timeout=10)
-
     vol_location = geolocator.geocode(current_user.postcode, timeout=10)
     #except a
     #except (geopy.exc.GeocoderTimedOut, geopy.exc.GeocoderServiceError, geopy.exc.GeocoderQueryError(no postcode)) as e:
@@ -424,7 +423,7 @@ def edit_project(number):
         pro.donation_outcome=form.donation_outcome.data,
         pro.data_protection=form.data_protection.data,
         pro.dat_protection_outcome=form.dat_protection_outcome.data
-        return redirect(url_for('main.userproject', number=pro.id))
+        return redirect(url_for('main.project_single', number=pro.id))
     form.request_title.data = pro.request_title
     form.request_body.data = pro.request_body
     form.donation_discussed.data=pro.Donation_discussed
@@ -486,7 +485,7 @@ def pdf(respon):
 @login_required
 def detailed_pdf(number):
     make_detailed_pdf(number)
-    print('make detailed')
+    #print('make detailed')
     return redirect(url_for('main.index'))
 
 @main.route('/project/pdf/encrypt/', methods=['GET','POST'])
