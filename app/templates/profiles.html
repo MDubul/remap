@@ -1,24 +1,29 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base-material.html" %}
+
 {% import "_macros.html" as macros %}
 
 {% block title %}REMAP - Profiles {% endblock %}
 
 {% block page_content %}
 
-  <div class="row">
-    <table class="table">
-      <tr>
-        <th colspan="1" ><h1>Remap South London Panel</h1> </th>
-        <td class="text-right"><a href="{{url_for('main.add_new_volunteer')}}" class="btn btn-danger btn-lg">Add New Volunteer</a></td>
-      </tr>
-    </table>
+<div class="row">
+  <div class="col s12">
+    <h3 class="center-align"> Remap South London Panel </h3>
   </div>
 
+<div class="col s1 offset-s10">
+  <table>
+    <tr>
+      <td><a href="{{url_for('main.add_new_volunteer')}}" class="btn-floating btn-large red">New</a></td>
+    </tr>
+  </table>
+ </div>
+</div>
+
 <div class="row">
-  <div class="col-md-12">
+
      {% include '_profiles.html' %}
-   </div>
+   
 </div>
 
 {% if index != None %}
