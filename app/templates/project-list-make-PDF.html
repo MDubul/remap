@@ -1,22 +1,37 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base-material.html" %}
+
 
 {% block title %}Project PDF {% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-  <h1> PDF form </h1>
+
+<div class="row">
+  <div class="col s12">
+    <h3 class="center-align"> PDF Form </h3>
+  </div>
 </div>
 
-<form method="post" role="form" action="">
-<div class="col-md-4">
-  <div class="row">
-    {{ wtf.form_field(form.selection)}}
-  </div>
-  <div class="row">
-    <input class="btn btn-danger btn-lg" type="submit"  value="Download PDF">
-  </div>
- </div>
-</form>
 
+  <div class="row">
+    <div class="col s9 offset-s1">
+     <div class="card">
+      <div class="card-content">
+        <form method="post" role="form" action="">
+          {{form.hidden_tag()}}
+
+          <div class="row">
+            <div class="input-field s12">
+                {{form.selection(class="browser-default")}}
+            </div>
+          </div>
+
+          <div class="row">
+            <input class="btn btn-danger btn-lg" type="submit"  value="Download PDF">
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
