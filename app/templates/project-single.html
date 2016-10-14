@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base-material.html" %}
 
 {% block title %}REMAP - Project  {% endblock %}
 
@@ -12,127 +11,146 @@
 
 {% block page_content %}
 
+<div class="row">
 
-<div class="container-fluid">
-  <h1>Project Number : {{proj.id}}</h1>
+  <div class="col s12">
+    <h3>Project Number : {{proj.id}}</h3>
+  </div>
 
-    <table class="table table-hover">
+  <div class="col s4">
+    <table>
       <tr>
-        <td>Location</td>
+        <td><a href="{{url_for('main.client_info_admin', cli_number=proj.user.first().id, project_num=proj.id )}}" class="btn-floating btn-large red"><i class="material-icons">perm_identity</i></a></td>
+
+        <td><a href="{{url_for('main.edit_project', number=proj.id)}}" class="btn-floating light-blue darken-3 btn-large "><i class="material-icons ">mode_edit</i></a></td>
+
+        <td><a href="{{url_for('main.project_photos', number=proj.id)}}" class="btn-floating light-blue darken-3 btn-large"><i class="material-icons">attach_file</i></a></td>
+
+        <td><button class="btn-floating light-blue darken-3 btn-large" id="the_map_collapse"><i class="large material-icons">location_on</i>MAP</button></td>
+
+        {% if proj.photos.first() %}
+        <td>
+          <a id="button" href="#" class="btn-floating light-blue darken-3 btn-large"><i class="material-icons">image</i>Photos</a>
+        </td>
+        {% endif %}
+
+      </tr>
+    </table>
+   </div>
+
+</div>
+
+
+<div class="row">
+  <div class="col s12">
+    <table class="bordered">
+      <tr>
+        <th>Location</th>
         <td>{{proj.user.first().postcode}}</td>
       </tr>
       <tr>
-        <td>Data Recieved</td>
+        <th>Data Recieved</th>
         <td>{{ moment(proj.timestamp).format('MMMM Do YYYY')}}</td>
       </tr>
       <tr>
-        <td>Project Title</td>
+        <th>Project Title</th>
         <td>{{proj.request_title }}</td>
       </tr>
       <tr>
-        <td>Project Request</td>
+        <th>Project Request</th>
         <td>{{proj.request_body}}</td>
       </tr>
       <tr>
-        <td>Status</td>
+        <th>Status</th>
         <td>{{proj.status}}</td>
+        {% if proj.status == 'Finished' and proj.solutionphotos %}
+        <td><a href="{{url_for('main.summery_pdf', number=proj.id)}}" class="btn">PDF </a>
+        {% endif %}</td>
       </tr>
       <tr>
-        <td>Assigned Volunteer</td>
-        {% if proj.volunteer.first().name == None%}
-          <td> Open </td>
-        {% else%}
-          <td>{{proj.volunteer.first().name}}</td>
+        <th>Assigned Volunteer</th>
+          {% if proj.volunteer.first().name %}
+            <td>{{proj.volunteer.first().name}}</td>
+          {% else%}
+          <td><a href="{{url_for('main.take_project', number=proj.id)}}" class="btn"> Assign Project</a></td>
         {% endif %}
+
       </tr>
       <tr>
-        <td>Closed Date</td>
+        <th>Closed Date</th>
         {% if proj.end_date == None%}
           <td></td>
         {% else%}
           <td>{{moment(proj.end_date).format('MMMM Do YYYY')}}</td>
         {% endif %}
       </tr>
-    </table>
+      </table>
+    </div>
+  </div>
 
-    <table>
+<div class="row">
+  <div class="col s12">
+  <table>
     <tr>
-      <td>
-
-        <a href="{{url_for('main.client_info_admin', cli_number=proj.user.first().id, project_num=proj.id )}}"><button type="button" class="btn btn-danger">User Information</button></a>
-
-        <a href="{{url_for('main.edit_project', number=proj.id)}}"><button type="button" class="btn btn-danger">Edit Project</button></a>
-
-        <a href="{{url_for('main.project_photos', number=proj.id)}}" class="btn btn-success">Upload Project Photos</a>
-
-        {% if proj.status == 'Finished' or proj.status =='Closed' or proj.status == 'Ongoing'%}
-
-        {% else%}
-          <a href="{{url_for('main.take_project', number=proj.id)}}" class="btn btn-success"> Assign Project</a>
-        {% endif%}
-
-        {% if proj.photos.first() %}
-        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#photos">Toggle Photos</button>
-        {% endif %}
-
-        <button class="btn btn-info" id="the_map_collapse">Show map</button>
-
-
-        <a href="{{url_for('main.project_comments', number=proj.id)}}" class="btn btn-primary"> Project Notes <span class="badge">{{proj.comments.count()}}</span></a>
-
+      <td><a href="{{url_for('main.project_comments', number=proj.id)}}" class="btn">Project Notes <i class="material-icons">comment</i></a></td>
       {% if proj.status == 'Finished' and proj.solutionphotos %}
-          <a href="{{url_for('main.project_solution', number=proj.id)}}" class="btn btn-success">Project Solution</a>
+      <td><a href="{{url_for('main.project_solution', number=proj.id)}}" class="btn btn-success">Project Solution</a></td>
       {% endif %}
-
       {% if (proj.status == 'Awaiting Volunteer') or (proj.status == 'Ongoing')  %}
-          <a href="{{url_for('main.end_project', number=proj.id, way='Close')}}" class="btn btn-warning">Close Project</a>
+      <td><a href="{{url_for('main.end_project', number=proj.id, way='Close')}}" class="btn deep-purple darken-3">Close Project</a></td>
       {% endif %}
       {% if proj.status == 'Ongoing' %}
-          <a href="{{url_for('main.end_project', number=proj.id, way='Finish')}}" class="btn btn-warning">Finish Project</a>
+      <td><a href="{{url_for('main.end_project', number=proj.id, way='Finish')}}" class="btn deep-purple darken-3">Finish Project</a></td>
       {% endif %}
-
-      {% if proj.status == 'Finished' and proj.solutionphotos %}
-          <a href="{{url_for('main.summery_pdf', number=proj.id)}}" class="btn btn-success">Project Summery PDF </a>
-      {% endif %}
-
-        </td>
-      </tr>
-    </table>
-  </div>
-  <br>
-
-{% if (proj.photos.first() ) and (pro_folder_items != None ) %}
-<div class="container-fluid">
-  <div id="photos" class="collapse">
-        <div class="row">
-          {% for x in proj.photos %}
-            {% set item = pro_folder_items[loop.index0] | string%}
-            {% set num = proj.id | string %}
-            {% set numx = '/'+ num %}
-            {% set folder = 'img/projectPhotos' + numx %}
-            {% set path = folder + '/' + item %}
-            <div class="col-sm-6 col-md-4">
-              <div class="thumbnail">
-                <img class="img-responsive" src="{{url_for('static', filename=path)}}" height='350', width='350' >
-                <div class="caption">
-                  {% if loop.first%}
-                  <p> {{proj.photos.first().caption}}</p>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-        {% endfor %}
-      </div>
-  </div>
+    </tr>
+  </table>
 </div>
-{% endif %}
+</div>
 
+
+    <div class="row" id="item">
+    <div class="col s12 left-align">
+      {% for x in proj.photos %}
+        {% set item = pro_folder_items[loop.index0] | string%}
+        {% set num = proj.id | string %}
+        {% set numx = '/'+ num %}
+        {% set folder = 'img/projectPhotos' + numx %}
+        {% set path = folder + '/' + item %}
+        <div class="col s4">
+          <div class="card hoverable">
+            <div class="card-image">
+              <img class="materialboxed" data-caption="{{proj.photos.first().caption }}" src="{{url_for('static', filename=path)}}"  >
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 
   <div class="row">
-    <div class="col-md-4 col-md-offset-1">
+    <div class="col s12">
      {{the_map.html}}
    </div>
- </div>
+  </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+
+
+$(function(){
+    $("#item").hide();
+    $("#button").on("click", function(){
+        $("#item").toggle();
+    });
+});
+
+
+</script>
 
 
 {% endblock %}
