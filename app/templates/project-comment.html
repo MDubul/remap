@@ -1,44 +1,62 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base-material.html" %}
 
 {% block title %}REMAP - Project Communication {% endblock %}
 
 {% block page_content %}
 
-<h1> Project Number: {{project.id}} </h1>
-
-
-<div class='comment-box'>
-    {{ wtf.quick_form(form, button_map={'submit':'primary'}) }}
+<div class="row">
+  <div class="col s12">
+    <h3> Project Number: {{project.id}} </h3>
+  </div>
 </div>
 
+<div class="row">
+
+<form  method=post>
+  {{form.hidden_tag()}}
+
+   <div>
+     <div class="card">
+       <div class="card-content black-text">
+
+          <div class="row">
+            <div >
+                {{form.body.label}}
+                {{form.body (class="materialize-textarea")}}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col s12">
+              {{form.submit (class="btn-large teal")}}
+            </div>
+         </div>
+      </div>
+    </div>
+   </div>
+ </form>
+
+</div>
 
 {% for comment in commentlist |sort(attribute='timestamp',reverse=True)%}
-<div class="media">
-  <div class="media-left">
-      <img class="media-object" src="{{ comment.author.gravatar(size=350) }}" height='50', width='50'>
-    </div>
-    <div class="media-body">
-        <h4 class="media-heading">{{comment.author.name}}</h4>
-           {{comment.body}}
+<div class="col s12">
+  <ul class="collection">
+    <li class="collection-item avatar">
+      <img src="{{ comment.author.gravatar(size=100) }}" alt="" class="circle">
+      <span class="title">{{comment.author.name}}</span>
 
-        <h6>{{moment(comment.timestamp).format('LLL')}}
+      <span><a href="{{url_for('main.edit_comment_admin', id=comment.id, number=project.id)}}"><i class="material-icons">mode_edit</i></a></span>
 
+      <p> {{comment.body}}</p>
+      <a href="{{url_for('main.delete_comment', id=comment.id)}}" class="secondary-content"><i class="material-icons icon-red">clear</i></a>
+    </br>
+      <p><i>{{moment(comment.timestamp).format('LLL')}}</i></p>
 
-        {% if comment.author == current_user %}
-          {% if not current_user.is_admin() %}
-            <a href="{{url_for('main.edit_comment', id=comment.id, number=project.id)}}"><span class="label label-primary">Edit</span> </a>
-          {% endif %}
-          <a href="{{url_for('main.delete_comment', id=comment.id)}}"><span class="label label-danger">Delete</span> </a>
-        {% endif %}
-
-        {% if current_user.is_admin() %}
-          <a href="{{url_for('main.edit_comment_admin', id=comment.id, number=project.id)}}"><span class="label label-danger">Edit</span> </a>
-        {% endif %}
-
-    </div>
-  </div>
+    </li>
+  </ul>
+</div>
 {% endfor %}
+
 
 
 {% endblock %}
