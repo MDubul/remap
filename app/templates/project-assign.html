@@ -1,15 +1,37 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base-material.html" %}
 
 {% block title %}REMAP - Assign Project {% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h1>Assign Volunteer to Project {{pro.id}} </h1>
 
+<div class="row left-align">
+  <div class="col s12">
+    <h4>Assign Volunteer to Project {{pro.id}}</h4>
+ </div>
+</div>
 
-</div>
-<div class="col-md-4">
-      {{ wtf.quick_form(form,button_map={'submit':'primary'}) }}
-</div>
+  <div class="row">
+     <div class="col s9 offset-s1">
+       <div class="card z-depth-2 grey lighten-5">
+         <div class="card-content black-text">
+           <div class="row">
+            <form class="col s12" method=post>
+               {{form.hidden_tag()}}
+             <div class="row">
+               {{form.vol.label(class="black-text")}}
+               {{form.vol(class="browser-default")}}
+             </div>
+             <div class="row">
+                {{form.confirmed}}{{form.confirmed.label(class="filled-in", id="filled-in-box")}}
+             </div>
+             <div class="row">
+               {{form.submit (class="btn-large teal")}}
+             </div>
+           </form>
+           </div>
+         </div>
+       </div>
+   </div>
+ </div>
+
 {% endblock %}
