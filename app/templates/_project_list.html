@@ -9,7 +9,7 @@
     {% endif %}
 
 <tr class="{{stat}}">
-  <td><a href="{{url_for('main.project_single',number=pro.id)}}" class="btn btn-primary ">{{pro.id}}</a></td>
+  <td><a href="{{url_for('main.project_single',number=pro.id)}}" class="waves-effect waves-light btn">{{pro.id}}</a></td>
   {% if pro.volunteer.first()== None %}
     <td ></td>
   {% else %}
@@ -24,6 +24,6 @@
   {% else%}
     <td>{{moment(pro.end_date).format('MMMM Do YYYY')}}</td>
   {% endif %}
-  <td class="text-right"><a href="{{url_for('main.detailed_pdf', number=pro.id)}}" class="btn btn-danger">PDF</a></td>
+  <td class="text-right"><a href="{{url_for('main.detailed_pdf', number=pro.id)}}" class="waves-effect waves-light btn red darken-4">PDF</a></td>
 </tr>
 {% endfor%}

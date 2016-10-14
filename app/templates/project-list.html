@@ -1,37 +1,38 @@
-{% extends "base.html" %}
+{% extends "base-material.html" %}
 {% import '_macros.html' as macros %}
+
 
 {% block title %}REMAP - Project List {% endblock %}
 
 {% block page_content %}
-  <div class="container">
-    <div class="col-md-12">
+
+    <div class="col s12">
       <div class="row">
-        <table class="table table-hover">
+        <table class="bordered responsive-table">
           <tr>
-            <td class=active><b>Project Number</b></td>
-            <td class=active><b>Assigned Volunteer</b></td>
-            <td class=active><b>Location</b></td>
-            <td class=active><b>Date Recieved</b></td>
-            <td class=active><b>Project Title</b></td>
-            <td class=active><b>Status</b></td>
-            <td class=active><b>End Date</b></td>
-            <td class=active><b>Download PDF </b></td>
+            <th class=activefield>Project Number</th>
+            <th class=activefield>Assigned Volunteer</th>
+            <th class=activefield>Location</th>
+            <th class=activefield>Date Recieved</th>
+            <th class=activefield>Project Title</th>
+            <th class=activefield>Status</th>
+            <th class=activefield>End Date</th>
+            <th class=activefield>Download PDF</th>
           </tr>
         {% include'_project_list.html'%}
       </table>
     </div>
   </div>
-</div>
+
 
 {% if index != None %}
-<div class="col-md-10">
-    <div class="col-md-offset-5">
-      <div class="pagination">
+
+    <div class="row center">
+      <div class="container">
           {{ macros.pagination_widget(pagination, 'main.projects') }}
       </div>
    </div>
-</div>
+
 {% endif %}
 
 {% endblock %}

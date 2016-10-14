@@ -9,11 +9,11 @@
     {% for p in pagination.iter_pages() %}
         {% if p %}
             {% if p == pagination.page %}
-            <li class="active">
+            <li class="active waves-effect waves-teal">
                 <a href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
             </li>
             {% else %}
-            <li>
+            <li class="waves-effect waves-teal">
                 <a href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
             </li>
             {% endif %}
