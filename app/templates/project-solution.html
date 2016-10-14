@@ -1,43 +1,55 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base-material.html" %}
 
 {% block title %}REMAP - Project Solution {% endblock %}
 
 {% block page_content %}
-<div class="container-fluid">
 
-  <h1>Project {{pro.id}} Solution </h1>
-    <br>
-    <div class="row">
+<div class="row">
+  <div class="col s12">
+    <h3 class="center-align">Project {{pro.id}} Solution </h3>
+  </div>
+</div>
 
-      <div class="panel panel-primary">
-        <div class="panel-heading"><h3 class="panel-title">Solution Description</h3></div>
-        <div class="panel-body"><p>{{pro.solution}}</p></div>
-        <div class="panel-footer">{{pro.volunteer.first().name}}</div>
+<div class="row">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">Solution Description</span>
+        <p>{{pro.solution}}</p>
       </div>
-
+      <div class="card-action">
+        {{pro.volunteer.first().name}}
+      </div>
     </div>
+  </div>
+</div>
 
-    <div class="row">
-      {% for x in pro.solutionphotos %}
-        {% set item = pro_folder_items[loop.index0] | string%}
-        {% set num = pro.id | string %}
-        {% set numx = '/'+ num %}
-        {% set folder = 'img/projectSolution' + numx %}
-        {% set path = folder + '/' + item %}
-          <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <img class="img-responsive" src="{{url_for('static', filename=path)}}" height='350', width='350' >
-                  <div class="caption">
-                  {% if x.caption == None%}
-                  {% else %}
-                    <p> {{x.caption}}</p>
-                  {% endif %}
-                </div>
-            </div>
-          </div>
-      {% endfor %}
-    </div>
 
-    </div>
+<div class="row">
+  <div class="col s12 left-align">
+    {% for x in pro.solutionphotos %}
+      {% set item = pro_folder_items[loop.index0] | string%}
+      {% set num = pro.id | string %}
+      {% set numx = '/'+ num %}
+      {% set folder = 'img/projectSolution' + numx %}
+      {% set path = folder + '/' + item %}
+
+      <div class="col s4">
+        <div class="card">
+          <img class="materialboxed"
+          {% if x.caption == None%}
+          {% else %}
+          data-caption="{{x.caption}}"
+          {% endif %}
+          src="{{url_for('static', filename=path)}}"
+          height='350', width='350'>
+        </div>
+      </div>
+      <div class="col s1">
+      </div>
+  {% endfor %}
+</div>
+
+
+
 {% endblock %}
