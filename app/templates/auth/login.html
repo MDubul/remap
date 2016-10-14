@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base-material.html" %}
+
 
 
 {% block page_content %}
@@ -8,11 +8,45 @@
 {% if not current_user.is_authenticated%}
 
 
-<div class="col-md-8 col-md-offset-2">
-    <div class="jumbotron">
-      <h1 class="text-center">Login</h1>
-        {{ wtf.quick_form(form, button_map={'submit':'danger'})}}
-    </div>
+<div class="container">
+
+  <div class="row">
+  <div class="col s9 offset-s1">
+  <div class="card">
+
+
+      <div class="card-content black-text">
+        <span class="card-title">Login</span>
+        <div class="row">
+
+          <form class="col s12" method=post>
+            {{form.hidden_tag()}}
+            <div class="row">
+              <div class="input-field col s12 black-text">
+              {{form.email}}{{form.email.label(class="black-text")}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                {{form.password (class="black-text")}} {{form.password.label(class="black-text")}}
+              </div>
+            </div>
+          <div class="row">
+        {{form.remember_me}}{{form.remember_me.label(class="filled-in", id="filled-in-box")}}
+          </div>
+          <div class="row">
+          {{form.submit (class="btn-large teal")}}
+          </div>
+        </form>
+
+
+        </div>
+        </div>
+
+      </div>
+  </div>
+</div>
+<br><br>
 </div>
 
 {% endif %}
