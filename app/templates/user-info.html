@@ -1,74 +1,73 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base-material.html" %}
 {% block title %} REMAP {% endblock %}
 
 {% block page_content %}
-<div class='container-fluid'>
+
+
   <div class="row">
+    <div class='col s6'>
+      <h4> User Information </h4>
 
-    <div class='col-md-4'>
-      <h1> User Information </h1>
-
-      <table class="table table-hover">
+      <table class="table bordered">
           <tr>
-            <td>Age Range</td>
+            <th>Age Range</th>
             <td>{{ clie.age_range }}</td>
           </tr>
           <tr>
-            <td>Name</td>
+            <th>Name</th>
             <td>{{ clie.name}}</td>
           </tr>
           <tr>
-            <td>Post code</td>
+            <th>Post code</th>
             <td>{{ clie.postcode }}</td>
           </tr>
           <tr>
-            <td>Address</td>
+            <th>Address</th>
             <td>{{ clie.address }}</td>
           </tr>
           <tr>
-            <td>Telephone</td>
+            <th>Telephone</th>
             <td>{{ clie.tel }}</td>
           </tr>
           <tr>
-            <td>Mobile</td>
+            <th>Mobile</th>
             <td>{{ clie.mob }}</td>
           </tr>
           <tr>
-            <td>Email</td>
+            <th>Email</th>
             <td><a href="mailto:{{ clie.email }}">{{ clie.email }}</td>
           </tr>
           {% if referee %}
             <tr>
-              <td>Initial Contact</td>
-              <td>{{ clie.intial_contact }}</td>
+              <th>Initial Contact</th>
+              <td>{{ clie.initial_contact }}</td>
             </tr>
         {% endif %}
       </table>
     </div>
-    
+
     {% if referee %}
-      <div class='col-md-6'>
-        <h1> Referee Information </h1>
-        <table class="table table-hover">
+      <div class='col s6'>
+        <h4> Referee Information </h4>
+        <table class="table bordered">
           <tr>
-            <td>Name</td>
+            <th>Name</th>
             <td>{{referee.name }}</td>
           </tr>
           <tr>
-            <td>Telephone</td>
+            <th>Telephone</th>
             <td>{{referee.tel }}</td>
           </tr>
           <tr>
-            <td>Mobile</td>
+            <th>Mobile</th>
             <td>{{ referee.mob }}</td>
           </tr>
           <tr>
-            <td>Email</td>
+            <th>Email</th>
             <td><a href="mailto:{{ clie.email }}">{{ referee.email }}</td>
           </tr>
           <tr>
-            <td>relationship to End User</td>
+            <th>Relationship to End User</th>
             <td>{{ clie.relation }}</td>
           </tr>
         </table>
@@ -77,7 +76,5 @@
 
   </div>
 
-
-</div>
 
 {% endblock %}
