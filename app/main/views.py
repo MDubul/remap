@@ -324,7 +324,7 @@ def end_project(number, way):
                 db.session.rollback()
                 raise
             return redirect(url_for('main.project_single', number = number))
-        return render_template('project-end.html', form=form, way=way)
+        return render_template('project-end-close.html', form=form, way=way)
 
     else:
         abort(404)

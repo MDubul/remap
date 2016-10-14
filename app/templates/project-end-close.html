@@ -1,0 +1,49 @@
+{% extends "base-material.html" %}
+
+{% block title %}REMAP - {% endblock %}
+
+{% block page_content %}
+
+
+<div class="row">
+  <div class="col s12">
+      <h4>Upload Photos for Project</h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s9 offset-s1">
+    <div class="card grey lighten-5">
+     <div class="card-content black-text">
+
+        <form action="" method="post" name="image" enctype="multipart/form-data">
+          {{form.hidden_tag()}}
+
+
+           <div class="row">
+             <div class="input-field col s12">
+               {{form.comment.label}}
+              {{form.comment (class="materialize-textarea")}}
+              </div>
+           </div>
+
+           <div class="row">
+             <div class="input-field col s12">
+              {{form.sure}}{{form.sure.label(class="filled-in",id="filled-in-box")}}
+              </div>
+           </div>
+         </br>
+       </br>
+           <div class="row">
+             <div class="col s12">
+               <input type=submit  class="btn btn-primary" value=Upload>
+              </div>
+          </div>
+
+        </form>
+
+    </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
