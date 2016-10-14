@@ -1,41 +1,73 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base-material.html" %}
 
 {% block page_content %}
 
-
-  <div class="page-header">
-      <h1>Add new Volunteer </h1>
+<div class="row">
+  <div class="col s12">
+    <h3 class="left-align">Add New Volunteer</h3>
   </div>
-
-<div class="col-md-12">
+</div>
 
   <form method="post" role="form">
-
+    {{form.hidden_tag() }}
     <div class="row">
-      <div class="col-md-4">
-        {{ form.hidden_tag() }}
-        {{ wtf.form_errors(form, hiddens="only") }}
-        {{wtf.form_field(form.name)}}
-        {{wtf.form_field(form.address)}}
-        {{wtf.form_field(form.postcode)}}
-        {{wtf.form_field(form.tel)}}
-        {{wtf.form_field(form.mob)}}
-        {{wtf.form_field(form.email)}}
+      <div class="col s9 offset-s1">
+        <div class="card grey lighten-5 z-depth-1">
+          <div class="card-content">
 
-      </div>
+            <div class="row">
+              <div class="input-field col s12">
+                {{form.name.label}}
+                {{form.name}}
+              </div>
+            </div>
 
-      <div class="col-md-4">
-        {{wtf.form_field(form.role)}}
-        {{wtf.form_field(form.about_me, rows=4)}}
+            <div class="row">
+              <div class="black-text col s12">
+              {{form.role.label(class="black-text")}}
+              {{form.role(class="browser-default")}}
+            </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                {{form.address.label}}
+                {{form.address}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                {{form.postcode.label}}
+                {{form.postcode}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                {{form.tel.label}}
+                {{form.tel}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                {{form.mob.label}}
+                {{form.mob}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                {{form.email.label}}
+                {{form.email}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field black-text col s12">
+              {{form.submit (class="btn-large teal")}}
+            </div>
+            </div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-4">
-      {{wtf.form_field(form.submit, button_map={'submit':'primary'}) }}
-    </div>
-    </div>
+  </div>
   </form>
-</div>
 
 {% endblock%}
