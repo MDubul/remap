@@ -1,0 +1,48 @@
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
+
+
+.success {
+  background-color: #e8f5e9;
+}
+
+.danger {
+  background-color: #fbe9e7;
+}
+
+.primary {
+  background-color: #e8f5e9;
+}
+
+.info {
+  background-color: #e8f5e9;
+}
+
+.activefield {
+  background-color: #eceff1;
+}
+
+.warning {
+  background-color: #e8f5e9;
+}
+
+
+.active a{
+
+  background-color:#00897B;
+}
+
+
+.icon-red {
+
+  color: red;
+}
+
+.icon-blue {
+
+  color: blue;
+}
