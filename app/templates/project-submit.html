@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base-material.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}REMAP - Submit Project  {% endblock %}
@@ -6,95 +6,170 @@
 
 {% block page_content %}
 
-
-<div class="page-header">
-    <h1>Submit Project </h1>
+<div class="row">
+  <div class="col s12">
+    <h3 class="center-align">Submit Project</h3>
+  </div>
 </div>
 
-<div class="col-md-12">
 
-  <form method="post" role="form">
+<form method=post  role="form">
+  {{form.hidden_tag()}}
 
-    <div id="selection-button" class="row">
-      <div class="col-md-4">
-        {{ wtf.form_field(form.age_range) }}
+  <div class="row">
+      <div class="col s6">
+        {{form.age_range.label(class="black-text")}}
+        {{form.age_range}}
       </div>
-      <div class="col-md-4">
-          {{ wtf.form_field(form.refered) }}
+      <div class="col s6">
+        {{form.refered}}{{form.refered.label(class="filled-in", id="filled-in-box")}}
       </div>
-      <div class="col-md-4">
-          <a href="#" class="btn btn-primary">Repeat User</a>
+   </div>
+
+  <div class="row">
+    <div class="col s6">
+      <div class="card grey lighten-5 z-depth-1">
+        <div class="card-content">
+
+          <div class="row">
+            <div class="input-field col s12">
+              {{form.name.label(class="black-text")}}
+              {{form.name (class="black-text")}}
+            </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+              {{form.address.label(class="black-text")}}
+              {{form.address(class="black-text")}}
+            </div>
+            <div class="input-field col s6">
+              {{form.postcode.label(class="black-text")}}
+              {{form.postcode (class="black-text")}}
+            </div>
+          </div>
+
+          <div class="row">
+              <div class="input-field col s6">
+                {{form.tel.label(class="black-text")}}
+                {{form.tel(class="black-text")}}
+              </div>
+              <div class="input-field col s6">
+                {{form.mob.label(class="black-text")}}
+                {{form.mob(class="black-text")}}
+              </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              {{form.email.label(class="black-text")}}
+              {{form.email(class="black-text")}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              {{form.initial_contact.label(class="black-text")}}
+              {{form.initial_contact(class="black-text")}}
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-4">
-        {{ form.hidden_tag() }}
-        {{ wtf.form_errors(form, hiddens="only") }}
 
-        {{ wtf.form_field(form.name) }}
-        {{ wtf.form_field(form.address) }}
-        {{ wtf.form_field(form.postcode) }}
-        {{ wtf.form_field(form.tel) }}
-        {{ wtf.form_field(form.mob) }}
-        {{ wtf.form_field(form.email) }}
-        {{ wtf.form_field(form.initial_contact) }}
-        {{ wtf.form_field(form.how_find) }}
-      </div>
-      <div id="form2" class="col-md-4">
+    <div class="col s6">
+      <div class="card grey lighten-5 z-depth-1">
+        <div class="card-content">
+          <div class="row">
+            <div class="input-field col s12">
+              {{form.name2.label(class="black-text")}}
+              {{form.name2(class="black-text")}}
+            </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                {{form.tel2.label(class="black-text")}}
+                {{form.tel2(class="black-text")}}
+              </div>
+              <div class="input-field col s6">
+                {{form.mob2.label(class="black-text")}}
+                {{form.mob2(class="black-text")}}
+              </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              {{form.email2.label(class="black-text")}}
+              {{form.email2(class="black-text")}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              {{form.relation.label(class="black-text")}}
+              {{form.relation(class="black-text")}}
+            </div>
+          </div>
 
-        {{ wtf.form_field(form.name2) }}
-        {{ wtf.form_field(form.tel2) }}
-        {{ wtf.form_field(form.mob2) }}
-        {{ wtf.form_field(form.email2) }}
-        {{ wtf.form_field(form.relation) }}
+        </div>
       </div>
     </div>
-
-    <div class="row">
-      <div class="col-md-4">
-        {{ wtf.form_field(form.request_title) }}
-      </div>
-    </div>
-      <div class="row">
-      <div class="col-md-8">
-        {{ wtf.form_field(form.request_body, rows=5, cols=5)}}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-4">
-        {{ wtf.form_field(form.donation_discussed) }}
-        {{ wtf.form_field(form.donation_outcome) }}
-      </div>
-      <div class="col-md-4">
-        {{ wtf.form_field(form.data_protection) }}
-        {{ wtf.form_field(form.dat_protection_outcome) }}
-      </div>
   </div>
 
   <div class="row">
-    <div class="col-md-4">
-      <input class="btn btn-primary btn-lg" type="submit"  value="Submit">
-    </div>
-  </div>
-
-  </form>
-
-  <br>
-  <br>
-  <br>
+    <div class="col s12">
+      <div class="card grey lighten-5 z-depth-1">
+        <div class="card-content">
+          <div class="row">
+            {{form.request_title.label(class="black-text")}}
+            {{form.request_title(class="materialize-textarea")}}
+          </div>
+          <div class="row">
+            {{form.request_body.label(class="black-text")}}
+            {{form.request_body(class="materialize-textarea")}}
+          </div>
+          </div>
+        </div>
+      </div>
+   </div>
 
   <div class="row">
-    <div class="col-md-4">
+    <div class="col s6">
+      <div class="card grey lighten-5 z-depth-1">
+        <div class="card-content">
+          <div class="row">
+            {{form.donation_discussed}}{{form.donation_discussed.label(class="filled-in", id="filled-in-box")}}
+          </div>
+          <div class="row">
+            {{form.donation_outcome.label(class="black-text")}}
+            {{form.donation_outcome(class="materialize-textarea")}}
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="col s6">
+        <div class="card grey lighten-5 z-depth-1">
+          <div class="card-content">
+            <div class="row">
+              {{form.data_protection}}{{form.data_protection.label(class="filled-in", id="filled-in-box")}}
+            </div>
+            <div class="row">
+              {{form.dat_protection_outcome.label(class="black-text")}}
+              {{form.dat_protection_outcome(class="materialize-textarea")}}
+            </div>
+          </div>
+        </div>
+      </div>
+   </div>
+
+  <div class="row">
+    <div class="col s6">
+      <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+      <i class="material-icons right">send</i>
+    </button>
     </div>
   </div>
 
-</div>
+
+</form>
 
 
 {% endblock%}
-
-{% block scripts %}
-{{ super() }}
-{% endblock %}
