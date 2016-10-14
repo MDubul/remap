@@ -1,15 +1,30 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base-material.html" %}
 
 {% block title %}REMAP - Project Communication {% endblock %}
 
 {% block page_content %}
 
 
+  <div class="row">
+    <div class="col s12">
 
-<div class='comment-box'>
-    {{ wtf.quick_form(form) }}
-</div>
- 
+        <form method='post'>
+          {{form.hidden_tag()}}
+          <div class="row">
+          <div class="input-field">
+              {{form.body.label}}
+              {{form.body(class="materialize-textarea")}}
+          </div>
+        </div>
+        <div class="row">
+
+          {{form.submit (class="btn-large teal")}}
+        </div>
+        </form>
+
+
+    </div>
+  </div>
+
 
 {% endblock %}
