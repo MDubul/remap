@@ -1,13 +1,84 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base-material.html" %}
+
 
 {% block title %}REMAP - Edit Profile{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h1>Edit Your Profile</h1>
-</div>
-<div class="col-md-4">
-    {{ wtf.quick_form(form) }}
+<div class="container">
+      <div class="row">
+        <div class="col s9 offset-s1">
+          <h3 class="left-align">Edit Profile</h3>
+        </div>
+      </div>
+      <div class="row">
+      <div class="col s9 offset-s1">
+      <div class="card grey lighten-5 z-depth-1">
+      <div class="card-content black-text">
+        <form method=post>
+          {{form.hidden_tag()}}
+
+          <div class="row">
+            <div class="input-field black-text col s12">
+            {{form.name}}
+            {{form.name.label(class="black-text")}}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="black-text col s12">
+            {{form.role.label(class="black-text")}}
+            {{form.role(class="browser-default")}}
+          </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              {{form.email (class="black-text")}}
+              {{form.email.label(class="black-text")}}
+            </div>
+          </div>
+
+
+        <div class="row">
+          <div class="input-field black-text col s6">
+          {{form.postcode}}
+          {{form.postcode.label(class="black-text")}}
+        </div>
+        <div class="input-field black-text col s6">
+        {{form.address}}
+        {{form.address.label(class="black-text")}}
+      </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field black-text col s6">
+          {{form.tel}}
+          {{form.tel.label(class="black-text")}}
+        </div>
+        <div class="input-field black-text col s6">
+        {{form.mob}}
+        {{form.mob.label(class="black-text")}}
+      </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field black-text col s12">
+          {{form.about_me.label(class="black-text") }}
+
+          {{form.about_me(class="materialize-textarea")}}
+        </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field black-text col s12">
+          {{form.submit (class="btn-large teal")}}
+        </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  </div>
+
 </div>
 {% endblock %}
