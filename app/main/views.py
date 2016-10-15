@@ -112,7 +112,7 @@ def edit_profile_admin(id):
         db.session.add(vol)
         db.session.commit()
         flash('The profile has been updated.','green accent-3')
-        return redirect(url_for('.profile', name = vol.name))
+        return redirect(url_for('main.profile', name = vol.name))
     form.email.data = vol.email
     form.name.data = vol.name
     form.address.data = vol.address
@@ -493,7 +493,6 @@ def pdf(respon):
 @login_required
 def detailed_pdf(number):
     make_detailed_pdf(number)
-    #print('make detailed')
     flash('PDF is being made in the background', 'green accent-3')
     return redirect(url_for('main.index'))
 
