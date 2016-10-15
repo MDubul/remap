@@ -88,6 +88,7 @@ def add_new_volunteer():
                         )
         db.session.add(vol)
         db.session.commit()
+        flash('Added a New volunteer.','green accent-3')
         return redirect(url_for('main.profile'))
     return render_template('profile-new.html',form=form)
 
@@ -110,7 +111,7 @@ def edit_profile_admin(id):
         vol.about_me = form.about_me.data
         db.session.add(vol)
         db.session.commit()
-        flash('The profile has been updated.','success')
+        flash('The profile has been updated.','green accent-3')
         return redirect(url_for('.profile', name = vol.name))
     form.email.data = vol.email
     form.name.data = vol.name
@@ -207,6 +208,7 @@ def take_project(number):
        pro.status = 'Ongoing'
        db.session.add_all([pro,vol])
        db.session.commit()
+       flash('Volunteer has been assigned.','green accent-3')
        return redirect(url_for('main.project_single', number=number))
    return render_template('project-assign.html', form = form, pro=pro)
 
@@ -226,7 +228,7 @@ def project_comments(number):
                     project=project)
         db.session.add(c)
         db.session.commit()
-        flash('Your comment has been published.', 'success')
+        flash('Your comment has been published.', 'green accent-3')
         return redirect(url_for('main.project_comments', number = project.id))
     return render_template('project-comment.html', form = form,
                                                    vol= vol,
@@ -243,6 +245,7 @@ def delete_comment(id):
     pro = comment.project_id
     comment = Comment.query.filter_by(id=id).delete()
     db.session.commit()
+    flash('Comment deleted.', 'green accent-3')
     return redirect(url_for('main.project_comments', number=pro))
 
 
@@ -256,7 +259,7 @@ def edit_comment_admin(number, id):
         comment.body = form.body.data
         db.session.add(comment)
         db.session.commit()
-        flash('The post has been updated.','success')
+        flash('The post has been updated.','green accent-3')
         return redirect(url_for('main.project_comments', number = number))
     form.body.data = comment.body
     return render_template('project-comment-edit.html', form = form,
@@ -307,6 +310,7 @@ def end_project(number, way):
             except:
                 db.session.rollback()
                 raise
+            flash('Project is now finished.','green accent-3')
             return redirect(url_for('main.project_single', number = number))
         return render_template('project-end-finish.html', form=form, way=way)
 
@@ -323,6 +327,7 @@ def end_project(number, way):
             except:
                 db.session.rollback()
                 raise
+            flash('Project is now Closed.','green accent-3')
             return redirect(url_for('main.project_single', number = number))
         return render_template('project-end-close.html', form=form, way=way)
 
@@ -386,6 +391,7 @@ def submit_project():
         except:
             db.session.rollback()
             raise
+        flash('Project has been submitted.','green accent-3')
         return redirect(url_for('main.user_profile'))
     return render_template('project-submit.html', form = form)
 
@@ -423,6 +429,7 @@ def edit_project(number):
         pro.donation_outcome=form.donation_outcome.data,
         pro.data_protection=form.data_protection.data,
         pro.dat_protection_outcome=form.dat_protection_outcome.data
+        flash('Project has been edited','green accent-3')
         return redirect(url_for('main.project_single', number=pro.id))
     form.request_title.data = pro.request_title
     form.request_body.data = pro.request_body
@@ -456,7 +463,7 @@ def project_photos(number):
                 pro.photos.append(p)
                 db.session.add_all([p,pro])
         db.session.commit()
-        flash('Your photos has been uploaded', 'success')
+        flash('Your photos has been uploaded', 'green accent-3')
         return redirect(url_for('main.project_single',number = number))
     return render_template('project-photo.html')
 
@@ -478,6 +485,7 @@ def pdf_page():
 @login_required
 def pdf(respon):
     make_project_list_pdf(respon)
+    flash('PDF is being made in the background', 'green accent-3')
     return redirect(url_for('main.index'))
 
 
@@ -486,6 +494,7 @@ def pdf(respon):
 def detailed_pdf(number):
     make_detailed_pdf(number)
     #print('make detailed')
+    flash('PDF is being made in the background', 'green accent-3')
     return redirect(url_for('main.index'))
 
 @main.route('/project/pdf/encrypt/', methods=['GET','POST'])
@@ -505,6 +514,7 @@ def encrypt_pdf():
             resultPdf = open('E-'+filename, 'wb')
             pdfWriter.write(resultPdf)
             resultPdf.close()
+            flash('PDF is being made in the background', 'green accent-3')
             return redirect(url_for('main.index'))
     return render_template('project-encrypt-pdf.html', form=form)
 
