@@ -145,7 +145,7 @@ class Volunteer(People):
         return volun.id == selme
 
     @staticmethod
-    def fake_volunteers(count=5):
+    def fake_volunteers(count=10):
         from sqlalchemy.exc import IntegrityError
         from random import seed
         import forgery_py
@@ -155,12 +155,14 @@ class Volunteer(People):
         for i in range(count):
             u = Volunteer(name=forgery_py.name.full_name(),
                     postcode ='KT1',
-                    address = forgery_py.address.street_address(),
-                    tel = forgery_py.address.phone(),
-                    mob= forgery_py.address.phone(),
+                    address_line_1 = forgery_py.address.street_number(),
+                    address_line_2 =forgery_py.address.street_name(),
+                    town_city= 'London',
+                    telephone = forgery_py.address.phone(),
+                    mobile= forgery_py.address.phone(),
                     email=forgery_py.internet.email_address(),
                     password='aaa',
-                    about_me=forgery_py.lorem_ipsum.sentences(3),
+                    volunteer_profile=forgery_py.lorem_ipsum.sentences(3),
                     confirmed = True)
             db.session.add(u)
             try:
@@ -225,14 +227,16 @@ class User(People):
         for i in range(count):
             u = User(name=forgery_py.name.full_name(),
                     postcode ='KT1 1TP',
-                    address = forgery_py.address.street_address(),
-                    tel = forgery_py.address.phone(),
-                    mob= forgery_py.address.phone(),
+                    address_line_1 = forgery_py.address.street_number(),
+                    address_line_2 =forgery_py.address.street_name(),
+                    town_city= 'London',
+                    telephone = forgery_py.address.phone(),
+                    mobile= forgery_py.address.phone(),
                     email=forgery_py.internet.email_address(),
                     age_range=random.choice(age_range),
                     relation=forgery_py.lorem_ipsum.sentence(),
                     initial_contact='Direct',
-                    how_find=forgery_py.lorem_ipsum.sentence(),
+                    how_they_find_us=forgery_py.lorem_ipsum.sentence(),
                     )
             db.session.add(u)
             try:
