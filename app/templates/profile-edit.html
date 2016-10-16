@@ -41,31 +41,41 @@
 
         <div class="row">
           <div class="input-field black-text col s6">
-          {{form.postcode}}
-          {{form.postcode.label(class="black-text")}}
+          {{form.address_line_1}}
+          {{form.address_line_1.label(class="black-text")}}
         </div>
         <div class="input-field black-text col s6">
-        {{form.address}}
-        {{form.address.label(class="black-text")}}
+        {{form.address_line_2}}
+        {{form.address_line_2.label(class="black-text")}}
       </div>
         </div>
 
         <div class="row">
           <div class="input-field black-text col s6">
-          {{form.tel}}
-          {{form.tel.label(class="black-text")}}
+          {{form.town_city}}
+          {{form.town_city.label(class="black-text")}}
         </div>
         <div class="input-field black-text col s6">
-        {{form.mob}}
-        {{form.mob.label(class="black-text")}}
+        {{form.postcode}}
+        {{form.postcode.label(class="black-text")}}
+      </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field black-text col s6">
+          {{form.telephone}}
+          {{form.telephone.label(class="black-text")}}
+        </div>
+        <div class="input-field black-text col s6">
+        {{form.mobile}}
+        {{form.mobile.label(class="black-text")}}
       </div>
         </div>
 
         <div class="row">
           <div class="input-field black-text col s12">
-          {{form.about_me.label(class="black-text") }}
-
-          {{form.about_me(class="materialize-textarea")}}
+          {{form.volunteer_profile.label(class="black-text") }}
+          {{form.volunteer_profile(class="materialize-textarea")}}
         </div>
         </div>
 

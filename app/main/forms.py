@@ -8,16 +8,18 @@ from flask_wtf.recaptcha import RecaptchaField
 
 
 class EditProfileForm(Form):
-    name = StringField('Real name', validators=[Length(0, 64)])
+    name = StringField('Name', validators=[Length(0, 64)])
     role = SelectField('Role', coerce=int)
     postcode = StringField('Postcode')
-    address = StringField('Address')
-    tel = IntegerField('Telephone')
-    mob = IntegerField('Mobile' )
+    address_line_1 = StringField('Address Line 1')
+    address_line_2 = StringField('Address Line 2')
+    town_city = StringField('Town/City')
+    telephone = IntegerField('Telephone')
+    mobile = IntegerField('Mobile')
     email = StringField('Email')
-    about_me = TextAreaField('About')
-
+    volunteer_profile = TextAreaField('Volunteer Profile')
     submit = SubmitField('Submit')
+
     def __init__(self, vol, *args, **kwargs): ## Need to understand this section more
         super(EditProfileForm, self).__init__(*args, **kwargs)
         self.role.choices = [(role.id, role.name) for role in Role.query.order_by(Role.name).all()]
@@ -52,20 +54,24 @@ class EditProjectForm(Form):
 class ProjectSubmissionForm(Form):
     age_range = RadioField('Age Group:', choices=[('0-17','0-17'),('18-64','18-64'),('65+','65+')],validators=[Required()])
     refered = BooleanField('Was User Refered?')
-    name = StringField('User Name*:', validators=[Required()])
-    address = StringField('Address*:', validators=[Required()])
-    postcode = StringField('Postcode*:', validators=[Required()])
-    tel = IntegerField('Telephone:', validators=[Optional()])
-    mob = IntegerField('Mobile:', validators=[Optional()])
+    name = StringField('User Name:', validators=[Required()])
+    address_line_1 = StringField('Address Line 1',validators=[Required()])
+    address_line_2 = StringField('Address Line 2',validators=[Required()])
+    town_city = StringField('Town/City')
+    telephone = IntegerField('Telephone')
+    mobile = IntegerField('Mobile')
+    postcode = StringField('Postcode:', validators=[Required()])
     email = StringField('Email:', validators=[Optional()])
     initial_contact = StringField('Initial Contact & useful info', default='Direct')
-    how_find = TextAreaField('How did the find us?')
+    how_they_find_us = TextAreaField('How did the find us?')
     request_title = StringField('Project Title:')
     request_body = TextAreaField('Project Request:', validators=[Required()])
-    name2 = StringField('Initiator Name:')
-    tel2 = IntegerField('Telephone:', validators=[Optional()])
-    mob2 = IntegerField('Mobile:', validators=[Optional()])
-    email2 = StringField('Email:', validators=[Optional()])
+
+    name_2 = StringField('Initiator Name:')
+    telephone_2 = IntegerField('Telephone:', validators=[Optional()])
+    mobile_2 = IntegerField('Mobile:', validators=[Optional()])
+
+    email_2 = StringField('Email:', validators=[Optional()])
     relation = StringField('Relationship:', description=' What is the Relationship to Service User')
 
     donation_discussed = BooleanField('Donation/Expenses Discussed?')
@@ -107,12 +113,14 @@ class ProjectPdfSelection(Form):
 class AddNewVolunteerForm(Form):
     name = StringField('Name:', validators=[Required()])
     role = SelectField('Role',coerce=int)
-    address = StringField('Address:', validators=[Required()])
+    address_line_1 = StringField('Address Line 1:', validators=[Required()])
+    address_line_2 = StringField('Address Line 2:')
+    town_city = StringField('Town/City')
     postcode = StringField('Postcode:', validators=[Required()])
-    tel = IntegerField('Telephone:', validators=[Optional()])
-    mob = IntegerField('Mobile:', validators=[Optional()])
+    telephone = IntegerField('Telephone:', validators=[Optional()])
+    mobile = IntegerField('Mobile:', validators=[Optional()])
     email = StringField('Email:', validators=[Optional()])
-    about_me = TextAreaField('About')
+    volunteer_profile = TextAreaField('About')
     submit = SubmitField('Submit')
 
     def __init__(self,  *args, **kwargs): ## Need to understand this section more

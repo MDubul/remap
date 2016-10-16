@@ -37,25 +37,38 @@
               {{form.name (class="black-text")}}
             </div>
           </div>
+
+
           <div class="row">
               <div class="input-field col s6">
-              {{form.address.label(class="black-text")}}
-              {{form.address(class="black-text")}}
+              {{form.address_line_1.label(class="black-text")}}
+              {{form.address_line_1(class="black-text")}}
             </div>
             <div class="input-field col s6">
-              {{form.postcode.label(class="black-text")}}
-              {{form.postcode (class="black-text")}}
+              {{form.address_line_2.label(class="black-text")}}
+              {{form.address_line_2(class="black-text")}}
             </div>
           </div>
 
           <div class="row">
               <div class="input-field col s6">
-                {{form.tel.label(class="black-text")}}
-                {{form.tel(class="black-text")}}
+              {{form.town_city.label(class="black-text")}}
+              {{form.town_city(class="black-text")}}
+            </div>
+            <div class="input-field col s6">
+              {{form.postcode.label(class="black-text")}}
+              {{form.postcode(class="black-text")}}
+            </div>
+          </div>
+
+          <div class="row">
+              <div class="input-field col s6">
+                {{form.telephone.label(class="black-text")}}
+                {{form.telephone(class="black-text")}}
               </div>
               <div class="input-field col s6">
-                {{form.mob.label(class="black-text")}}
-                {{form.mob(class="black-text")}}
+                {{form.mobile.label(class="black-text")}}
+                {{form.mobile(class="black-text")}}
               </div>
           </div>
 
@@ -71,7 +84,12 @@
               {{form.initial_contact(class="black-text")}}
             </div>
           </div>
-
+          <div class="row">
+            <div class="input-field col s12">
+              {{form.how_they_find_us.label(class="black-text")}}
+              {{form.how_they_find_us(class="materialize-textarea")}}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -82,24 +100,24 @@
         <div class="card-content">
           <div class="row">
             <div class="input-field col s12">
-              {{form.name2.label(class="black-text")}}
-              {{form.name2(class="black-text")}}
+              {{form.name_2.label(class="black-text")}}
+              {{form.name_2(class="black-text")}}
             </div>
           </div>
           <div class="row">
               <div class="input-field col s6">
-                {{form.tel2.label(class="black-text")}}
-                {{form.tel2(class="black-text")}}
+                {{form.telephone_2.label(class="black-text")}}
+                {{form.telephone_2(class="black-text")}}
               </div>
               <div class="input-field col s6">
-                {{form.mob2.label(class="black-text")}}
-                {{form.mob2(class="black-text")}}
+                {{form.mobile_2.label(class="black-text")}}
+                {{form.mobile_2(class="black-text")}}
               </div>
           </div>
           <div class="row">
             <div class="input-field col s12">
-              {{form.email2.label(class="black-text")}}
-              {{form.email2(class="black-text")}}
+              {{form.email_2.label(class="black-text")}}
+              {{form.email_2(class="black-text")}}
             </div>
           </div>
           <div class="row">

@@ -23,6 +23,13 @@
             </div>
 
             <div class="row">
+              <div class="input-field col s12">
+                {{form.email.label}}
+                {{form.email}}
+              </div>
+            </div>
+            
+            <div class="row">
               <div class="black-text col s12">
               {{form.role.label(class="black-text")}}
               {{form.role(class="browser-default")}}
@@ -30,40 +37,44 @@
             </div>
 
             <div class="row">
-              <div class="input-field col s12">
-                {{form.address.label}}
-                {{form.address}}
+              <div class="input-field col s6">
+                {{form.address_line_1.label}}
+                {{form.address_line_1}}
+              </div>
+              <div class="input-field col s6">
+                {{form.address_line_2.label}}
+                {{form.address_line_2}}
               </div>
             </div>
+
             <div class="row">
-              <div class="input-field col s12">
+              <div class="input-field col s6">
+                {{form.town_city.label}}
+                {{form.town_city}}
+              </div>
+              <div class="input-field col s6">
                 {{form.postcode.label}}
                 {{form.postcode}}
               </div>
             </div>
+
             <div class="row">
-              <div class="input-field col s12">
-                {{form.tel.label}}
-                {{form.tel}}
+              <div class="input-field col s6">
+                {{form.telephone.label}}
+                {{form.telephone}}
+              </div>
+              <div class="input-field col s6">
+                {{form.mobile.label}}
+                {{form.mobile}}
               </div>
             </div>
-            <div class="row">
-              <div class="input-field col s12">
-                {{form.mob.label}}
-                {{form.mob}}
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s12">
-                {{form.email.label}}
-                {{form.email}}
-              </div>
-            </div>
+
             <div class="row">
               <div class="input-field black-text col s12">
-              {{form.submit (class="btn-large teal")}}
+                {{form.submit (class="btn-large teal")}}
+              </div>
             </div>
-            </div>
+
         </div>
       </div>
     </div>

@@ -52,7 +52,6 @@ cliPro = db.Table('User Project Association',
     db.Column('user_id', db.Integer,db.ForeignKey('users.id')),
     db.Column('project_id', db.Integer, db.ForeignKey('projects.id')))
 
-
 class People(UserMixin, db.Model):
     __tablename__ = 'people'
     id = db.Column(db.Integer, primary_key=True)
@@ -60,9 +59,11 @@ class People(UserMixin, db.Model):
     __mapper_args__ = {'polymorphic_identity':'people','polymorphic_on':type}
     name = db.Column(db.String(64))
     postcode = db.Column(db.String(64))
-    address =db.Column(db.String(64))
-    tel = db.Column(db.Integer)
-    mob = db.Column(db.Integer)
+    address_line_1 =db.Column(db.String(64))
+    address_line_2 = db.Column(db.String(64))
+    town_city = db.Column(db.String(64))
+    telephone = db.Column(db.Integer)
+    mobile= db.Column(db.Integer)
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
@@ -128,7 +129,7 @@ class Volunteer(People):
     __tablename__ = 'volunteers'
     __mapper_args__ = {'polymorphic_identity':'volunteers'}
     id = db.Column(db.Integer, db.ForeignKey('people.id'), primary_key=True)
-    about_me = db.Column(db.Text())
+    volunteer_profile = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     photo = db.Column(db.String(128))
     avatar_hash = db.Column(db.String(128))
@@ -193,7 +194,7 @@ class User(People):
     age_range = db.Column(db.String(64))
     relation = db.Column(db.String(64), default='self')
     initial_contact = db.Column(db.String(64), default='self')
-    how_find = db.Column(db.Text)
+    how_they_find_us = db.Column(db.Text)
 
     referee = db.relationship('Referal', foreign_keys=[Referal.referenced_id],
                                         backref=db.backref('referenced', lazy='joined'),

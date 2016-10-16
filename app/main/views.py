@@ -78,13 +78,15 @@ def add_new_volunteer():
     form = AddNewVolunteerForm()
     if form.validate_on_submit():
         vol = Volunteer( name=form.name.data,
-                         address=form.address.data,
+                         address_line_1=form.address_line_1.data,
+                         address_line_2=form.address_line_2.data,
+                         town_city= form.town_city.data,
                          postcode=form.postcode.data,
                          email=form.email.data,
-                         tel=form.tel.data,
-                         mob=form.mob.data,
+                         telephone=form.telephone.data,
+                         mobile=form.mobile.data,
                          role_id=form.role.data,
-                         about_me=form.about_me.data,
+                         volunteer_profile=form.volunteer_profile.data,
                         )
         db.session.add(vol)
         db.session.commit()
@@ -103,23 +105,27 @@ def edit_profile_admin(id):
     if form.validate_on_submit():
         vol.email = form.email.data
         vol.role = Role.query.get(form.role.data)
-        vol.tel = form.tel.data
-        vol.mob = form.mob.data
-        vol.address = form.address.data
+        vol.telephone = form.telephone.data
+        vol.mobile = form.mobile.data
+        vol.address_line_1 = form.address_line_1.data
+        vol.address_line_2 = form.address_line_2.data
+        vol.town_city  = form.town_city.data
         vol.name = form.name.data
         vol.postcode = form.postcode.data
-        vol.about_me = form.about_me.data
+        vol.volunteer_profile = form.volunteer_profile.data
         db.session.add(vol)
         db.session.commit()
         flash('The profile has been updated.','green accent-3')
         return redirect(url_for('main.profile', name = vol.name))
     form.email.data = vol.email
     form.name.data = vol.name
-    form.address.data = vol.address
-    form.mob.data = vol.mob
-    form.tel.data = vol.tel
+    form.address_line_1.data = vol.address_line_1
+    form.address_line_2.data = vol.address_line_2
+    form.town_city.data = vol.town_city
+    form.mobile.data = vol.mobile
+    form.telephone.data = vol.telephone
     form.postcode.data = vol.postcode
-    form.about_me.data = vol.about_me
+    form.volunteer_profile.data = vol.volunteer_profile
     return render_template('profile-edit.html', form = form, vol=vol)
 
 
@@ -360,20 +366,22 @@ def submit_project():
     if form.validate_on_submit():
         c = User(age_range=form.age_range.data,
                  name=form.name.data,
-                 address=form.address.data,
+                 address_line_1=form.address_line_1.data,
+                 address_line_2 =form.address_line_2.data,
+                 town_city = form.town_city.data,
                  postcode=form.postcode.data,
-                 tel=form.tel.data,
-                 mob = form.mob.data,
+                 telephone=form.tel.data,
+                 mobile = form.mob.data,
                  email=form.email.data,
                  initial_contact=form.initial_contact.data,
                  relation=form.relation.data,
-                 how_find=form.how_find.data)
+                 how_they_find_us=form.how_they_find_us.data)
         db.session.add(c)
         if form.refered.data:
-            user2 = User(name=form.name2.data,
-                        tel=form.tel2.data,
-                        mob = form.mob2.data,
-                        email=form.email2.data)
+            user2 = User(name=form.name_2.data,
+                        telephone=form.telephone_2.data,
+                        mobile = form.mobile_2.data,
+                        email=form.email_2.data)
             db.session.add(user2)
             ref = Referal(referee=user2, referenced=c)
             db.session.add(ref)
