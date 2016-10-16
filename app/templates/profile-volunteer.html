@@ -24,8 +24,12 @@
         <div class="col s4 offset-s1">
           <table class="bordered">
             <tr>
-              <th>Address:</th>
-              <td class="text-center"> {{vol.address}}</td>
+              <th>Address Line 1:</th>
+              <td class="text-center">{{vol.address_line_1}}</td>
+            </tr>
+            <tr>
+              <th>Address Line 2:</th>
+              <td class="text-center">{{vol.address_line_2}}</td>
             </tr>
             <tr>
               <th>Postcode:</th>
@@ -33,16 +37,17 @@
             </tr>
             <tr>
               <th>Telephone:</th>
-              <td class="text-center"> {{vol.tel}}</td>
+              <td class="text-center"> {{vol.telephone}}</td>
             </tr>
             <tr>
               <th>Mobile:</th>
-              <td class="text-center"> {{vol.mob}}</td>
+              <td class="text-center"> {{vol.mobile}}</td>
             </tr>
             <tr>
               <th>Email:</th>
               <td class="text-center"><a href="mailto:{{ vol.email }}">{{ vol.email }}</td>
             </tr>
+
           </table>
         </div>
       </div>
