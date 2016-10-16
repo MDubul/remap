@@ -75,24 +75,45 @@
           {% endif %}
         </tr>
         <tr>
-          <th>Address</th>
-          <td>{{cli.address}}</td>
+          <th>Address Line 1</th>
+          <td>{{cli.address_line_1}}</td>
+          {% if referee %}
+          <td></td>
+          {% endif %}
+        </tr>
+        <tr>
+          <th>Address Line 2</th>
+          <td>{{cli.address_line_2}}</td>
+          {% if referee %}
+          <td></td>
+          {% endif %}
+        </tr>
+        <tr>
+          <th>Town/City</th>
+          <td>{{cli.town_city}}</td>
+          {% if referee %}
+          <td></td>
+          {% endif %}
+        </tr>
+        <tr>
+          <th>Postcode</th>
+          <td>{{cli.postcode}}</td>
           {% if referee %}
           <td></td>
           {% endif %}
         </tr>
         <tr>
           <th>Telephone</th>
-          <td>{{cli.tel}}</td>
+          <td>{{cli.telephone}}</td>
           {% if referee %}
-          <td>{{referee.tel}}</td>
+          <td>{{referee.telephone}}</td>
           {% endif %}
         </tr>
         <tr>
           <th>Mobile</th>
-          <td>{{cli.mob}}</td>
+          <td>{{cli.mobile}}</td>
           {% if referee %}
-          <td>{{referee.mob}}</td>
+          <td>{{referee.mobile}}</td>
           {% endif %}
         </tr>
         <tr>
@@ -136,7 +157,7 @@
           <th class="active"> How did they find us?</th>
         </tr>
         <tr>
-          <td>{{cli.how_find}}</td>
+          <td>{{cli.how_they_find_us}}</td>
         </tr>
       </table>
 
