@@ -370,8 +370,8 @@ def submit_project():
                  address_line_2 =form.address_line_2.data,
                  town_city = form.town_city.data,
                  postcode=form.postcode.data,
-                 telephone=form.tel.data,
-                 mobile = form.mob.data,
+                 telephone=form.telephone.data,
+                 mobile = form.mobile.data,
                  email=form.email.data,
                  initial_contact=form.initial_contact.data,
                  relation=form.relation.data,
@@ -400,7 +400,7 @@ def submit_project():
             db.session.rollback()
             raise
         flash('Project has been submitted.','green accent-3')
-        return redirect(url_for('main.user_profile'))
+        return redirect(url_for('main.projects'))
     return render_template('project-submit.html', form = form)
 
 ##################################################################################
