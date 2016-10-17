@@ -246,6 +246,7 @@ class Project(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    date_first_contacted = db.Column(db.Date)
     request_body = db.Column(db.Text)
     request_title = db.Column(db.String(64))
     status = db.Column(db.String(64), default='Awaiting Volunteer')
