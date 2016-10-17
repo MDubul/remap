@@ -230,9 +230,11 @@ def project_comments(number):
     project = Project.query.get_or_404(number)
     commentlist = project.comments.all()
     if form.validate_on_submit():
+        dt = form.date_reported.data
         c = Comment(body=form.body.data,
                     author=current_user._get_current_object(),
-                    project=project)
+                    project=project,
+                    date_reported=date(dt.year,dt.month, dt.day))
         db.session.add(c)
         db.session.commit()
         flash('Your comment has been published.', 'green accent-3')
@@ -366,7 +368,6 @@ def submit_project():
     form = ProjectSubmissionForm()
     if form.validate_on_submit():
         dt = form.date_first_contacted.data
-        year, month, day = dt.year,dt.month, dt.day
         c = User(age_range=form.age_range.data,
                  name=form.name.data,
                  address_line_1=form.address_line_1.data,
