@@ -1,6 +1,7 @@
 
 from flask.ext.wtf import Form
 from wtforms import StringField,TextAreaField,SelectField,RadioField,SubmitField,IntegerField, BooleanField,FileField
+from wtforms.fields.html5 import DateField
 from wtforms.validators import Required, Optional, Length, Email
 from ..models import Role, Volunteer
 from flask_wtf.recaptcha import RecaptchaField
@@ -54,6 +55,7 @@ class EditProjectForm(Form):
 class ProjectSubmissionForm(Form):
     age_range = RadioField('Age Group:', choices=[('0-17','0-17'),('18-64','18-64'),('65+','65+')],validators=[Required()])
     refered = BooleanField('Was User Refered?')
+    date_first_contacted = DateField('Date First Contacted',format="%Y-%m-%d")
     name = StringField('User Name:', validators=[Required()])
     address_line_1 = StringField('Address Line 1',validators=[Required()])
     address_line_2 = StringField('Address Line 2',validators=[Required()])
