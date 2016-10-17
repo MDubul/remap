@@ -86,6 +86,7 @@ class ProjectSubmissionForm(Form):
 
 
 class CommentForm(Form):
+    date_reported = DateField('Date Reported',format="%Y-%m-%d")
     body = TextAreaField('Message')
     submit = SubmitField('Submit Comment')
 

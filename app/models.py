@@ -315,7 +315,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text())
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-
+    date_reported = db.Column(db.Date)
     author_id = db.Column(db.Integer, db.ForeignKey('people.id'))
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
 
