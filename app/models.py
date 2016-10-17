@@ -73,7 +73,7 @@ class People(UserMixin, db.Model):
         super(People,self).__init__(**kwargs)
 
         if (self.type == 'volunteers') and (self.role is None):
-            if self.email == current_app.config['REMAP_ADMIN']:
+            if self.email == current_app.config['REMAP_ADMIN'] or self.email == current_app.config['REMAP_ADMIN2']:
                 self.role = Role.query.filter_by(permissions=0xff).first()
                 self.confirmed = True
 
