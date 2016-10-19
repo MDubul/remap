@@ -5,90 +5,91 @@
 
 {% block page_content %}
 <div class="container">
-      <div class="row">
-        <div class="col s9 offset-s1">
-          <h3 class="left-align">Edit Profile</h3>
-        </div>
-      </div>
-      <div class="row">
+    <div class="row">
       <div class="col s9 offset-s1">
-      <div class="card grey lighten-5 z-depth-1">
-      <div class="card-content black-text">
-        <form method=post>
-          {{form.hidden_tag()}}
-
-          <div class="row">
-            <div class="input-field black-text col s12">
-            {{form.name}}
-            {{form.name.label(class="black-text")}}
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="black-text col s12">
-            {{form.role.label(class="black-text")}}
-            {{form.role(class="browser-default")}}
-          </div>
-          </div>
-
-          <div class="row">
-            <div class="input-field col s12">
-              {{form.email (class="black-text")}}
-              {{form.email.label(class="black-text")}}
-            </div>
-          </div>
-
-
-        <div class="row">
-          <div class="input-field black-text col s6">
-          {{form.address_line_1}}
-          {{form.address_line_1.label(class="black-text")}}
-        </div>
-        <div class="input-field black-text col s6">
-        {{form.address_line_2}}
-        {{form.address_line_2.label(class="black-text")}}
+        <h3 class="left-align">Edit Profile</h3>
       </div>
-        </div>
-
-        <div class="row">
-          <div class="input-field black-text col s6">
-          {{form.town_city}}
-          {{form.town_city.label(class="black-text")}}
-        </div>
-        <div class="input-field black-text col s6">
-        {{form.postcode}}
-        {{form.postcode.label(class="black-text")}}
-      </div>
-        </div>
-
-        <div class="row">
-          <div class="input-field black-text col s6">
-          {{form.telephone}}
-          {{form.telephone.label(class="black-text")}}
-        </div>
-        <div class="input-field black-text col s6">
-        {{form.mobile}}
-        {{form.mobile.label(class="black-text")}}
-      </div>
-        </div>
-
-        <div class="row">
-          <div class="input-field black-text col s12">
-          {{form.volunteer_profile.label(class="black-text") }}
-          {{form.volunteer_profile(class="materialize-textarea")}}
-        </div>
-        </div>
-
-        <div class="row">
-          <div class="input-field black-text col s12">
-          {{form.submit (class="btn-large teal")}}
-        </div>
-        </div>
-
-      </form>
     </div>
-  </div>
-  </div>
 
+    <div class="row">
+      <div class="col s9 offset-s1">
+        <div class="card grey lighten-5 z-depth-1">
+          <div class="card-content black-text">
+            <form method=post action="{{ url_for('main.edit_profile_admin', id=vol.id) }}" >
+              {{form.hidden_tag()}}
+
+              <div class="row">
+                <div class="input-field black-text col s12">
+                  {{form.name}}
+                  {{form.name.label(class="black-text")}}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="black-text col s12">
+                  {{form.role.label(class="black-text")}}
+                  {{form.role(class="browser-default")}}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s12">
+                  {{form.email (class="black-text")}}
+                  {{form.email.label(class="black-text")}}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field black-text col s6">
+                  {{form.address_line_1}}
+                  {{form.address_line_1.label(class="black-text")}}
+                </div>
+                <div class="input-field black-text col s6">
+                  {{form.address_line_2}}
+                  {{form.address_line_2.label(class="black-text")}}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field black-text col s6">
+                  {{form.town_city}}
+                  {{form.town_city.label(class="black-text")}}
+                </div>
+                <div class="input-field black-text col s6">
+                  {{form.postcode}}
+                  {{form.postcode.label(class="black-text")}}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field black-text col s6">
+                  {{form.telephone}}
+                  {{form.telephone.label(class="black-text")}}
+                </div>
+                <div class="input-field black-text col s6">
+                  {{form.mobile}}
+                  {{form.mobile.label(class="black-text")}}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field black-text col s12">
+                  {{form.volunteer_profile.label(class="black-text") }}
+                  {{form.volunteer_profile(class="materialize-textarea")}}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field black-text col s12">
+                  {{form.submit (class="btn-large teal")}}
+                </div>
+              </div>
+
+          </form>
+        </div>
+      </div>
+  </div>
 </div>
+
+
 {% endblock %}

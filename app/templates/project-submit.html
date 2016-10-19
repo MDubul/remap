@@ -13,9 +13,8 @@
 </div>
 
 
-<form method=post  role="form">
+<form method=post action="{{ url_for('main.submit_project') }}">  <!-- for some reason "post doesnt work, however post works?" -->
   {{form.hidden_tag()}}
-
 
   <div class="row">
       <div class="col s6">
@@ -32,7 +31,6 @@
       <div class="col s6">
         {{form.refered}}{{form.refered.label(class="filled-in", id="filled-in-box")}}
       </div>
-
    </div>
 
   <div class="row">
@@ -102,7 +100,6 @@
         </div>
       </div>
     </div>
-
 
     <div class="col s6">
       <div class="card grey lighten-5 z-depth-1">
@@ -209,7 +206,7 @@
   $(function() {
 		$( ".datepicker" ).pickadate({
 
-      format: 'yyyy-mm-d' 
+      format: 'yyyy-mm-d'
     });
 	});
 
