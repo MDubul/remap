@@ -6,72 +6,61 @@
   <title>REMAP - Project List</title>
    <link rel="stylesheet" type="text/css" href={{bootstrap_css}}>
 
-<!--  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}"> -->
+  <!--  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}"> -->
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-  {{ moment.include_moment() }}
-
-
 </head>
+
 <body>
-
   <div class="container-fluid">
-          <table class="table">
-            <tr>
-              <td class=active><b>Project Number</b></td>
-              <td class=active><b>Assigned Volunteer</b></td>
-              <td class=active><b>Location</b></td>
-              <td class=active><b>Date Recieved</b></td>
-              <td class=active><b>Project Title</b></td>
-              <td class=active><b>Status</b></td>
-              <td class=active><b>End Date</b></td>
-            </tr>
-            {% for pro in pro_all | sort(attribute='timestamp', reverse = True)%}
+    <table class="table">
+      <tr>
+        <td class=active><b>Project Number</b></td>
+        <td class=active><b>Assigned Volunteer</b></td>
+        <td class=active><b>Location</b></td>
+        <td class=active><b>Date Recieved</b></td>
+        <td class=active><b>Project Title</b></td>
+        <td class=active><b>Status</b></td>
+        <td class=active><b>End Date</b></td>
+      </tr>
+      {% for pro in pro_all | sort(attribute='date_first_contacted', reverse = True)%}
 
+      <tr class="active">
+        <td>{{pro.id}}</td>
+        {% if pro.volunteer.first()== None %}
+          <td ></td>
+        {% else %}
+          <td >{{pro.volunteer.first().name}}</td>
+        {% endif %}
+          <td >{{pro.user.first().postcode}}</td>
+          <td >{{pro.date_first_contacted.strftime('%d-%b-%Y')}}</td>
+          <td >{{pro.request_title}}</td>
+          <td >{{pro.status}}</td>
+        {% if pro.end_date == None %}
+          <td></td>
+        {% else%}
+          <td>{{pro.end_date.strftime('%d-%b-%Y')}}</td>
+        {% endif %}
+      </tr>
 
-              <tr class="active">
-                <td>{{pro.id}}</td>
-                {% if pro.volunteer.first()== None %}
-                  <td ></td>
-                {% else %}
-                  <td >{{pro.volunteer.first().name}}</td>
-                {% endif %}
-                  <td >{{pro.user.first().postcode}}</td>
-                  <td >{{moment(pro.timestamp).format('MMMM Do YYYY')}}</td>
-                  <td >{{pro.request_title}}</td>
-                  <td >{{pro.status}}</td>
-                {% if pro.end_date == None %}
-                  <td></td>
-                {% else%}
-                  <td>{{moment(pro.end_date).format('MMMM Do YYYY')}}</td>
-                {% endif %}
-              </tr>
-              {% if pro.comments.all() %}
-              <tr>
-                  <th colspan="7" class="text-center">Project Notes
-                    <table class="table-condensed">
-                      {% for comment in pro.comments.all()  | sort(reverse=True, attribute='timestamp') %}
-                        {% if loop.index <= 3 %}
-                          <tr>
-                            <td>
-                                {{ comment.body  }}
-                            </td>
-                          </tr>
-                        {% endif %}
-                      {% endfor %}
-                    </table>
-                  </th>
-              </tr>
-            {% endif %}
-            {% endfor%}
-          </table>
-        </div>
-
-
-
-
-
+      {% if pro.comments.all() %}
+          <tr>
+            <th colspan="7" class="text-center">Project Notes
+              <table class="table-condensed">
+                {% for comment in pro.comments.all()  | sort(reverse=True, attribute='timestamp') %}
+                  {% if loop.index <= 3 %}
+                    <tr>
+                      <td>{{ comment.body  }}</td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </table>
+            </th>
+          </tr>
+        {% endif %}
+      {% endfor%}
+    </table>
+  </div>
 </body>
-
 </html>
