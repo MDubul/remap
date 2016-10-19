@@ -24,7 +24,8 @@ import pdfkit
 import PyPDF2
 from flask_googlemaps import Map, icons, GoogleMaps
 
-from datetime import date
+from datetime import date,datetime
+
 
 @main.route('/')
 def index():
@@ -367,7 +368,8 @@ def project_solution(number):
 def submit_project():
     form = ProjectSubmissionForm()
     if form.validate_on_submit():
-        dt = form.date_first_contacted.data
+        strdt = form.date_first_contacted.data
+        dat = datetime.strptime(strdt, '%d-%b-%Y')
         c = User(age_range=form.age_range.data,
                  name=form.name.data,
                  address_line_1=form.address_line_1.data,
@@ -395,7 +397,8 @@ def submit_project():
                        donation_outcome=form.donation_outcome.data,
                        data_protection=form.data_protection.data,
                        dat_protection_outcome=form.dat_protection_outcome.data,
-                       date_first_contacted=date(dt.year,dt.month, dt.day))
+                       date_first_contacted=date(dat.year,dat.month, dat.day)
+                       )
         proj.user.append(c)
         db.session.add(proj)
         try:
