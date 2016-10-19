@@ -19,7 +19,7 @@
   <div class="row">
       <div class="col s6">
          {{form.date_first_contacted.label}}
-         {{form.date_first_contacted(class="datepicker",type="date")}}
+         {{form.date_first_contacted(class="datepicker",type="text")}}
       </div>
    </div>
 
@@ -206,7 +206,7 @@
   $(function() {
 		$( ".datepicker" ).pickadate({
 
-      format: 'yyyy-mm-d'
+      format: 'd-mmm-yyyy'
     });
 	});
 
