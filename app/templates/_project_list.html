@@ -1,4 +1,4 @@
-{% for pro in pro_all | sort(attribute='timestamp', reverse = True)%}
+{% for pro in pro_all | sort(attribute='date_first_contacted', reverse = True)%}
 
     {% if pro.status == 'Awaiting Volunteer' %}
       {% set stat = 'danger'%}
@@ -16,7 +16,7 @@
     <td >{{pro.volunteer.first().name}}</td>
   {% endif %}
     <td >{{pro.user.first().postcode}}</td>
-    <td >{{moment(pro.timestamp).format('MMMM Do YYYY')}}</td>
+    <td >{{moment(pro.date_first_contacted).format('MMMM Do YYYY')}}</td>
     <td >{{pro.request_title}}</td>
     <td >{{pro.status}}</td>
   {% if pro.end_date == None %}
