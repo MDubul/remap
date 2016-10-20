@@ -397,6 +397,7 @@ def submit_project():
                        whom_donation_discussed=form.whom_donation_discussed.data,
                        donation_outcome=form.donation_outcome.data,
                        data_protection=form.data_protection.data,
+                       whom_data_protection_discussed=form.whom_data_protection_discussed.data,
                        dat_protection_outcome=form.dat_protection_outcome.data,
                        date_first_contacted=date(dat.year,dat.month, dat.day)
                        )

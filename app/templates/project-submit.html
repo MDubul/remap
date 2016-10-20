@@ -179,13 +179,16 @@
           </div>
         </div>
       </div>
-
       <div class="col s6">
         <div class="card grey lighten-5 z-depth-1">
           <div class="card-content">
             <div class="row">
+              {{form.data_protection}}{{form.data_protection.label(class="filled-in",     id="filled-in-box")}}
+            </div>
+            <div class="row">
               <div class="input-field">
-                {{form.data_protection}}{{form.data_protection.label(class="filled-in",     id="filled-in-box")}}
+                {{form.whom_data_protection_discussed.label(class="black-text")}}
+                {{form.whom_data_protection_discussed}}
               </div>
             </div>
             <div class="row">
@@ -197,13 +200,14 @@
           </div>
         </div>
       </div>
-   </div>
-
-  <div class="row">
-    <div class="input-field col s12">
-      {{form.submit (class="btn-large teal")}}
     </div>
-  </div>
+
+
+    <div class="row">
+      <div class="input-field col s12">
+        {{form.submit (class="btn-large teal")}}
+      </div>
+    </div>
 
 
 </form>

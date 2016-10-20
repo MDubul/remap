@@ -271,6 +271,7 @@ class Project(db.Model):
     donation_outcome = db.Column(db.String(64))
 
     data_protection =  db.Column(db.Boolean)
+    whom_data_protection_discussed = db.Column(db.String(64))
     dat_protection_outcome = db.Column(db.String(64))
 
 
