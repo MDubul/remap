@@ -1,4 +1,4 @@
-{% for pro in pro_all | sort(attribute='date_first_contacted', reverse = True)%}
+{% for pro in pro_all | sort(attribute='id', reverse = True)%}
 
     {% if pro.status == 'Awaiting Volunteer' %}
       {% set stat = 'danger'%}

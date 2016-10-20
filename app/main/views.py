@@ -367,7 +367,7 @@ def project_solution(number):
 @login_required
 def submit_project():
     form = ProjectSubmissionForm()
-    if form.validate_on_submit():
+    if request.method == 'POST':
         strdt = form.date_first_contacted.data
         dat = datetime.strptime(strdt, '%d-%b-%Y')
         c = User(age_range=form.age_range.data,
@@ -394,6 +394,7 @@ def submit_project():
         proj = Project(request_title=form.request_title.data,
                        request_body = form.request_body.data,
                        Donation_discussed=form.donation_discussed.data,
+                       whom_donation_discussed=form.whom_donation_discussed.data,
                        donation_outcome=form.donation_outcome.data,
                        data_protection=form.data_protection.data,
                        dat_protection_outcome=form.dat_protection_outcome.data,

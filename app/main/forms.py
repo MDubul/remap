@@ -78,6 +78,7 @@ class ProjectSubmissionForm(Form):
     relation = StringField('Relationship:', description=' What is the Relationship to Service User')
 
     donation_discussed = BooleanField('Donation/Expenses Discussed?')
+    whom_donation_discussed =StringField('With whom was Donation/Expenses discussed')
     donation_outcome = TextAreaField('Outcome?', validators=[Optional()])
     data_protection = BooleanField('Data Protection Discussed?')
     dat_protection_outcome = TextAreaField('Outcome?', validators=[Optional()])

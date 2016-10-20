@@ -164,10 +164,12 @@
       <table class="table table-bordered">
         <tr>
           <th class="active">Was donation or discussed?</th>
+          <th class="active"> Discussed with Whom</th>
           <th class="active">Outcome</th>
         </tr>
         <tr>
           <td>{{pro.Donation_discussed}}</td>
+          <td>{{pro.whom_donation_discussed}}
           <td>{{pro.donation_outcome}}</td>
         </tr>
         <tr>
@@ -178,12 +180,11 @@
           <td>{{pro.data_protection}}</td>
           <td>{{pro.dat_protection_outcome}}</td>
         </tr>
-        {% set day = now.day%}
-        {% set month = now.month%}
-        {% set year = now.year%}
+      </table>
+      <table>
         <tr>
           <th class="active">Date Printed:</th>
-          <th class="active" class="text-right"> {{day}}/{{month}}/{{year}}</th>
+          <th class="active" class="text-right"> {{now.day}}/{{now.month}}/{{now.year}}</th>
         </tr>
       </table>
 
