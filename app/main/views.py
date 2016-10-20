@@ -128,6 +128,7 @@ def edit_profile_admin(id):
     form.telephone.data = vol.telephone
     form.postcode.data = vol.postcode
     form.volunteer_profile.data = vol.volunteer_profile
+
     return render_template('profile-edit.html', form = form, vol=vol)
 
 
@@ -442,10 +443,14 @@ def edit_project(number):
     if form.validate_on_submit():
         pro.request_title = form.request_title.data
         pro.request_body = form.request_body.data
-        pro.Donation_discussed=form.donation_discussed.data,
-        pro.donation_outcome=form.donation_outcome.data,
-        pro.data_protection=form.data_protection.data,
-        pro.dat_protection_outcome=form.dat_protection_outcome.data
+        pro.Donation_discussed = form.donation_discussed.data
+        pro.donation_outcome = form.donation_outcome.data
+        pro.data_protection = form.data_protection.data
+        pro.dat_protection_outcome = form.dat_protection_outcome.data
+        pro.whom_donation_discussed = form.whom_donation_discussed.data
+        pro.whom_data_protection_discussed = form.whom_data_protection_discussed.data
+        db.session.add(pro)
+        db.session.commit()
         flash('Project has been edited','green accent-3')
         return redirect(url_for('main.project_single', number=pro.id))
     form.request_title.data = pro.request_title
@@ -454,6 +459,8 @@ def edit_project(number):
     form.donation_outcome.data =pro.donation_outcome
     form.data_protection.data =pro.data_protection
     form.dat_protection_outcome.data = pro.dat_protection_outcome
+    form.whom_donation_discussed.data = pro.whom_donation_discussed
+    form.whom_data_protection_discussed.data = pro.whom_data_protection_discussed
     return render_template('project-edit.html', form=form, pro=pro)
 
 

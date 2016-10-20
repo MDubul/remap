@@ -47,8 +47,10 @@ class EditProjectForm(Form):
     request_title = StringField('Project Title')
     request_body = TextAreaField('Project Request',  description='Describe your problem', validators=[Required()])
     donation_discussed = BooleanField('Donation/Expenses Discussed?')
+    whom_donation_discussed =StringField('With whom was Donation/Expenses discussed')
     donation_outcome = TextAreaField('Outcome?', validators=[Optional()])
     data_protection = BooleanField('Data Protection Discussed?')
+    whom_data_protection_discussed = StringField('With whom was Data Protection Discussed?')
     dat_protection_outcome = TextAreaField('Outcome?', validators=[Optional()])
     submit = SubmitField('Submit')
 
