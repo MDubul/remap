@@ -25,6 +25,7 @@ import PyPDF2
 from flask_googlemaps import Map, icons, GoogleMaps
 
 from datetime import date,datetime
+from sqlalchemy import or_
 
 
 @main.route('/')
@@ -547,3 +548,12 @@ def encrypt_pdf():
 def summery_pdf(number):
     #make_detailed_pdf(number)
     return redirect(url_for('main.index'))
+
+
+@main.route('/meeting', methods=['GET','POST'])
+@login_required
+def meeting():
+    pro_all = Project.query.filter(or_(Project.status=="Ongoing", Project.status=="Awaiting Volunteer"))
+    #pro = Project.query.filter_by(id=10).first()
+
+    return render_template('meeting.html', pro_all=pro_all)

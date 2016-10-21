@@ -1,0 +1,64 @@
+{% extends "base-material.html" %}
+
+
+{% block page_content %}
+
+<div class="row">
+  <div class="col s12">
+    <h3>Meeting Page</h3>
+  </div>
+</div>
+
+<div class="row">
+
+{% for pro in pro_all |sort(attribute='id',reverse=True)%}
+  <ul class="collapsible" data-collapsible="accordion">
+    <li>
+      <div class="collapsible-header">
+        <b>{{pro.id}} - {{pro.status}}</b>
+      </div>
+      <div class="collapsible-body">
+        <table>
+          <tr>
+            <th class="left-align">Project Volunteer</th>
+            <th class="center-align">Project Title</th>
+            <th class="right-align">Date First Contacted</th>
+          </tr>
+          <tr >
+          {% if pro.volunteer.name%}
+          <td  class="left-align">{{pro.volunteer.name}}</td>
+          {% else %}
+          <td></td>
+          {% endif %}
+
+          <td class="center-align">{{pro.request_title}}</td>
+          <td class="right-align">{{pro.date_first_contacted}}</td>
+          </tr>
+        </table>
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header"><b>Project request</b></div>
+      <div class="collapsible-body"><p>{{pro.request_body}}</p></div>
+    </li>
+    <li>
+      <div class="collapsible-header"><b>Comments</b></div>
+      <div class="collapsible-body">
+        <table>
+          {% for comment in pro.comments.all()%}
+            <tr>
+              <th>{{comment.date_reported}}</th>
+            </tr>
+            <tr>
+              <td>{{comment.body}}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </li>
+  </ul>
+{% endfor %}
+
+</div>
+
+{% endblock %}
