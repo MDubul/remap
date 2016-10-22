@@ -1,11 +1,11 @@
 import os, errno
 
-from flask import render_template, session, redirect, url_for, flash, abort, request, current_app,make_response
+from flask import render_template, session, redirect, url_for, flash, abort, request, current_app,make_response,jsonify
 
 from . import main
 from flask.ext.login import login_required, current_user
 
-from .forms import EditProfileForm, EditProjectForm, CommentForm, ProjectSubmissionForm, ProjectCompletionForm, ProjectCloseForm, AssignProjectForm,ProjectPdfSelection,AddNewVolunteerForm,PDFEncryptionForm
+from .forms import EditProfileForm, EditProjectForm, CommentForm, ProjectSubmissionForm, ProjectCompletionForm, ProjectCloseForm, AssignProjectForm,ProjectPdfSelection,AddNewVolunteerForm,PDFEncryptionForm,MeetingUpdateForm
 
 from .. import db
 from ..models import Project, User, Volunteer, Role, People, Comment, ProjectPhoto, Referal, SolutionPhotos
@@ -24,7 +24,7 @@ import pdfkit
 import PyPDF2
 from flask_googlemaps import Map, icons, GoogleMaps
 
-from datetime import date,datetime
+from datetime import date, datetime
 from sqlalchemy import or_
 
 
@@ -553,7 +553,18 @@ def summery_pdf(number):
 @main.route('/meeting', methods=['GET','POST'])
 @login_required
 def meeting():
-    pro_all = Project.query.filter(or_(Project.status=="Ongoing", Project.status=="Awaiting Volunteer"))
-    #pro = Project.query.filter_by(id=10).first()
-
-    return render_template('meeting.html', pro_all=pro_all)
+    form = MeetingUpdateForm()
+    if request.method == 'POST':
+        date_reported = form.date.data
+        dat = datetime.strptime(date_reported, '%d-%b-%Y')
+        pro = Project.query.filter_by(id=form.project_number.data).first()
+        pro.status = form.status.data
+        c = Comment(body=form.comment.data,
+                    author=current_user,
+                    project=pro,
+                    date_reported=date(dat.year,dat.month, dat.day)
+                    )
+        db.session.add_all([pro,c])
+        db.session.commit()
+    form.comment.data = ''
+    return render_template('meeting.html', form=form)

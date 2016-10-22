@@ -93,15 +93,15 @@
   <table>
     <tr>
       <td><a href="{{url_for('main.project_comments', number=proj.id)}}" class="btn">Project Notes <i class="material-icons">comment</i></a></td>
-      {% if proj.status == 'Finished' and proj.solutionphotos %}
+      {% if proj.status == 'Finished' %}
       <td><a href="{{url_for('main.project_solution', number=proj.id)}}" class="btn btn-success">Project Solution</a></td>
       {% endif %}
       {% if (proj.status == 'Awaiting Volunteer') or (proj.status == 'Ongoing')  %}
       <td><a href="{{url_for('main.end_project', number=proj.id, way='Close')}}" class="btn deep-purple darken-3">Close Project</a></td>
       {% endif %}
-      {% if proj.status == 'Ongoing' %}
+
       <td><a href="{{url_for('main.end_project', number=proj.id, way='Finish')}}" class="btn deep-purple darken-3">Finish Project</a></td>
-      {% endif %}
+
     </tr>
   </table>
 </div>

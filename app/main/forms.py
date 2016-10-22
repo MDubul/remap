@@ -3,9 +3,9 @@ from flask.ext.wtf import Form
 from wtforms import StringField,TextAreaField,SelectField,RadioField,SubmitField,IntegerField, BooleanField,FileField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import Required, Optional, Length, Email
-from ..models import Role, Volunteer
+from ..models import Role, Volunteer, Project
 from flask_wtf.recaptcha import RecaptchaField
-
+from sqlalchemy import or_
 
 
 class EditProfileForm(Form):
@@ -141,9 +141,21 @@ class AddNewVolunteerForm(Form):
         if Volunteer.query.filter_by(email=field.data).first():
             raise ValidationError('Email already registered.')
 
-
-
 class PDFEncryptionForm(Form):
     PdfFile = FileField('Your PDF File')
     password = StringField('Enter Password for Encryption:', validators=[Required()])
     submit = SubmitField('Submit')
+
+
+class MeetingUpdateForm(Form):
+
+    date = StringField('Date')
+    project_number = SelectField('Project Number')
+    comment = TextAreaField('Comment')
+    status = SelectField('Status', choices=[('Awaiting Volunteer','Awaiting Volunteer'), ('Ongoing','Ongoing'), ('Finished','Finished'), ('Closed','Closed')])
+    submit = SubmitField('Submit')
+
+    def __init__(self,  *args, **kwargs): ## Need to understand this section more
+        super(MeetingUpdateForm, self).__init__(*args, **kwargs)
+
+        self.project_number.choices = [(pro.id, pro.id) for pro in Project.query.filter(or_(Project.status=="Ongoing", Project.status=="Awaiting Volunteer"))]

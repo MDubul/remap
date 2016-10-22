@@ -11,9 +11,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/materialize.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles3.css')}}">
 
+
     <title>{% block title %}{% endblock %} Remap </title>
     {{ moment.include_jquery() }}
+
     {{ moment.include_moment() }}
+
+
   {% endblock %}
 
 </head>
@@ -102,7 +106,7 @@
 
 {% block scripts%}
 <!--  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script> -->
-  <script src="{{url_for('static', filename="js/jquery.js")}}"></script>
+
   <script src="{{url_for('static', filename="js/materialize.js")}}"></script>
   <script src="{{url_for('static', filename="js/init.js")}}"></script>
 
