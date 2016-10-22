@@ -13,40 +13,68 @@
 <form method=post action='/meeting'>
 
   <div class="row">
-      <div class="col s6">
-         {{form.date.label(class="black-text")}}
-         {{form.date(class="datepicker",type="text")}}
+    <div class="col s8">
+      <div class="card grey lighten-5">
+        <div class="card-content">
+
+          <div class="row">
+              <div class="col s12">
+                 {{form.date.label(class="black-text")}}
+                 {{form.date(class="datepicker",type="text")}}
+              </div>
+           </div>
+
+           <div class="row">
+              <div class="input-field col s12">
+                 Project Number
+               </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                  {{form.project_number(class="browser-default")}}
+                </div>
+            </div>
+
+            <div class="row">
+               <div class="input-field col s12">
+                 {{form.comment.label(class="black-text")}}
+                 {{form.comment(class="materialize-textarea")}}
+               </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <p><b>Project Status</b></p>
+              </div>
+            </div>
+
+            <div class="row">
+               <div class="input-field col s12">
+                 {{form.status(class="browser-default")}}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+               {{form.submit(class="btn")}}
+             </div>
+            </div>
+
+        </div>
       </div>
-   </div>
-<div class="row">
-  <div class="input-field col s12">
-    <div class="row">
-      Project Number
-    </div>
-    <div class="row">
-      {{form.project_number(class="browser-default")}}
-    </div>
-    <div class="input-field col s12">
-      <div class="row">
-        {{form.comment.label}}
-        {{form.comment(class="materialize-textarea")}}
-      </div>
-   </div>
-   <div class="input-field col s12">
-     <div class="row">
-       Status
-     </div>
-     <div class="row">
-       {{form.status(class="browser-default")}}
-     </div>
-    <div class="row">
-      {{form.submit(class="btn")}}
     </div>
   </div>
 
-</div>
 
-</div>
+
+
+
+
+
+
+
+
+
 
 </form>
 

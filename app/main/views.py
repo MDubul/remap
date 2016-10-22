@@ -556,7 +556,7 @@ def meeting():
     form = MeetingUpdateForm()
     if request.method == 'POST':
         date_reported = form.date.data
-        dat = datetime.strptime(date_reported, '%d-%b-%Y')
+        dat = datetime.strptime(date_reported, '%d-%b-%Y') # put a try and except
         pro = Project.query.filter_by(id=form.project_number.data).first()
         pro.status = form.status.data
         c = Comment(body=form.comment.data,
@@ -566,5 +566,7 @@ def meeting():
                     )
         db.session.add_all([pro,c])
         db.session.commit()
+        flash('Updated Project', 'green accent-3')
+        return redirect(url_for('main.meeting'))
     form.comment.data = ''
     return render_template('meeting.html', form=form)
