@@ -60,6 +60,7 @@ class ProjectSubmissionForm(Form):
     date_first_contacted = StringField('Date First Contacted')
     #date_first_contacted = DateField('Date First Contacted',format="%Y-%m-%d")
     name = StringField('User Name:', validators=[Required()])
+    organisation_name = StringField('Organisation Name') # new field 
     address_line_1 = StringField('Address Line 1',validators=[Required()])
     address_line_2 = StringField('Address Line 2',validators=[Required()])
     town_city = StringField('Town/City')
