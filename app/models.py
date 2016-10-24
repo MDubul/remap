@@ -193,6 +193,7 @@ class User(People):
     __tablename__ = 'users'
     __mapper_args__ = {'polymorphic_identity':'users'}
     id = db.Column(db.Integer, db.ForeignKey('people.id'), primary_key=True)
+    organisation_name = db.Column(db.String(64)) # new field
     age_range = db.Column(db.String(64))
     relation = db.Column(db.String(64), default='self')
     initial_contact = db.Column(db.String(64), default='self')
@@ -249,8 +250,12 @@ class Project(db.Model):
     __tablename__ = 'projects'
 
     id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    first_database_entry = db.Column(db.DateTime, default=datetime.utcnow) # edited from timestamp
+
     date_first_contacted = db.Column(db.Date)
+    last_edited = db.Column(db.DateTime) # new field
+
     request_body = db.Column(db.Text)
     request_title = db.Column(db.String(64))
     status = db.Column(db.String(64), default='Awaiting Volunteer')
@@ -316,8 +321,12 @@ class Comment(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text())
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    first_datase_entry = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    # changed from timestamp
     date_reported = db.Column(db.Date)
+    last_edited = db.Column(db.DateTime)
+
     author_id = db.Column(db.Integer, db.ForeignKey('people.id'))
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
 
@@ -338,11 +347,11 @@ class Comment(db.Model):
 
 
 
-
 class ProjectPhoto(db.Model):
     __tablename__ = 'projectphotos'
 
     id = db.Column(db.Integer, primary_key=True)
+    first_datase_entry = db.Column(db.DateTime, index=True, default=datetime.utcnow) # new field
     location = db.Column(db.String(128))
     caption = db.Column(db.Text())
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
@@ -352,6 +361,7 @@ class SolutionPhotos(db.Model):
     __tablename__ = 'solutionphotos'
 
     id = db.Column(db.Integer, primary_key=True)
+    first_database_entry = db.Column(db.DateTime, index=True, default=datetime.utcnow) # new field
     location = db.Column(db.String(128))
     caption = db.Column(db.Text())
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
