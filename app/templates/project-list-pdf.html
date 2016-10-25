@@ -46,11 +46,12 @@
 
       {% if pro.comments.all() %}
           <tr>
-            <th colspan="7" class="text-center">Project Notes
-              <table class="table-condensed">
-                {% for comment in pro.comments.all()  | sort(reverse=True, attribute='timestamp') %}
+            <th colspan="7" class="text-center">Project Notes</th>
+              <table class="table-condensed table-bordered">
+                {% for comment in pro.comments.all()  | sort(reverse=True, attribute='date_reported') %}
                   {% if loop.index <= 3 %}
                     <tr>
+                      <th> {{comment.date_reported.strftime('%d-%b-%Y')}}</th>
                       <td>{{ comment.body  }}</td>
                     </tr>
                   {% endif %}
