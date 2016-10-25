@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles3.css')}}">
 
 
-    <title>{% block title %}{% endblock %} Remap </title>
+    <title>{% block title %}{% endblock %} REMAP </title>
     {{ moment.include_jquery() }}
 
     {{ moment.include_moment() }}
@@ -26,9 +26,9 @@
 {% block navbar %}
   <nav class="teal darken-1" role="navigation">
     {% if not current_user.is_authenticated %}
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo center">Remap</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo center">REMAP</a>
       {% else %}
-      <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Remap</a>
+      <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">REMAP</a>
       {% endif %}
 
       {% if current_user.is_authenticated %}
