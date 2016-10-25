@@ -45,20 +45,32 @@
 
 </div>
 
-{% for comment in commentlist |sort(attribute='timestamp',reverse=True)%}
+{% for comment in commentlist |sort(attribute='first_database_entry',reverse=True)%}
 <div class="col s12">
   <ul class="collection">
-    <li class="collection-item avatar">
-      <img src="{{ comment.author.gravatar(size=100) }}" alt="" class="circle">
+    <li class="collection-item">
+      
       <span class="title">{{comment.author.name}}</span>
 
       <span><a href="{{url_for('main.edit_comment_admin', id=comment.id, number=project.id)}}"><i class="material-icons">mode_edit</i></a></span>
 
       <p> {{comment.body}}</p>
       <a href="{{url_for('main.delete_comment', id=comment.id)}}" class="secondary-content"><i class="material-icons icon-red">clear</i></a>
-    </br>
-      <p><i>Comment first reported</i></p>
-      <p><i>{{moment(comment.date_reported).format('LLL')}}</i></p>
+
+      <div class="col s3">
+        <table>
+          <tr>
+            <th>First Reported</th>
+            <th>{{comment.date_reported.strftime('%x')}}</th>
+          </tr>
+          {% if comment.last_edited %}
+          <tr>
+            <th>First Reported</th>
+            <th>{{comment.last_edited.strftime('%x')}}</th>
+          </tr>
+          {% endif %}
+        </table>
+      </div>
 
     </li>
   </ul>
