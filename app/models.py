@@ -322,7 +322,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text())
 
-    first_datase_entry = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    first_database_entry = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     # changed from timestamp
     date_reported = db.Column(db.Date)
     last_edited = db.Column(db.DateTime)
@@ -351,7 +351,7 @@ class ProjectPhoto(db.Model):
     __tablename__ = 'projectphotos'
 
     id = db.Column(db.Integer, primary_key=True)
-    first_datase_entry = db.Column(db.DateTime, index=True, default=datetime.utcnow) # new field
+    first_database_entry = db.Column(db.DateTime, index=True, default=datetime.utcnow) # new field
     location = db.Column(db.String(128))
     caption = db.Column(db.Text())
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
