@@ -18,13 +18,12 @@ from geopy.geocoders import Nominatim
 from geopy.geocoders import GoogleV3
 
 from werkzeug import secure_filename
-from datetime import datetime
+from datetime import datetime,date
 from ..project_pdf import make_project_list_pdf, make_detailed_pdf,pdf_encryption
 import pdfkit
 import PyPDF2
 from flask_googlemaps import Map, icons, GoogleMaps
 
-from datetime import date, datetime
 from sqlalchemy import or_
 
 
@@ -215,6 +214,7 @@ def take_project(number):
 
        vol = Volunteer.query.filter_by(id=form.vol.data).first()
        pro.volunteer.append(vol)
+       pro.last_edited = datetime.utcnow()
        pro.status = 'Ongoing'
        db.session.add_all([pro,vol])
        db.session.commit()
@@ -269,6 +269,7 @@ def edit_comment_admin(number, id):
     comment = Comment.query.get_or_404(id)
     if form.validate_on_submit():
         comment.body = form.body.data
+        comment.last_edited = datetime.utcnow()
         db.session.add(comment)
         db.session.commit()
         flash('The post has been updated.','green accent-3')
@@ -291,6 +292,7 @@ def end_project(number, way):
             pro.status = 'Finished'
             pro.expense_hours = form.expensehour.data
             pro.end_date = datetime.utcnow()
+            pro.last_edited = datetime.utcnow()
             pro.solution = form.solution.data
             uploaded_files = request.files.getlist("imageupload")
             first = True
@@ -330,6 +332,7 @@ def end_project(number, way):
         form = ProjectCloseForm()
         if form.validate_on_submit():
             pro = Project.query.filter_by(id=number).first()
+            pro.last_edited = datetime.utcnow()
             pro.status = 'Closed'
             pro.end_date = datetime.utcnow()
             c = Comment(body= form.comment.data, author=current_user)
@@ -456,6 +459,7 @@ def edit_project(number):
         pro.dat_protection_outcome = form.dat_protection_outcome.data
         pro.whom_donation_discussed = form.whom_donation_discussed.data
         pro.whom_data_protection_discussed = form.whom_data_protection_discussed.data
+        pro.last_edited = datetime.utcnow()
         db.session.add(pro)
         db.session.commit()
         flash('Project has been edited','green accent-3')
@@ -492,6 +496,7 @@ def project_photos(number):
                 p = ProjectPhoto(location=os.path.join(distination(number), filename), caption=caption[0])
                 pro = Project.query.filter_by(id=number).first()
                 pro.photos.append(p)
+                pro.last_edited = datetime.utcnow()
                 db.session.add_all([p,pro])
         db.session.commit()
         flash('Your photos has been uploaded', 'green accent-3')
@@ -565,6 +570,7 @@ def meeting():
         dat = datetime.strptime(date_reported, '%d-%b-%Y') # put a try and except
         pro = Project.query.filter_by(id=form.project_number.data).first()
         pro.status = form.status.data
+        pro.last_edited = datetime.utcnow()
         c = Comment(body=form.comment.data,
                     author=current_user,
                     project=pro,
