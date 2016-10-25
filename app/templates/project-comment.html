@@ -49,26 +49,29 @@
 <div class="col s12">
   <ul class="collection">
     <li class="collection-item">
-      
+
       <span class="title">{{comment.author.name}}</span>
 
       <span><a href="{{url_for('main.edit_comment_admin', id=comment.id, number=project.id)}}"><i class="material-icons">mode_edit</i></a></span>
 
       <p> {{comment.body}}</p>
+      
       <a href="{{url_for('main.delete_comment', id=comment.id)}}" class="secondary-content"><i class="material-icons icon-red">clear</i></a>
 
-      <div class="col s3">
+      <div class="col s4">
         <table>
           <tr>
             <th>First Reported</th>
-            <th>{{comment.date_reported.strftime('%x')}}</th>
+            {% if comment.last_edited %}
+            <th>Last Edited</th>
+            {% endif %}
           </tr>
-          {% if comment.last_edited %}
           <tr>
-            <th>First Reported</th>
-            <th>{{comment.last_edited.strftime('%x')}}</th>
+            <td>{{comment.date_reported.strftime('%d/%m/%Y')}}</td>
+            {% if comment.last_edited %}
+            <td>{{comment.last_edited.strftime('%d/%m/%Y')}}</td>
+            {% endif %}
           </tr>
-          {% endif %}
         </table>
       </div>
 
