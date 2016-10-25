@@ -11,40 +11,39 @@
   <div class="row">
     <div class="col s9 offset-s1">
       <div class="card">
-
         <div class="card-content black-text">
           <div class="row">
 
-            <form method="post" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data" action="{{ url_for('main.encrypt_pdf')}}">
               {{form.hidden_tag()}}
 
-              <div class="file-field">
-                <div class="btn">
-                  <span>PDF</span>
-                  <input type="file" name="PdfFile">
+                <div class="file-field">
+                  <div class="btn">
+                    <span>PDF</span>
+                    <input type="file" name="PdfFile">
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                  </div>
                 </div>
-                <div class="file-path-wrapper">
-                  <input class="file-path validate" type="text">
-                </div>
-              </div>
 
-              <div class="row">
-                <div class="input-field col s12">
-                  {{form.password.label}}
-                  {{form.password}}
+                <div class="row">
+                  <div class="input-field col s12">
+                    {{form.password.label}}
+                    {{form.password}}
+                  </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="input-field col s12">
-                  {{form.submit(class="btn")}}
+                <div class="row">
+                  <div class="input-field col s12">
+                    {{form.submit(class="btn")}}
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
 
-           </div>
          </div>
        </div>
      </div>
+   </div>
  </div>
 
 {% endblock %}

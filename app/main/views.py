@@ -78,7 +78,7 @@ def profile_user(name):
 @main.route('/profile/new', methods=['GET','POST'])
 def add_new_volunteer():
     form = AddNewVolunteerForm()
-    if request.method == 'POST'::
+    if request.method == 'POST':
         vol = Volunteer( name=form.name.data,
                          address_line_1=form.address_line_1.data,
                          address_line_2=form.address_line_2.data,
@@ -104,7 +104,7 @@ def add_new_volunteer():
 def edit_profile_admin(id):
     vol = Volunteer.query.filter_by(id=id).first()
     form = EditProfileForm(vol=vol)
-    if request.method == 'POST'::
+    if request.method == 'POST':
         vol.email = form.email.data
         vol.role = Role.query.get(form.role.data)
         vol.telephone = form.telephone.data
@@ -266,6 +266,8 @@ def delete_comment(id):
 def edit_comment_admin(number, id):
     form = CommentForm()
     comment = Comment.query.get_or_404(id)
+    pro_num = number
+    com_id = id
     if request.method == 'POST':
         comment.body = form.body.data
         comment.last_edited = datetime.utcnow()
@@ -275,7 +277,9 @@ def edit_comment_admin(number, id):
         return redirect(url_for('main.project_comments', number = number))
     form.body.data = comment.body
     return render_template('project-comment-edit.html', form = form,
-                                                        comment = comment)
+                                                        comment = comment,
+                                                        pro_num=pro_num,
+                                                        com_id=com_id)
 
 ###############################################################################
 #                   Project End
@@ -325,8 +329,9 @@ def end_project(number, way):
                 raise
             flash('Project is now finished.','green accent-3')
             return redirect(url_for('main.project_single', number = number))
-        return render_template('project-end-finish.html', form=form, way=way)
-
+        return render_template('project-end-finish.html', form=form,
+                                                          way=way,
+                                                          number=number)
     elif way == 'Close':
         form = ProjectCloseForm()
         if request.method == 'POST':
@@ -343,8 +348,9 @@ def end_project(number, way):
                 raise
             flash('Project is now Closed.','green accent-3')
             return redirect(url_for('main.project_single', number = number))
-        return render_template('project-end-close.html', form=form, way=way)
-
+        return render_template('project-end-close.html', form=form,
+                                                        way=way,
+                                                        number=number)
     else:
         abort(404)
 
@@ -500,7 +506,7 @@ def project_photos(number):
         db.session.commit()
         flash('Your photos has been uploaded', 'green accent-3')
         return redirect(url_for('main.project_single',number = number))
-    return render_template('project-photo.html')
+    return render_template('project-photo.html', number=number)
 
 
 ######################## DELETE PROJECT PHOTOS #################################

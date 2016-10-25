@@ -16,7 +16,7 @@
     <div class="card grey lighten-5">
      <div class="card-content black-text">
 
-        <form action="" method="post" name="image" enctype="multipart/form-data">
+        <form method="POST" name="image" enctype="multipart/form-data" action="{{url_for('main.end_project', number=number, way=way)}}">
           {{form.hidden_tag()}}
 
            <div class="row">
@@ -60,7 +60,7 @@
        </br>
            <div class="row">
              <div class="col s12">
-               <input type=submit  class="btn btn-primary" value=Upload>
+               <input type=submit  class="btn" value=Upload>
               </div>
           </div>
 

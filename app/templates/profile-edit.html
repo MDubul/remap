@@ -15,7 +15,7 @@
       <div class="col s9 offset-s1">
         <div class="card grey lighten-5 z-depth-1">
           <div class="card-content black-text">
-            <form method=post action="{{ url_for('main.edit_profile_admin', id=vol.id) }}" >
+            <form method="POST" action="{{ url_for('main.edit_profile_admin', id=vol.id) }}" >
               {{form.hidden_tag()}}
 
               <div class="row">

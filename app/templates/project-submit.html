@@ -13,7 +13,7 @@
 </div>
 
 
-<form method=post action="{{ url_for('main.submit_project') }}">  <!-- for some reason "post doesnt work, however post works?" -->
+<form method="POST" action="{{ url_for('main.submit_project') }}">  <!-- for some reason "post doesnt work, however post works?" -->
   {{form.hidden_tag()}}
 
   <div class="row">

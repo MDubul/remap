@@ -16,24 +16,22 @@
     <div class="card grey lighten-5">
      <div class="card-content black-text">
 
-        <form action="" method="post" name="image" enctype="multipart/form-data">
+        <form action="{{url_for('main.end_project', number=number, way=way)}}" method="POST">
           {{form.hidden_tag()}}
-
-
            <div class="row">
              <div class="input-field col s12">
                {{form.comment.label}}
               {{form.comment (class="materialize-textarea")}}
               </div>
-           </div>
+            </div>
 
-           <div class="row">
+            <div class="row">
              <div class="input-field col s12">
-              {{form.sure}}{{form.sure.label(class="filled-in",id="filled-in-box")}}
+               {{form.sure}}{{form.sure.label(class="filled-in",id="filled-in-box")}}
               </div>
            </div>
+           </br>
          </br>
-       </br>
            <div class="row">
              <div class="col s12">
                <input type=submit  class="btn btn-primary" value=Upload>
@@ -42,7 +40,7 @@
 
         </form>
 
-    </div>
+      </div>
     </div>
   </div>
 </div>

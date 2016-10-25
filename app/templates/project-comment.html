@@ -12,7 +12,7 @@
 
 <div class="row">
 
-<form  method=post>
+<form method="POST" action="{{ url_for('main.project_comments', number=project.id)}}">
   {{form.hidden_tag()}}
 
    <div>
@@ -55,7 +55,7 @@
       <span><a href="{{url_for('main.edit_comment_admin', id=comment.id, number=project.id)}}"><i class="material-icons">mode_edit</i></a></span>
 
       <p> {{comment.body}}</p>
-      
+
       <a href="{{url_for('main.delete_comment', id=comment.id)}}" class="secondary-content"><i class="material-icons icon-red">clear</i></a>
 
       <div class="col s4">
