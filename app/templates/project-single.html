@@ -50,7 +50,7 @@
       </tr>
       <tr>
         <th>Data Recieved</th>
-        <td>{{ moment(proj.date_first_contacted).format('MMMM Do YYYY')}}</td>
+        <td>{{proj.date_first_contacted.strftime('%B %d %Y')}}</td>
       </tr>
       <tr>
         <th>Project Title</th>
@@ -81,7 +81,7 @@
         {% if proj.end_date == None%}
           <td></td>
         {% else%}
-          <td>{{moment(proj.end_date).format('MMMM Do YYYY')}}</td>
+          <td>{{proj.end_date.strftime('%B %d %Y')}}</td>
         {% endif %}
       </tr>
       </table>

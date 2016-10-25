@@ -16,13 +16,13 @@
     <td >{{pro.volunteer.first().name}}</td>
   {% endif %}
     <td >{{pro.user.first().postcode}}</td>
-    <td >{{moment(pro.date_first_contacted).format('MMMM Do YYYY')}}</td>
+    <td >{{pro.date_first_contacted.strftime('%d-%b-%Y')}}</td>
     <td >{{pro.request_title}}</td>
     <td >{{pro.status}}</td>
   {% if pro.end_date == None %}
     <td></td>
   {% else%}
-    <td>{{moment(pro.end_date).format('MMMM Do YYYY')}}</td>
+    <td>{{pro.end_date.strftime('%d-%b-%Y')}}</td>
   {% endif %}
   <td class="text-right"><a href="{{url_for('main.detailed_pdf', number=pro.id)}}" class="waves-effect waves-light btn red darken-4">PDF</a></td>
 </tr>
