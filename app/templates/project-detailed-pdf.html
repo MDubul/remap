@@ -49,6 +49,12 @@
           <th>Date of Initial Contact</th>
           <td>{{pro.date_first_contacted.strftime('%d-%b-%Y')}}</td>
         </tr>
+        {% if pro.last_edited%}
+        <tr>
+          <th>Last Edited</th>
+          <td>{{pro.last_edited.strftime('%d-%b-%Y')}}</td>
+        </tr>
+        {% endif %}
         <tr>
           <th>Client Age Group</th>
           <td>{{pro.user.first().age_range}}</td>
@@ -75,31 +81,38 @@
           {% endif %}
         </tr>
         <tr>
+          <th>Name</th>
+          <td>{{cli.organisation_name}}</td>
+          {% if referee %}
+          <td>{{referee.organisation_name}}</td>
+          {% endif %}
+        </tr>
+        <tr>
           <th>Address Line 1</th>
           <td>{{cli.address_line_1}}</td>
           {% if referee %}
-          <td></td>
+          <td>{{referee.address_line_1}}</td>
           {% endif %}
         </tr>
         <tr>
           <th>Address Line 2</th>
           <td>{{cli.address_line_2}}</td>
           {% if referee %}
-          <td></td>
+          <td>{{referee.address_line_2}}</td>
           {% endif %}
         </tr>
         <tr>
           <th>Town/City</th>
           <td>{{cli.town_city}}</td>
           {% if referee %}
-          <td></td>
+          <td>{{referee.town_city}}</td>
           {% endif %}
         </tr>
         <tr>
           <th>Postcode</th>
           <td>{{cli.postcode}}</td>
           {% if referee %}
-          <td></td>
+          <td>{{referee.postcode}}</td>
           {% endif %}
         </tr>
         <tr>

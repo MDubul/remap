@@ -254,7 +254,7 @@ class Project(db.Model):
     first_database_entry = db.Column(db.DateTime, default=datetime.utcnow) # edited from timestamp
 
     date_first_contacted = db.Column(db.Date)
-    last_edited = db.Column(db.DateTime,default=datetime.utcnow) # new field
+    last_edited = db.Column(db.DateTime) # new field
 
     request_body = db.Column(db.Text)
     request_title = db.Column(db.String(64))
