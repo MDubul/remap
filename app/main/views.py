@@ -140,7 +140,7 @@ def edit_profile_admin(id):
 @login_required
 def projects():
     page= request.args.get('page',1, type=int)
-    pagination = Project.query.order_by(Project.timestamp.desc()).paginate(page,per_page=current_app.config['PROJECT_PER_PAGE'], error_out=False)
+    pagination = Project.query.order_by(Project.id.desc()).paginate(page,per_page=current_app.config['PROJECT_PER_PAGE'], error_out=False)
     pro_all=pagination.items
 
     if pagination.pages < 2:
