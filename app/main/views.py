@@ -78,7 +78,7 @@ def profile_user(name):
 @main.route('/profile/new', methods=['GET','POST'])
 def add_new_volunteer():
     form = AddNewVolunteerForm()
-    if form.validate_on_submit():
+    if request.method == 'POST'::
         vol = Volunteer( name=form.name.data,
                          address_line_1=form.address_line_1.data,
                          address_line_2=form.address_line_2.data,
@@ -104,7 +104,7 @@ def add_new_volunteer():
 def edit_profile_admin(id):
     vol = Volunteer.query.filter_by(id=id).first()
     form = EditProfileForm(vol=vol)
-    if form.validate_on_submit():
+    if request.method == 'POST'::
         vol.email = form.email.data
         vol.role = Role.query.get(form.role.data)
         vol.telephone = form.telephone.data
@@ -146,7 +146,7 @@ def projects():
         index = None
     else:
         index = True
-    return render_template('project-list.html',pro_all=pro_all, pagination=pagination)
+    return render_template('project-list.html',pro_all=pro_all, pagination=pagination, index=index)
 
 
 
@@ -210,8 +210,7 @@ def project_single(number):
 def take_project(number):
    form = AssignProjectForm()
    pro = Project.query.filter_by(id=number).first()
-   if form.validate_on_submit():
-
+   if request.method == 'POST':
        vol = Volunteer.query.filter_by(id=form.vol.data).first()
        pro.volunteer.append(vol)
        pro.last_edited = datetime.utcnow()
@@ -232,7 +231,7 @@ def project_comments(number):
     vol = current_user
     project = Project.query.get_or_404(number)
     commentlist = project.comments.all()
-    if form.validate_on_submit():
+    if request.method == 'POST':
         dt = form.date_reported.data
         c = Comment(body=form.body.data,
                     author=current_user._get_current_object(),
@@ -247,7 +246,7 @@ def project_comments(number):
                                                    commentlist = commentlist,
                                                    project = project)
 
-###########################  EDITING COMMENT   #################################
+
 
 ###########################  DELETE COMMENT  ###################################
 @main.route('/project/comments/<int:id>/', methods=['GET','POST'])
@@ -255,7 +254,7 @@ def project_comments(number):
 def delete_comment(id):
     comment = Comment.query.filter_by(id=id).first()
     pro = comment.project_id
-    comment = Comment.query.filter_by(id=id).delete()
+    comment = Comment.query.filter_by(id=id).delete()  # im doing some rather redundant stuff here ¯\_(ツ)_/¯
     db.session.commit()
     flash('Comment deleted.', 'green accent-3')
     return redirect(url_for('main.project_comments', number=pro))
@@ -267,7 +266,7 @@ def delete_comment(id):
 def edit_comment_admin(number, id):
     form = CommentForm()
     comment = Comment.query.get_or_404(id)
-    if form.validate_on_submit():
+    if request.method == 'POST':
         comment.body = form.body.data
         comment.last_edited = datetime.utcnow()
         db.session.add(comment)
@@ -287,7 +286,7 @@ def edit_comment_admin(number, id):
 def end_project(number, way):
     if way == 'Finish':
         form = ProjectCompletionForm()
-        if form.validate_on_submit():
+        if request.method == 'POST':
             pro = Project.query.filter_by(id=number).first()
             pro.status = 'Finished'
             pro.expense_hours = form.expensehour.data
@@ -330,7 +329,7 @@ def end_project(number, way):
 
     elif way == 'Close':
         form = ProjectCloseForm()
-        if form.validate_on_submit():
+        if request.method == 'POST':
             pro = Project.query.filter_by(id=number).first()
             pro.last_edited = datetime.utcnow()
             pro.status = 'Closed'
@@ -450,7 +449,7 @@ def client_info_admin(cli_number,project_num):
 def edit_project(number):
     pro = Project.query.filter_by(id=number).first()
     form = EditProjectForm()
-    if form.validate_on_submit():
+    if request.method == 'POST':
         pro.request_title = form.request_title.data
         pro.request_body = form.request_body.data
         pro.Donation_discussed = form.donation_discussed.data
