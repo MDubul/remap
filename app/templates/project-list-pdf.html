@@ -2,18 +2,12 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <title>REMAP - Project List</title>
+   <meta charset="utf-8" />
    <link rel="stylesheet" type="text/css" href={{bootstrap_css}}>
-
-  <!--  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}"> -->
-
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
 </head>
 
 <body>
-  <div class="container-fluid">
+  <div class="container">
     <table class="table">
       <tr>
         <td class=active><b>Project Number</b></td>
@@ -57,7 +51,6 @@
                   {% endif %}
                 {% endfor %}
               </table>
-            </th>
           </tr>
         {% endif %}
       {% endfor%}
