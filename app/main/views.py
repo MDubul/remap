@@ -388,9 +388,14 @@ def submit_project():
         db.session.add(c)
         if form.refered.data:
             user2 = User(name=form.name_2.data,
-                        telephone=form.telephone_2.data,
+                        address_line_1 = form.address_line_1_2.data,
+                        address_line_2 = form.address_line_2_2.data,
+                        organisation_name = form.organisation_name_2.data,
+                        town_city = form.town_city_2.data,
+                        postcode = form.postcode_2.data,
+                        telephone = form.telephone_2.data,
                         mobile = form.mobile_2.data,
-                        email=form.email_2.data)
+                        email = form.email_2.data)
             db.session.add(user2)
             ref = Referal(referee=user2, referenced=c)
             db.session.add(ref)
