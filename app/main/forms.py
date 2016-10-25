@@ -21,7 +21,7 @@ class EditProfileForm(Form):
     volunteer_profile = TextAreaField('Volunteer Profile')
     submit = SubmitField('Submit')
 
-    def __init__(self, vol, *args, **kwargs): ## Need to understand this section more
+    def __init__(self, vol, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
         self.role.choices = [(role.id, role.name) for role in Role.query.order_by(Role.name).all()]
         self.vol = vol
@@ -36,10 +36,10 @@ class AssignProjectForm(Form):
     vol = SelectField('Volunteer', coerce=int)
     confirmed = BooleanField('Confirmed')
     submit = SubmitField('Submit')
-    def __init__(self, *args, **kwargs): ## Need to understand this section more
+    def __init__(self, *args, **kwargs):
         super(AssignProjectForm, self).__init__(*args, **kwargs)
         self.vol.choices = [(vol.id, vol.name) for vol in Volunteer.query.order_by(Volunteer.name).all()]
-        #self.vol = vol
+
 
 
 
@@ -60,7 +60,7 @@ class ProjectSubmissionForm(Form):
     date_first_contacted = StringField('Date First Contacted')
     #date_first_contacted = DateField('Date First Contacted',format="%Y-%m-%d")
     name = StringField('User Name:', validators=[Required()])
-    organisation_name = StringField('Organisation Name') # new field 
+    organisation_name = StringField('Organisation Name') # new field
     address_line_1 = StringField('Address Line 1',validators=[Required()])
     address_line_2 = StringField('Address Line 2',validators=[Required()])
     town_city = StringField('Town/City')
@@ -69,16 +69,23 @@ class ProjectSubmissionForm(Form):
     postcode = StringField('Postcode:', validators=[Required()])
     email = StringField('Email:', validators=[Optional()])
     initial_contact = StringField('Initial Contact & useful info', default='Direct')
-    how_they_find_us = TextAreaField('How did the find us?')
+    how_they_find_us = TextAreaField('How did they find us?')
     request_title = StringField('Project Title:')
     request_body = TextAreaField('Project Request:', validators=[Required()])
 
     name_2 = StringField('Initiator Name:')
+    organisation_name_2 = StringField('Organisation Name') # new field
+    address_line_1_2 = StringField('Address Line 1',validators=[Required()])
+    address_line_2_2 = StringField('Address Line 2',validators=[Required()])
+    town_city_2 = StringField('Town/City')
+    postcode_2 = StringField('Postcode:', validators=[Required()])
+
     telephone_2 = IntegerField('Telephone:', validators=[Optional()])
     mobile_2 = IntegerField('Mobile:', validators=[Optional()])
-
     email_2 = StringField('Email:', validators=[Optional()])
     relation = StringField('Relationship:', description=' What is the Relationship to Service User')
+
+
 
     donation_discussed = BooleanField('Donation/Expenses Discussed?')
     whom_donation_discussed =StringField('With whom was Donation/Expenses discussed')
@@ -133,7 +140,7 @@ class AddNewVolunteerForm(Form):
     volunteer_profile = TextAreaField('About')
     submit = SubmitField('Submit')
 
-    def __init__(self,  *args, **kwargs): ## Need to understand this section more
+    def __init__(self,  *args, **kwargs):
         super(AddNewVolunteerForm, self).__init__(*args, **kwargs)
         self.role.choices = [(role.id, role.name) for role in Role.query.order_by(Role.name).all()]
 
@@ -156,7 +163,7 @@ class MeetingUpdateForm(Form):
     status = SelectField('Status', choices=[('Awaiting Volunteer','Awaiting Volunteer'), ('Ongoing','Ongoing'), ('Finished','Finished'), ('Closed','Closed')])
     submit = SubmitField('Submit')
 
-    def __init__(self,  *args, **kwargs): ## Need to understand this section more
+    def __init__(self,  *args, **kwargs):
         super(MeetingUpdateForm, self).__init__(*args, **kwargs)
 
         self.project_number.choices = [(pro.id, pro.id) for pro in Project.query.filter(or_(Project.status=="Ongoing", Project.status=="Awaiting Volunteer"))]

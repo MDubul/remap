@@ -376,6 +376,7 @@ def submit_project():
                  name=form.name.data,
                  address_line_1=form.address_line_1.data,
                  address_line_2 =form.address_line_2.data,
+                 organisation_name = form.organisation_name.data,
                  town_city = form.town_city.data,
                  postcode=form.postcode.data,
                  telephone=form.telephone.data,

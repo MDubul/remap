@@ -46,6 +46,13 @@
           </div>
 
           <div class="row">
+              <div class="input-field col s12">
+                {{form.organisation_name.label(class="black-text")}}
+                {{form.organisation_name(class="black-text")}}
+              </div>
+          </div>
+
+          <div class="row">
               <div class="input-field col s6">
               {{form.address_line_1.label(class="black-text")}}
               {{form.address_line_1(class="black-text")}}
@@ -90,16 +97,11 @@
               {{form.initial_contact(class="black-text")}}
             </div>
           </div>
-          <div class="row">
-            <div class="input-field col s12">
-              {{form.how_they_find_us.label(class="black-text")}}
-              {{form.how_they_find_us(class="materialize-textarea")}}
-            </div>
-          </div>
         </div>
       </div>
     </div>
 
+<!--                 Initiator  -->
     <div class="col s6">
       <div class="card grey lighten-5 z-depth-1">
         <div class="card-content">
@@ -109,6 +111,37 @@
               {{form.name_2(class="black-text")}}
             </div>
           </div>
+
+          <div class="row">
+              <div class="input-field col s12">
+                {{form.organisation_name_2.label(class="black-text")}}
+                {{form.organisation_name_2(class="black-text")}}
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="input-field col s6">
+              {{form.address_line_1_2.label(class="black-text")}}
+              {{form.address_line_1_2(class="black-text")}}
+            </div>
+            <div class="input-field col s6">
+              {{form.address_line_2_2.label(class="black-text")}}
+              {{form.address_line_2_2(class="black-text")}}
+            </div>
+          </div>
+
+          <div class="row">
+              <div class="input-field col s6">
+              {{form.town_city_2.label(class="black-text")}}
+              {{form.town_city_2(class="black-text")}}
+            </div>
+            <div class="input-field col s6">
+              {{form.postcode_2.label(class="black-text")}}
+              {{form.postcode_2(class="black-text")}}
+            </div>
+          </div>
+
+
           <div class="row">
               <div class="input-field col s6">
                 {{form.telephone_2.label(class="black-text")}}
@@ -119,6 +152,7 @@
                 {{form.mobile_2(class="black-text")}}
               </div>
           </div>
+
           <div class="row">
             <div class="input-field col s12">
               {{form.email_2.label(class="black-text")}}
@@ -135,6 +169,21 @@
       </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col s12">
+      <div class="card grey lighten-5 z-depth-1">
+        <div class="card-content">
+  <div class="row">
+    <div class="input-field col s12">
+      {{form.how_they_find_us.label(class="black-text")}}
+      {{form.how_they_find_us(class="materialize-textarea")}}
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
   <div class="row">
     <div class="col s12">
