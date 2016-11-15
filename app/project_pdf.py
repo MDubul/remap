@@ -31,21 +31,20 @@ def make_async_pdf(template,app, prefix):
 
 def prepare_pdf_for_list(prefix,pro):
         app = current_app._get_current_object()
-        bootstrap_css = current_app.config['BOOTSTRAP_CSS']
-        template = render_template('project-list-pdf.html', pro_all=pro, bootstrap_css=bootstrap_css)
+        #bootstrap_css = current_app.config['BOOTSTRAP_CSS']
+        template = render_template('project-list-pdf.html', pro_all=pro)
         thr = Thread(target=make_async_pdf, args=[template,app, prefix])
         thr.start()
 
 def prepare_pdf_for_detailed(prefix,pro,cli,referee):
         app = current_app._get_current_object()
-        bootstrap_css = current_app.config['BOOTSTRAP_CSS']
+        #bootstrap_css = current_app.config['BOOTSTRAP_CSS']
         logo = current_app.config['LOGO']
         template = render_template('project-detailed-pdf.html',
                                     pro=pro,
                                     cli=cli,
                                     referee=referee,
                                     now=datetime.utcnow(),
-                                    bootstrap_css=bootstrap_css,
                                     logo=logo)
 
         thr = Thread(target=make_async_pdf, args=[template,app, prefix])
