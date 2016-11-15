@@ -69,6 +69,7 @@ class ProjectSubmissionForm(Form):
     postcode = StringField('Postcode:', validators=[Required()])
     email = StringField('Email:', validators=[Optional()])
     initial_contact = StringField('Initial Contact & useful info', default='Direct')
+    service_user_condition = TextAreaField('Service user condition')
     how_they_find_us = TextAreaField('How did they find us?')
     request_title = StringField('Project Title:')
     request_body = TextAreaField('Project Request:', validators=[Required()])

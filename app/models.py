@@ -195,6 +195,7 @@ class User(People):
     id = db.Column(db.Integer, db.ForeignKey('people.id'), primary_key=True)
     organisation_name = db.Column(db.String(64)) # new field
     age_range = db.Column(db.String(64))
+    service_user_condition = db.Column(db.Text)
     relation = db.Column(db.String(64), default='self')
     initial_contact = db.Column(db.String(64), default='self')
     how_they_find_us = db.Column(db.Text)

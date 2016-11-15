@@ -390,6 +390,7 @@ def submit_project():
                  telephone=form.telephone.data,
                  mobile = form.mobile.data,
                  email=form.email.data,
+                 service_user_condition=form.service_user_condition.data, 
                  initial_contact=form.initial_contact.data,
                  relation=form.relation.data,
                  how_they_find_us=form.how_they_find_us.data)
