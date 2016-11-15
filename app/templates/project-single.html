@@ -60,6 +60,12 @@
         <th>Project Request</th>
         <td>{{proj.request_body}}</td>
       </tr>
+      {% if proj.user.first().service_user_condition %}
+      <tr>
+        <th>Service user condition</th>
+        <td>{{proj.user.first().service_user_condition }}</td>
+      </tr>
+      {% endif %}
       <tr>
         <th>Status</th>
         <td>{{proj.status}}</td>
