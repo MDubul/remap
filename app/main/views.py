@@ -160,11 +160,14 @@ def project_single(number):
 
     geolocator = GoogleV3(api_key=app.config['MAP_KEY'], domain='maps.google.co.uk' )
     proj = Project.query.filter_by(id=number).first()
-    #try
-    cli_location = geolocator.geocode(proj.user.first().postcode,  timeout=10)
-    vol_location = geolocator.geocode(current_user.postcode, timeout=10)
-    #except a
-    #except (geopy.exc.GeocoderTimedOut, geopy.exc.GeocoderServiceError, geopy.exc.GeocoderQueryError(no postcode)) as e:
+    try:
+        cli_location = geolocator.geocode(proj.user.first().postcode,  timeout=10)
+        vol_location = geolocator.geocode(current_user.postcode, timeout=10)
+    except Exception as e:
+        cli_location = None
+        vol_location = None
+        print(str(e))
+
     pro_folder = distination(number)
 
     MAP_API_KEY = app.config['BROWSER_KEY']
