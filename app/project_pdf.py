@@ -11,8 +11,7 @@ from sqlalchemy import or_
 def config_wkthmltopdf():
     app = current_app._get_current_object()
     path_wkthmltopdf = app.config['PATH_WKTHMLTOPDF']
-    xconfig = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
-    return xconfig
+    return pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 
 
 def get_time_date():
@@ -20,38 +19,36 @@ def get_time_date():
     year = now.year
     month = now.month
     day = now.day
-    rand = random.randint(0,100)
+    rand = random.randint(0, 100)
     return year, month, day, rand
 
 
-def make_async_pdf(template,app, prefix):
+def make_async_pdf(template, app, prefix):
     with app.app_context():
-        year, month, day,rand = get_time_date()
-        filename = '{}-({}-{}-{})-{}.pdf'.format(prefix,day,month,year,rand)
+        year, month, day, rand = get_time_date()
+        filename = '{}-({}-{}-{})-{}.pdf'.format(prefix, day, month, year, rand)
         print('making PDF + ', filename)
-        pdf = pdfkit.from_string(template,filename, configuration=config_wkthmltopdf())
+        pdfkit.from_string(template, filename, configuration=config_wkthmltopdf())
 
 
-def prepare_pdf_for_list(prefix,pro):
+def prepare_pdf_for_list(prefix, pro):
         app = current_app._get_current_object()
-        #bootstrap_css = current_app.config['BOOTSTRAP_CSS']
         template = render_template('project-list-pdf.html', pro_all=pro)
-        thr = Thread(target=make_async_pdf, args=[template,app, prefix])
+        thr = Thread(target=make_async_pdf, args=[template, app, prefix])
         thr.start()
 
 
-def prepare_pdf_for_detailed(prefix,pro,cli,referee):
+def prepare_pdf_for_detailed(prefix, pro, cli, referee):
         app = current_app._get_current_object()
-        #bootstrap_css = current_app.config['BOOTSTRAP_CSS']
         logo = current_app.config['LOGO']
         template = render_template('project-detailed-pdf.html',
-                                    pro=pro,
-                                    cli=cli,
-                                    referee=referee,
-                                    now=datetime.utcnow(),
-                                    logo=logo)
+                                   pro=pro,
+                                   cli=cli,
+                                   referee=referee,
+                                   now=datetime.utcnow(),
+                                   logo=logo)
 
-        thr = Thread(target=make_async_pdf, args=[template,app, prefix])
+        thr = Thread(target=make_async_pdf, args=[template, app, prefix])
         thr.start()
 
 
@@ -64,7 +61,8 @@ def make_project_list_pdf(selection):
 
     if selection == '2':
         prefix = 'Ongoing-Awaiting'
-        pro_all = Project.query.filter(or_(Project.status == "Ongoing", Project.status == "Awaiting Volunteer"))
+        pro_all = Project.query.filter(or_(Project.status == "Ongoing",
+                                           Project.status == "Awaiting Volunteer"))
         prepare_pdf_for_list(prefix, pro_all)
 
     if selection == '3':
@@ -79,7 +77,8 @@ def make_project_list_pdf(selection):
 
     if selection == '5':
         prefix = "Finished-Closed"
-        pro_all = Project.query.filter(or_(Project.status=="Finished", Project.status=="Closed"))
+        pro_all = Project.query.filter(or_(Project.status == "Finished",
+                                           Project.status == "Closed"))
         prepare_pdf_for_list(prefix, pro_all)
 
     if selection == '6':
