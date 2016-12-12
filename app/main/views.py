@@ -1,10 +1,11 @@
-import os, errno
+import os
+import errno
 
 from flask import (render_template, redirect, url_for, flash, abort, request,
                    current_app)
 
 from . import main
-from flask.ext.login import login_required, current_user
+from flask_login import login_required, current_user
 
 from .forms import (EditProfileForm, EditProjectForm, CommentForm, ProjectSubmissionForm,
                     ProjectCompletionForm, ProjectCloseForm, AssignProjectForm, ProjectPdfSelection,
