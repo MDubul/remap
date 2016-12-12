@@ -14,13 +14,15 @@ def config_wkthmltopdf():
     xconfig = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
     return xconfig
 
+
 def get_time_date():
     now = datetime.utcnow()
     year = now.year
     month = now.month
     day = now.day
     rand = random.randint(0,100)
-    return year, month, day,rand
+    return year, month, day, rand
+
 
 def make_async_pdf(template,app, prefix):
     with app.app_context():
@@ -29,12 +31,14 @@ def make_async_pdf(template,app, prefix):
         print('making PDF + ', filename)
         pdf = pdfkit.from_string(template,filename, configuration=config_wkthmltopdf())
 
+
 def prepare_pdf_for_list(prefix,pro):
         app = current_app._get_current_object()
         #bootstrap_css = current_app.config['BOOTSTRAP_CSS']
         template = render_template('project-list-pdf.html', pro_all=pro)
         thr = Thread(target=make_async_pdf, args=[template,app, prefix])
         thr.start()
+
 
 def prepare_pdf_for_detailed(prefix,pro,cli,referee):
         app = current_app._get_current_object()
@@ -60,7 +64,7 @@ def make_project_list_pdf(selection):
 
     if selection == '2':
         prefix = 'Ongoing-Awaiting'
-        pro_all = Project.query.filter(or_(Project.status=="Ongoing", Project.status=="Awaiting Volunteer"))
+        pro_all = Project.query.filter(or_(Project.status == "Ongoing", Project.status == "Awaiting Volunteer"))
         prepare_pdf_for_list(prefix, pro_all)
 
     if selection == '3':
@@ -91,7 +95,7 @@ def make_project_list_pdf(selection):
 
 def make_detailed_pdf(number):
 
-    prefix = 'Project Number-'+ number
+    prefix = 'Project Number-' + number
     pro = Project.query.filter_by(id=number).first()
     cli_num = pro.user.first().id
     cli = User.query.filter_by(id=cli_num).first()
@@ -101,8 +105,6 @@ def make_detailed_pdf(number):
         referee = None
     prepare_pdf_for_detailed(prefix, pro, cli, referee)
 
-def pdf_encryption(file):
-    pass
 
 
 

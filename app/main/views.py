@@ -1,30 +1,26 @@
 import os, errno
 
-from flask import render_template, session, redirect, url_for, flash, abort, request, current_app,make_response,jsonify
+from flask import (render_template, redirect, url_for, flash, abort, request,
+                   current_app)
 
 from . import main
 from flask.ext.login import login_required, current_user
 
-from .forms import EditProfileForm, EditProjectForm, CommentForm, ProjectSubmissionForm, ProjectCompletionForm, ProjectCloseForm, AssignProjectForm,ProjectPdfSelection,AddNewVolunteerForm,PDFEncryptionForm,MeetingUpdateForm
+from .forms import (EditProfileForm, EditProjectForm, CommentForm, ProjectSubmissionForm,
+                    ProjectCompletionForm, ProjectCloseForm, AssignProjectForm, ProjectPdfSelection,
+                    AddNewVolunteerForm, PDFEncryptionForm, MeetingUpdateForm)
 
 from .. import db
-from ..models import Project, User, Volunteer, Role, People, Comment, ProjectPhoto, Referal, SolutionPhotos
+from ..models import (Project, User, Volunteer, Role, Comment, ProjectPhoto, Referal,
+                      SolutionPhotos)
 
-from ..email import send_email
-
-from ..decorators import admin_required , volunteer_required, access_required, user_only
-
-from geopy.geocoders import Nominatim
 from geopy.geocoders import GoogleV3
 
-from werkzeug import secure_filename
-from datetime import datetime,date
-from ..project_pdf import make_project_list_pdf, make_detailed_pdf,pdf_encryption
-import pdfkit
+from werkzeug.utils import secure_filename
+from datetime import datetime, date
+from ..project_pdf import make_project_list_pdf, make_detailed_pdf
 import PyPDF2
-from flask_googlemaps import Map, icons, GoogleMaps
-
-from sqlalchemy import or_
+from flask_googlemaps import Map, icons
 
 
 @main.route('/')
@@ -37,18 +33,19 @@ def index():
 ################################################################################
 def distination(number):
     uploadfolder = current_app.config['PROJECT_UPLOAD']
-    appex = '/'+ str(number)
+    appex = '/' + str(number)
     return uploadfolder + appex
+
 
 def solutionDestination(number):
     uploadfolder = current_app.config['PROJECT_SOLUTION']
-    appex = '/'+ str(number)
+    appex = '/' + str(number)
     return uploadfolder + appex
+
 
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1] in current_app.config['ALLOWED_EXTENSIONS']
-
 
 
 ##################################################################################
@@ -57,45 +54,48 @@ def allowed_file(filename):
 @main.route('/profiles') # about us page
 def profile():
     page = request.args.get('page', 1, type=int)
-    pagination = Volunteer.query.paginate(page,per_page=current_app.config['VOL_PER_PAGE'],error_out=False)
+    pagination = Volunteer.query.paginate(page,
+                                          per_page=current_app.config['VOL_PER_PAGE'],
+                                          error_out=False)
     vol = pagination.items
     if pagination.pages < 2:
-        index = None
+        index_page = None
     else:
-        index = True
-    return render_template('profiles.html',vol = vol,
-                                           pagination = pagination,
-                                           index = index)
+        index_page = True
+    return render_template('profiles.html',
+                           vol=vol,
+                           pagination=pagination,
+                           index=index_page)
+
 
 @main.route('/profile/<name>')
 def profile_user(name):
     vol = Volunteer.query.filter_by(name=name).first()
     if vol is None:
         abort(404)
-    return render_template('profile-volunteer.html', vol = vol)
+    return render_template('profile-volunteer.html', vol=vol)
 
 
-@main.route('/profile/new', methods=['GET','POST'])
+@main.route('/profile/new', methods=['GET', 'POST'])
 def add_new_volunteer():
     form = AddNewVolunteerForm()
     if request.method == 'POST':
-        vol = Volunteer( name=form.name.data,
-                         address_line_1=form.address_line_1.data,
-                         address_line_2=form.address_line_2.data,
-                         town_city= form.town_city.data,
-                         postcode=form.postcode.data,
-                         email=form.email.data,
-                         telephone=form.telephone.data,
-                         mobile=form.mobile.data,
-                         role_id=form.role.data,
-                         volunteer_profile=form.volunteer_profile.data,
+        vol = Volunteer(name=form.name.data,
+                        address_line_1=form.address_line_1.data,
+                        address_line_2=form.address_line_2.data,
+                        town_city= form.town_city.data,
+                        postcode=form.postcode.data,
+                        email=form.email.data,
+                        telephone=form.telephone.data,
+                        mobile=form.mobile.data,
+                        role_id=form.role.data,
+                        volunteer_profile=form.volunteer_profile.data,
                         )
         db.session.add(vol)
         db.session.commit()
-        flash('Added a New volunteer.','green accent-3')
+        flash('Added a New volunteer.', 'green accent-3')
         return redirect(url_for('main.profile'))
-    return render_template('profile-new.html',form=form)
-
+    return render_template('profile-new.html', form=form)
 
 
 ############################ ADMIN PROFILE EDIT   ##############################
@@ -111,14 +111,14 @@ def edit_profile_admin(id):
         vol.mobile = form.mobile.data
         vol.address_line_1 = form.address_line_1.data
         vol.address_line_2 = form.address_line_2.data
-        vol.town_city  = form.town_city.data
+        vol.town_city = form.town_city.data
         vol.name = form.name.data
         vol.postcode = form.postcode.data
         vol.volunteer_profile = form.volunteer_profile.data
         db.session.add(vol)
         db.session.commit()
-        flash('The profile has been updated.','green accent-3')
-        return redirect(url_for('main.profile', name = vol.name))
+        flash('The profile has been updated.', 'green accent-3')
+        return redirect(url_for('main.profile', name=vol.name))
     form.email.data = vol.email
     form.name.data = vol.name
     form.address_line_1.data = vol.address_line_1
@@ -128,8 +128,7 @@ def edit_profile_admin(id):
     form.telephone.data = vol.telephone
     form.postcode.data = vol.postcode
     form.volunteer_profile.data = vol.volunteer_profile
-
-    return render_template('profile-edit.html', form = form, vol=vol)
+    return render_template('profile-edit.html', form=form, vol=vol)
 
 
 ################################################################################
@@ -138,26 +137,28 @@ def edit_profile_admin(id):
 @main.route('/projects', methods=['GET'])
 @login_required
 def projects():
-    page= request.args.get('page',1, type=int)
-    pagination = Project.query.order_by(Project.id.desc()).paginate(page,per_page=current_app.config['PROJECT_PER_PAGE'], error_out=False)
-    pro_all=pagination.items
-
+    page = request.args.get('page', 1, type=int)
+    pagination = Project.query.order_by(Project.id.desc()).paginate(page,
+                                                                    per_page=current_app.config['PROJECT_PER_PAGE'],
+                                                                    error_out=False)
+    pro_all = pagination.items
     if pagination.pages < 2:
-        index = None
+        page_index = None
     else:
-        index = True
-    return render_template('project-list.html',pro_all=pro_all, pagination=pagination, index=index)
-
+        page_index = True
+    return render_template('project-list.html',
+                           pro_all=pro_all,
+                           pagination=pagination,
+                           index=page_index)
 
 
 ###########################  PROJECT SINGLE  ###################################
-
 @main.route('/project/<number>', methods=['GET'])
 @login_required
 def project_single(number):
     app = current_app._get_current_object()
 
-    geolocator = GoogleV3(api_key=app.config['MAP_KEY'],domain='maps.google.co.uk' )
+    geolocator = GoogleV3(api_key=app.config['MAP_KEY'], domain='maps.google.co.uk' )
     proj = Project.query.filter_by(id=number).first()
     #try
     cli_location = geolocator.geocode(proj.user.first().postcode,  timeout=10)
@@ -166,7 +167,7 @@ def project_single(number):
     #except (geopy.exc.GeocoderTimedOut, geopy.exc.GeocoderServiceError, geopy.exc.GeocoderQueryError(no postcode)) as e:
     pro_folder = distination(number)
 
-    API_KEY = app.config['BROWSER_KEY']
+    MAP_API_KEY = app.config['BROWSER_KEY']
 
     if os.path.exists(pro_folder):
         pro_folder_items = os.listdir(pro_folder)
@@ -180,51 +181,50 @@ def project_single(number):
             lng=vol_location.longitude,
             collapsible=True,
             style='height:400px;width:800px;margin:50;',
-            zoom = 12,
-            markers = [
+            zoom=12,
+            markers=[
                     {
-                    'icon': icons.alpha.V,
-                    'lat':vol_location.latitude,
-                    'lng':vol_location.longitude,
-                    'infobox': 'Your Location',
+                        'icon': icons.alpha.V,
+                        'lat': vol_location.latitude,
+                        'lng': vol_location.longitude,
+                        'infobox': 'Your Location',
                     },
                     {
-                    'icon': icons.alpha.C,
-                    'lat':cli_location.latitude,
-                    'lng':cli_location.longitude,
-                    'infobox': 'User Location',
+                        'icon': icons.alpha.C,
+                        'lat': cli_location.latitude,
+                        'lng': cli_location.longitude,
+                        'infobox': 'User Location',
                     }
                  ]
 
                 )
 
-    return render_template('project-single.html', proj=proj, API_KEY=API_KEY,
-                                                   pro_folder_items=pro_folder_items,
-                                                   the_map=the_map)
-
+    return render_template('project-single.html', proj=proj, API_KEY=MAP_API_KEY,
+                           pro_folder_items=pro_folder_items, the_map=the_map)
 
 
 ###########################  Assign project to volunteer4  ##########################
-@main.route('/take_project/<number>', methods=['GET','POST'])
+@main.route('/take_project/<number>', methods=['GET', 'POST'])
 @login_required
 def take_project(number):
-   form = AssignProjectForm()
-   pro = Project.query.filter_by(id=number).first()
-   if request.method == 'POST':
-       vol = Volunteer.query.filter_by(id=form.vol.data).first()
-       pro.volunteer.append(vol)
-       pro.last_edited = datetime.utcnow()
-       pro.status = 'Ongoing'
-       db.session.add_all([pro,vol])
-       db.session.commit()
-       flash('Volunteer has been assigned.','green accent-3')
-       return redirect(url_for('main.project_single', number=number))
-   return render_template('project-assign.html', form = form, pro=pro)
+    form = AssignProjectForm()
+    pro = Project.query.filter_by(id=number).first()
+    if request.method == 'POST':
+        vol = Volunteer.query.filter_by(id=form.vol.data).first()
+        pro.volunteer.append(vol)
+        pro.last_edited = datetime.utcnow()
+        pro.status = 'Ongoing'
+        db.session.add_all([pro, vol])
+        db.session.commit()
+        flash('Volunteer has been assigned.', 'green accent-3')
+        return redirect(url_for('main.project_single', number=number))
+    return render_template('project-assign.html', form=form, pro=pro)
+
 
 ################################################################################
 #                            PROJECT COMMENTS                                  #
 ################################################################################
-@main.route('/project/<number>/comments', methods=['GET','POST'])
+@main.route('/project/<number>/comments', methods=['GET', 'POST'])
 @login_required
 def project_comments(number):
     form = CommentForm()
@@ -236,20 +236,20 @@ def project_comments(number):
         c = Comment(body=form.body.data,
                     author=current_user._get_current_object(),
                     project=project,
-                    date_reported=date(dt.year,dt.month, dt.day))
+                    date_reported=date(dt.year, dt.month, dt.day))
         db.session.add(c)
         db.session.commit()
         flash('Your comment has been published.', 'green accent-3')
-        return redirect(url_for('main.project_comments', number = project.id))
-    return render_template('project-comment.html', form = form,
-                                                   vol= vol,
-                                                   commentlist = commentlist,
-                                                   project = project)
-
+        return redirect(url_for('main.project_comments', number=project.id))
+    return render_template('project-comment.html',
+                           form=form,
+                           vol=vol,
+                           commentlist=commentlist,
+                           project=project)
 
 
 ###########################  DELETE COMMENT  ###################################
-@main.route('/project/comments/<int:id>/', methods=['GET','POST'])
+@main.route('/project/comments/<int:id>/', methods=['GET', 'POST'])
 @login_required
 def delete_comment(id):
     comment = Comment.query.filter_by(id=id).first()
@@ -261,7 +261,7 @@ def delete_comment(id):
 
 
 ########################### ADMIN EDIT COMMENT ################################
-@main.route('/project/<number>/comments/<int:id>/admin', methods=['GET','POST'])
+@main.route('/project/<number>/comments/<int:id>/admin', methods=['GET', 'POST'])
 @login_required
 def edit_comment_admin(number, id):
     form = CommentForm()
@@ -274,12 +274,14 @@ def edit_comment_admin(number, id):
         db.session.add(comment)
         db.session.commit()
         flash('The post has been updated.','green accent-3')
-        return redirect(url_for('main.project_comments', number = number))
+        return redirect(url_for('main.project_comments', number=number))
     form.body.data = comment.body
-    return render_template('project-comment-edit.html', form = form,
-                                                        comment = comment,
-                                                        pro_num=pro_num,
-                                                        com_id=com_id)
+    return render_template('project-comment-edit.html',
+                           form=form,
+                           comment=comment,
+                           pro_num=pro_num,
+                           com_id=com_id)
+
 
 ###############################################################################
 #                   Project End
@@ -312,26 +314,28 @@ def end_project(number, way):
                     file.save(os.path.join(solutionDestination(number), filename))
                     caption = request.form.getlist('caption')
                     if first:
-                        p = SolutionPhotos(location=os.path.join(solutionDestination(number), filename), caption=caption[0])
+                        p = SolutionPhotos(location=os.path.join(solutionDestination(number), filename),
+                                           caption=caption[0])
                         first = False
                         pro = Project.query.filter_by(id=number).first()
                         pro.solutionphotos.append(p)
-                        db.session.add_all([p,pro])
+                        db.session.add_all([p, pro])
                     else:
                         p = SolutionPhotos(location=os.path.join(solutionDestination(number), filename))
                         pro = Project.query.filter_by(id=number).first()
                         pro.solutionphotos.append(p)
-                        db.session.add_all([p,pro])
+                        db.session.add_all([p, pro])
             try:
                 db.session.commit()
             except:
                 db.session.rollback()
                 raise
-            flash('Project is now finished.','green accent-3')
-            return redirect(url_for('main.project_single', number = number))
-        return render_template('project-end-finish.html', form=form,
-                                                          way=way,
-                                                          number=number)
+            flash('Project is now finished.', 'green accent-3')
+            return redirect(url_for('main.project_single', number=number))
+        return render_template('project-end-finish.html',
+                               form=form,
+                               way=way,
+                               number=number)
     elif way == 'Close':
         form = ProjectCloseForm()
         if request.method == 'POST':
@@ -339,7 +343,7 @@ def end_project(number, way):
             pro.last_edited = datetime.utcnow()
             pro.status = 'Closed'
             pro.end_date = datetime.utcnow()
-            c = Comment(body= form.comment.data, author=current_user)
+            c = Comment(body=form.comment.data, author=current_user)
             pro.comments.append(c)
             try:
                 db.session.commit()
@@ -347,15 +351,17 @@ def end_project(number, way):
                 db.session.rollback()
                 raise
             flash('Project is now Closed.','green accent-3')
-            return redirect(url_for('main.project_single', number = number))
-        return render_template('project-end-close.html', form=form,
-                                                        way=way,
-                                                        number=number)
+            return redirect(url_for('main.project_single', number=number))
+        return render_template('project-end-close.html',
+                               form=form,
+                               way=way,
+                               number=number)
     else:
         abort(404)
 
+
 ######################### VOLUNTEER SOLUTION PHOTOS ###########################
-@main.route('/project/<number>/solution', methods=['GET','POST'])
+@main.route('/project/<number>/solution', methods=['GET', 'POST'])
 @login_required
 def project_solution(number):
     pro = Project.query.filter_by(id=number).first()
@@ -365,15 +371,16 @@ def project_solution(number):
             pro_folder_items = os.listdir(pro_folder)
         else:
             pro_folder_items = None
-        return render_template('project-solution.html', pro=pro,
-                                                        pro_folder_items=pro_folder_items)
+        return render_template('project-solution.html',
+                               pro=pro,
+                               pro_folder_items=pro_folder_items)
     else:
         abort(404)
 
 ################################################################################
 #                            SUBMIT PROJECT                                   #
 ################################################################################
-@main.route('/submit-project/', methods=['GET','POST'])
+@main.route('/submit-project/', methods=['GET', 'POST'])
 @login_required
 def submit_project():
     form = ProjectSubmissionForm()
@@ -383,12 +390,12 @@ def submit_project():
         c = User(age_range=form.age_range.data,
                  name=form.name.data,
                  address_line_1=form.address_line_1.data,
-                 address_line_2 =form.address_line_2.data,
-                 organisation_name = form.organisation_name.data,
-                 town_city = form.town_city.data,
+                 address_line_2=form.address_line_2.data,
+                 organisation_name=form.organisation_name.data,
+                 town_city=form.town_city.data,
                  postcode=form.postcode.data,
                  telephone=form.telephone.data,
-                 mobile = form.mobile.data,
+                 mobile=form.mobile.data,
                  email=form.email.data,
                  service_user_condition=form.service_user_condition.data, 
                  initial_contact=form.initial_contact.data,
@@ -397,14 +404,14 @@ def submit_project():
         db.session.add(c)
         if form.refered.data:
             user2 = User(name=form.name_2.data,
-                        address_line_1 = form.address_line_1_2.data,
-                        address_line_2 = form.address_line_2_2.data,
-                        organisation_name = form.organisation_name_2.data,
-                        town_city = form.town_city_2.data,
-                        postcode = form.postcode_2.data,
-                        telephone = form.telephone_2.data,
-                        mobile = form.mobile_2.data,
-                        email = form.email_2.data)
+                         address_line_1=form.address_line_1_2.data,
+                         address_line_2=form.address_line_2_2.data,
+                         organisation_name=form.organisation_name_2.data,
+                         town_city=form.town_city_2.data,
+                         postcode=form.postcode_2.data,
+                         telephone=form.telephone_2.data,
+                         mobile=form.mobile_2.data,
+                         email=form.email_2.data)
             db.session.add(user2)
             ref = Referal(referee=user2, referenced=c)
             db.session.add(ref)
@@ -416,7 +423,7 @@ def submit_project():
                        data_protection=form.data_protection.data,
                        whom_data_protection_discussed=form.whom_data_protection_discussed.data,
                        dat_protection_outcome=form.dat_protection_outcome.data,
-                       date_first_contacted=date(dat.year,dat.month, dat.day)
+                       date_first_contacted=date(dat.year, dat.month, dat.day)
                        )
         proj.user.append(c)
         db.session.add(proj)
@@ -425,9 +432,9 @@ def submit_project():
         except:
             db.session.rollback()
             raise
-        flash('Project has been submitted.','green accent-3')
+        flash('Project has been submitted.', 'green accent-3')
         return redirect(url_for('main.projects'))
-    return render_template('project-submit.html', form = form)
+    return render_template('project-submit.html', form=form)
 
 ##################################################################################
 #                                    USER
@@ -437,21 +444,21 @@ def submit_project():
 #######################  ACCESS TO USER INFO VIA ADMIN   ######################
 @main.route('/user/<cli_number>/<project_num>/admin')
 @login_required
-def client_info_admin(cli_number,project_num):
+def client_info_admin(cli_number, project_num):
     clie = User.query.filter_by(id=cli_number).first()
-    pro= Project.query.filter_by(id=project_num).first()
+    pro = Project.query.filter_by(id=project_num).first()
     try:
         referee = pro.user.first().referee.first().referee
     except AttributeError:
         referee = None
-    return render_template('user-info.html', clie=clie,referee=referee )
+    return render_template('user-info.html', clie=clie, referee=referee )
 
 
 ################    USER PROJECT [PORTAL TO UPLOAD PHOTOS]    ##################
 
 ##################  EDITING PROJECT SUBMISSION FOR DIRECT USER  ################
 
-@main.route('/edit-project/<number>', methods=['GET','POST'])
+@main.route('/edit-project/<number>', methods=['GET', 'POST'])
 @login_required
 def edit_project(number):
     pro = Project.query.filter_by(id=number).first()
@@ -468,13 +475,13 @@ def edit_project(number):
         pro.last_edited = datetime.utcnow()
         db.session.add(pro)
         db.session.commit()
-        flash('Project has been edited','green accent-3')
+        flash('Project has been edited', 'green accent-3')
         return redirect(url_for('main.project_single', number=pro.id))
     form.request_title.data = pro.request_title
     form.request_body.data = pro.request_body
-    form.donation_discussed.data=pro.Donation_discussed
-    form.donation_outcome.data =pro.donation_outcome
-    form.data_protection.data =pro.data_protection
+    form.donation_discussed.data = pro.Donation_discussed
+    form.donation_outcome.data = pro.donation_outcome
+    form.data_protection.data = pro.data_protection
     form.dat_protection_outcome.data = pro.dat_protection_outcome
     form.whom_donation_discussed.data = pro.whom_donation_discussed
     form.whom_data_protection_discussed.data = pro.whom_data_protection_discussed
@@ -482,7 +489,7 @@ def edit_project(number):
 
 
 ######################## Admin  UPLOAD PROJECT PHOTOS #################################
-@main.route('/projects/<number>/photos', methods=['GET','POST'])
+@main.route('/projects/<number>/photos', methods=['GET', 'POST'])
 @login_required
 def project_photos(number):
     if request.method == 'POST':
@@ -503,23 +510,22 @@ def project_photos(number):
                 pro = Project.query.filter_by(id=number).first()
                 pro.photos.append(p)
                 pro.last_edited = datetime.utcnow()
-                db.session.add_all([p,pro])
+                db.session.add_all([p, pro])
         db.session.commit()
         flash('Your photos has been uploaded', 'green accent-3')
-        return redirect(url_for('main.project_single',number = number))
+        return redirect(url_for('main.project_single', number=number))
     return render_template('project-photo.html', number=number)
 
 
 ######################## DELETE PROJECT PHOTOS #################################
 
 
-
-@main.route('/project/pdf', methods=['GET','POST'])
+@main.route('/project/pdf', methods=['GET', 'POST'])
 @login_required
 def pdf_page():
     form = ProjectPdfSelection()
     if request.method == 'POST':
-        return redirect(url_for('main.pdf',respon=form.selection.data))
+        return redirect(url_for('main.pdf', respon=form.selection.data))
     return render_template('project-list-make-PDF.html', form=form)
 
 
@@ -538,7 +544,8 @@ def detailed_pdf(number):
     flash('PDF is being made in the background', 'green accent-3')
     return redirect(url_for('main.index'))
 
-@main.route('/project/pdf/encrypt/', methods=['GET','POST'])
+
+@main.route('/project/pdf/encrypt/', methods=['GET', 'POST'])
 @login_required
 def encrypt_pdf():
     form = PDFEncryptionForm()
@@ -567,7 +574,7 @@ def summery_pdf(number):
     return redirect(url_for('main.index'))
 
 
-@main.route('/meeting', methods=['GET','POST'])
+@main.route('/meeting', methods=['GET', 'POST'])
 @login_required
 def meeting():
     form = MeetingUpdateForm()
@@ -580,9 +587,9 @@ def meeting():
         c = Comment(body=form.comment.data,
                     author=current_user,
                     project=pro,
-                    date_reported=date(dat.year,dat.month, dat.day)
+                    date_reported=date(dat.year, dat.month, dat.day)
                     )
-        db.session.add_all([pro,c])
+        db.session.add_all([pro, c])
         db.session.commit()
         flash('Updated Project', 'green accent-3')
         return redirect(url_for('main.meeting'))
