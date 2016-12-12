@@ -4,7 +4,6 @@ from flask.ext.login import login_user, login_required, logout_user
 from . import auth
 from ..models import Volunteer, User
 from .forms import LoginForm #RegistrationForm, UserTypeForm
-from ..email import send_email
 from app import db
 from flask.ext.login import current_user
 
