@@ -1,11 +1,9 @@
-
 from flask import render_template, redirect, request, url_for, flash
-from flask.ext.login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user
 from . import auth
-from ..models import Volunteer, User
-from .forms import LoginForm #RegistrationForm, UserTypeForm
-from app import db
-from flask.ext.login import current_user
+from ..models import Volunteer
+from .forms import LoginForm
+from flask_login import current_user
 
 
 @auth.before_app_request
@@ -25,7 +23,7 @@ def user_login():
 
             return redirect(request.args.get('next') or url_for('main.projects'))
         flash('Invalid username or password.', 'red')
-    return render_template('auth/login.html', form=form) #, way=way)
+    return render_template('auth/login.html', form=form)
 
 
 @auth.route('/logout')
