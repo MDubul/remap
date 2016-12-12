@@ -553,15 +553,15 @@ def encrypt_pdf():
         filename = request.files['PdfFile'].filename
         password = form.password.data
 
-        with open(filename,'rb') as pdfFile:
-            pdfReader = PyPDF2.PdfFileReader(pdfFile)
-            pdfWriter = PyPDF2.PdfFileWriter()
-            for pageNum in range(pdfReader.numPages):
-                pdfWriter.addPage(pdfReader.getPage(pageNum))
-            pdfWriter.encrypt(password)
-            resultPdf = open('E-'+filename, 'wb')
-            pdfWriter.write(resultPdf)
-            resultPdf.close()
+        with open(filename, 'rb') as pdfFile:
+            pdf_reader = PyPDF2.PdfFileReader(pdfFile)
+            pdf_writer = PyPDF2.PdfFileWriter()
+            for pageNum in range(pdf_reader.numPages):
+                pdf_writer.addPage(pdf_reader.getPage(pageNum))
+            pdf_writer.encrypt(password)
+            result_pdf = open('E-'+filename, 'wb')
+            pdf_writer.write(result_pdf)
+            result_pdf.close()
             flash('PDF is being made in the background', 'green accent-3')
             return redirect(url_for('main.index'))
     return render_template('project-encrypt-pdf.html', form=form)
