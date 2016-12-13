@@ -7,14 +7,13 @@ from flask import (render_template, redirect, url_for, flash, abort, request,
 from . import main
 from flask_login import login_required, current_user
 
-from .forms import (EditProfileForm, EditProjectForm, ProjectSubmissionForm,
-                    ProjectPdfSelection, AddNewVolunteerForm, PDFEncryptionForm,
-                    MeetingUpdateForm)
+from .forms import (EditProfileForm, EditProjectForm, ProjectPdfSelection,
+                    AddNewVolunteerForm, PDFEncryptionForm, MeetingUpdateForm)
 
 from app import db
-from app.models import (Project, User, Volunteer, Role, Comment, ProjectPhoto, Referal)
+from app.models import (Project, User, Volunteer, Role, Comment, ProjectPhoto)
 
-from ..utils import distination_file, solution_destination, allowed_file_name
+from ..utils import distination_file, allowed_file_name
 
 from werkzeug.utils import secure_filename
 from datetime import datetime, date
@@ -62,7 +61,7 @@ def add_new_volunteer():
         vol = Volunteer(name=form.name.data,
                         address_line_1=form.address_line_1.data,
                         address_line_2=form.address_line_2.data,
-                        town_city= form.town_city.data,
+                        town_city=form.town_city.data,
                         postcode=form.postcode.data,
                         email=form.email.data,
                         telephone=form.telephone.data,
@@ -111,64 +110,6 @@ def edit_profile_admin(id):
 
 
 
-################################################################################
-#                            SUBMIT PROJECT                                   #
-################################################################################
-@main.route('/submit-project/', methods=['GET', 'POST'])
-@login_required
-def submit_project():
-    form = ProjectSubmissionForm()
-    if request.method == 'POST':
-        strdt = form.date_first_contacted.data
-        dat = datetime.strptime(strdt, '%d-%b-%Y')
-        c = User(age_range=form.age_range.data,
-                 name=form.name.data,
-                 address_line_1=form.address_line_1.data,
-                 address_line_2=form.address_line_2.data,
-                 organisation_name=form.organisation_name.data,
-                 town_city=form.town_city.data,
-                 postcode=form.postcode.data,
-                 telephone=form.telephone.data,
-                 mobile=form.mobile.data,
-                 email=form.email.data,
-                 service_user_condition=form.service_user_condition.data, 
-                 initial_contact=form.initial_contact.data,
-                 relation=form.relation.data,
-                 how_they_find_us=form.how_they_find_us.data)
-        db.session.add(c)
-        if form.refered.data:
-            user2 = User(name=form.name_2.data,
-                         address_line_1=form.address_line_1_2.data,
-                         address_line_2=form.address_line_2_2.data,
-                         organisation_name=form.organisation_name_2.data,
-                         town_city=form.town_city_2.data,
-                         postcode=form.postcode_2.data,
-                         telephone=form.telephone_2.data,
-                         mobile=form.mobile_2.data,
-                         email=form.email_2.data)
-            db.session.add(user2)
-            ref = Referal(referee=user2, referenced=c)
-            db.session.add(ref)
-        proj = Project(request_title=form.request_title.data,
-                       request_body = form.request_body.data,
-                       Donation_discussed=form.donation_discussed.data,
-                       whom_donation_discussed=form.whom_donation_discussed.data,
-                       donation_outcome=form.donation_outcome.data,
-                       data_protection=form.data_protection.data,
-                       whom_data_protection_discussed=form.whom_data_protection_discussed.data,
-                       dat_protection_outcome=form.dat_protection_outcome.data,
-                       date_first_contacted=date(dat.year, dat.month, dat.day)
-                       )
-        proj.user.append(c)
-        db.session.add(proj)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
-            raise
-        flash('Project has been submitted.', 'green accent-3')
-        return redirect(url_for('main.projects'))
-    return render_template('project-submit.html', form=form)
 
 ##################################################################################
 #                                    USER

@@ -15,9 +15,9 @@ from flask_login import login_required, current_user
 from flask_googlemaps import Map, icons
 from geopy.geocoders import GoogleV3
 
-from ..models import Project, Volunteer, Comment, SolutionPhotos
+from ..models import Project, Volunteer, Comment, SolutionPhotos, User, Referal
 
-from .forms import AssignProjectForm, CommentForm, ProjectCompletionForm, ProjectCloseForm
+from .forms import (AssignProjectForm, CommentForm, ProjectCompletionForm, ProjectCloseForm, ProjectSubmissionForm)
 
 
 @project.route('/', methods=['GET'])
@@ -248,3 +248,59 @@ def project_solution(number):
                                pro_folder_items=pro_folder_items)
     else:
         abort(404)
+
+
+@project.route('/submit-project', methods=['GET', 'POST'])
+@login_required
+def submit_project():
+    form = ProjectSubmissionForm()
+    if request.method == 'POST':
+        strdt = form.date_first_contacted.data
+        dat = datetime.strptime(strdt, '%d-%b-%Y')
+        user_object = User(age_range=form.age_range.data,
+                           name=form.name.data,
+                           address_line_1=form.address_line_1.data,
+                           address_line_2=form.address_line_2.data,
+                           organisation_name=form.organisation_name.data,
+                           town_city=form.town_city.data,
+                           postcode=form.postcode.data,
+                           telephone=form.telephone.data,
+                           mobile=form.mobile.data,
+                           email=form.email.data,
+                           service_user_condition=form.service_user_condition.data,
+                           initial_contact=form.initial_contact.data,
+                           relation=form.relation.data,
+                           how_they_find_us=form.how_they_find_us.data)
+        db.session.add(user_object)
+        if form.refered.data:
+            user_object_2 = User(name=form.name_2.data,
+                                 address_line_1=form.address_line_1_2.data,
+                                 address_line_2=form.address_line_2_2.data,
+                                 organisation_name=form.organisation_name_2.data,
+                                 town_city=form.town_city_2.data,
+                                 postcode=form.postcode_2.data,
+                                 telephone=form.telephone_2.data,
+                                 mobile=form.mobile_2.data,
+                                 email=form.email_2.data)
+            db.session.add(user_object_2)
+            ref = Referal(referee=user_object_2, referenced=user_object)
+            db.session.add(ref)
+        project_object = Project(request_title=form.request_title.data,
+                                 request_body=form.request_body.data,
+                                 Donation_discussed=form.donation_discussed.data,
+                                 whom_donation_discussed=form.whom_donation_discussed.data,
+                                 donation_outcome=form.donation_outcome.data,
+                                 data_protection=form.data_protection.data,
+                                 whom_data_protection_discussed=form.whom_data_protection_discussed.data,
+                                 dat_protection_outcome=form.dat_protection_outcome.data,
+                                 date_first_contacted=date(dat.year, dat.month, dat.day))
+        project_object.user.append(user_object)
+        db.session.add(project_object)
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
+        flash('Project has been submitted.', 'green accent-3')
+        return redirect(url_for('project.projects'))
+    return render_template('project/project-submit.html', form=form)
