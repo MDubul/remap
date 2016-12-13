@@ -8,12 +8,11 @@ from . import main
 from flask_login import login_required, current_user
 
 from .forms import (EditProfileForm, EditProjectForm, ProjectSubmissionForm,
-                    ProjectCompletionForm, ProjectCloseForm, ProjectPdfSelection,
-                    AddNewVolunteerForm, PDFEncryptionForm, MeetingUpdateForm)
+                    ProjectPdfSelection, AddNewVolunteerForm, PDFEncryptionForm,
+                    MeetingUpdateForm)
 
 from app import db
-from app.models import (Project, User, Volunteer, Role, Comment, ProjectPhoto, Referal,
-                        SolutionPhotos)
+from app.models import (Project, User, Volunteer, Role, Comment, ProjectPhoto, Referal)
 
 from ..utils import distination_file, solution_destination, allowed_file_name
 
@@ -110,83 +109,6 @@ def edit_profile_admin(id):
     form.volunteer_profile.data = vol.volunteer_profile
     return render_template('profile-edit.html', form=form, vol=vol)
 
-
-
-###############################################################################
-#                   Project End
-# thread this!!
-######################### VOLUNTEER PROJECT END ################################
-@main.route('/project/<number>/<way>', methods=['GET','POST'])
-@login_required
-def end_project(number, way):
-    if way == 'Finish':
-        form = ProjectCompletionForm()
-        if request.method == 'POST':
-            pro = Project.query.filter_by(id=number).first()
-            pro.status = 'Finished'
-            pro.expense_hours = form.expensehour.data
-            pro.end_date = datetime.utcnow()
-            pro.last_edited = datetime.utcnow()
-            pro.solution = form.solution.data
-            uploaded_files = request.files.getlist("imageupload")
-            first = True
-            for file in uploaded_files:
-                if file and allowed_file_name(file.filename):
-                    if not os.path.exists(solution_destination(number)):
-                        try:
-                            os.makedirs(solution_destination(number))
-                        except OSError as exc: # Guard against race condition
-                            if exc.errno != errno.EEXIST:
-                                raise
-                    app = current_app._get_current_object()
-                    filename = secure_filename(file.filename)
-                    file.save(os.path.join(solution_destination(number), filename))
-                    caption = request.form.getlist('caption')
-                    if first:
-                        p = SolutionPhotos(location=os.path.join(solution_destination(number), filename),
-                                           caption=caption[0])
-                        first = False
-                        pro = Project.query.filter_by(id=number).first()
-                        pro.solutionphotos.append(p)
-                        db.session.add_all([p, pro])
-                    else:
-                        p = SolutionPhotos(location=os.path.join(solution_destination(number), filename))
-                        pro = Project.query.filter_by(id=number).first()
-                        pro.solutionphotos.append(p)
-                        db.session.add_all([p, pro])
-            try:
-                db.session.commit()
-            except:
-                db.session.rollback()
-                raise
-            flash('Project is now finished.', 'green accent-3')
-            return redirect(url_for('main.project_single', number=number))
-        return render_template('project-end-finish.html',
-                               form=form,
-                               way=way,
-                               number=number)
-    elif way == 'Close':
-        form = ProjectCloseForm()
-        if request.method == 'POST':
-            pro = Project.query.filter_by(id=number).first()
-            pro.last_edited = datetime.utcnow()
-            pro.status = 'Closed'
-            pro.end_date = datetime.utcnow()
-            c = Comment(body=form.comment.data, author=current_user)
-            pro.comments.append(c)
-            try:
-                db.session.commit()
-            except:
-                db.session.rollback()
-                raise
-            flash('Project is now Closed.','green accent-3')
-            return redirect(url_for('main.project_single', number=number))
-        return render_template('project-end-close.html',
-                               form=form,
-                               way=way,
-                               number=number)
-    else:
-        abort(404)
 
 
 ######################### VOLUNTEER SOLUTION PHOTOS ###########################

@@ -1,19 +1,23 @@
 from . import project
-from ..utils import distination_file
+from ..utils import distination_file, solution_destination, allowed_file_name
 
 import os
+import errno
+
 from datetime import datetime, date
 
 from app import db
 
-from flask import render_template, request, current_app, redirect, url_for, flash
+from flask import render_template, request, current_app, redirect, url_for, flash, abort
+from werkzeug.utils import secure_filename
+
 from flask_login import login_required, current_user
 from flask_googlemaps import Map, icons
 from geopy.geocoders import GoogleV3
 
-from ..models import Project, Volunteer, Comment
+from ..models import Project, Volunteer, Comment, SolutionPhotos
 
-from .forms import AssignProjectForm, CommentForm
+from .forms import AssignProjectForm, CommentForm, ProjectCompletionForm, ProjectCloseForm
 
 
 @project.route('/', methods=['GET'])
@@ -154,3 +158,77 @@ def edit_comment_admin(number, id):
                            comment=comment,
                            project_number=number,
                            comment_id=id)
+
+
+@project.route('/<number>/<way>', methods=['GET','POST'])
+@login_required
+def end_project(number, way):
+    if way == 'Finish':
+        form = ProjectCompletionForm()
+        if request.method == 'POST':
+            project_object = Project.query.filter_by(id=number).first()
+            project_object.status = 'Finished'
+            project_object.expense_hours = form.expensehour.data
+            project_object.end_date = datetime.utcnow()
+            project_object.last_edited = datetime.utcnow()
+            project_object.solution = form.solution.data
+            uploaded_files = request.files.getlist("imageupload")
+            first = True
+            for file in uploaded_files:
+                if file and allowed_file_name(file.filename):
+                    if not os.path.exists(solution_destination(number)):
+                        try:
+                            os.makedirs(solution_destination(number))
+                        except OSError as exc: # Guard against race condition
+                            if exc.errno != errno.EEXIST:
+                                raise
+                    #app = current_app._get_current_object()
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(solution_destination(number), filename))
+                    caption = request.form.getlist('caption')
+                    if first:
+                        photo = SolutionPhotos(location=os.path.join(solution_destination(number), filename),
+                                               caption=caption[0])
+                        first = False
+                        project_object = Project.query.filter_by(id=number).first()
+                        project_object.solutionphotos.append(photo)
+                        db.session.add_all([photo, project_object])
+                    else:
+                        photo = SolutionPhotos(location=os.path.join(solution_destination(number), filename))
+                        project_object = Project.query.filter_by(id=number).first()
+                        project_object.solutionphotos.append(photo)
+                        db.session.add_all([photo, project_object])
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
+            flash('Project is now finished.', 'green accent-3')
+            return redirect(url_for('project.project_single', number=number))
+        return render_template('project/project-end-finish.html',
+                               form=form,
+                               way=way,
+                               number=number)
+    elif way == 'Close':
+        form = ProjectCloseForm()
+        if request.method == 'POST':
+            project_object = Project.query.filter_by(id=number).first()
+            project_object.last_edited = datetime.utcnow()
+            project_object.status = 'Closed'
+            project_object.end_date = datetime.utcnow()
+            comment = Comment(body=form.comment.data, author=current_user)
+            project_object.comments.append(comment)
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
+            flash('Project is now Closed.', 'green accent-3')
+            return redirect(url_for('project.project_single', number=number))
+        return render_template('project/project-end-close.html',
+                               form=form,
+                               way=way,
+                               number=number)
+    else:
+        abort(404)
+

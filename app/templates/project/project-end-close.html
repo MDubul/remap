@@ -16,7 +16,7 @@
     <div class="card grey lighten-5">
      <div class="card-content black-text">
 
-        <form action="{{url_for('main.end_project', number=number, way=way)}}" method="POST">
+        <form action="{{url_for('project.end_project', number=number, way=way)}}" method="POST">
           {{form.hidden_tag()}}
            <div class="row">
              <div class="input-field col s12">

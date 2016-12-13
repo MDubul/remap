@@ -16,7 +16,7 @@
     <div class="card grey lighten-5">
      <div class="card-content black-text">
 
-        <form method="POST" name="image" enctype="multipart/form-data" action="{{url_for('main.end_project', number=number, way=way)}}">
+        <form method="POST" name="image" enctype="multipart/form-data" action="{{url_for('project.end_project', number=number, way=way)}}">
           {{form.hidden_tag()}}
 
            <div class="row">

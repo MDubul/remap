@@ -86,19 +86,6 @@ class ProjectSubmissionForm(Form):
     submit = SubmitField('Submit')
 
 
-class ProjectCompletionForm(Form):
-    expensehour = IntegerField('Expense Hours', description='How many hours', validators=[Optional()])
-    solution = TextAreaField('Project Solution', validators=[Optional()])
-    imageupload = FileField('Your photo', render_kw={'multiple': True})
-    caption = StringField('Add Photo caption')
-    sure = BooleanField('Confirm', validators=[DataRequired()])
-    submit = SubmitField('Submit')
-
-
-class ProjectCloseForm(Form):
-    comment = TextAreaField('Add Reason for Project Closure', validators=[DataRequired()])
-    sure = BooleanField('Confirmed', validators=[DataRequired()])
-    submit = SubmitField('Submit')
 
 
 class ProjectPdfSelection(Form):

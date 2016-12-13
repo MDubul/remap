@@ -103,11 +103,11 @@
       <td><a href="{{url_for('main.project_solution', number=project.id)}}" class="btn btn-success">Project Solution</a></td>
       {% endif %}
       {% if (project.status == 'Awaiting Volunteer') or (project.status == 'Ongoing')  %}
-      <td><a href="{{url_for('main.end_project', number=project.id, way='Close')}}" class="btn deep-purple darken-3">Close Project</a></td>
+      <td><a href="{{url_for('project.end_project', number=project.id, way='Close')}}" class="btn deep-purple darken-3">Close Project</a></td>
       {% endif %}
-
-      <td><a href="{{url_for('main.end_project', number=project.id, way='Finish')}}" class="btn deep-purple darken-3">Finish Project</a></td>
-
+      {% if project.status != 'Finished' or project.status != 'Closed' %}
+      <td><a href="{{url_for('project.end_project', number=project.id, way='Finish')}}" class="btn deep-purple darken-3">Finish Project</a></td>
+      {% endif %}
     </tr>
   </table>
 </div>
