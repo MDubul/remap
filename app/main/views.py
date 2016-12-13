@@ -7,7 +7,7 @@ from flask import (render_template, redirect, url_for, flash, abort, request,
 from . import main
 from flask_login import login_required, current_user
 
-from .forms import (EditProfileForm, EditProjectForm, CommentForm, ProjectSubmissionForm,
+from .forms import (EditProfileForm, EditProjectForm, ProjectSubmissionForm,
                     ProjectCompletionForm, ProjectCloseForm, ProjectPdfSelection,
                     AddNewVolunteerForm, PDFEncryptionForm, MeetingUpdateForm)
 
@@ -112,33 +112,6 @@ def edit_profile_admin(id):
     form.volunteer_profile.data = vol.volunteer_profile
     return render_template('profile-edit.html', form=form, vol=vol)
 
-
-
-################################################################################
-#                            PROJECT COMMENTS                                  #
-################################################################################
-@main.route('/project/<number>/comments', methods=['GET', 'POST'])
-@login_required
-def project_comments(number):
-    form = CommentForm()
-    vol = current_user
-    project = Project.query.get_or_404(number)
-    commentlist = project.comments.all()
-    if request.method == 'POST':
-        dt = form.date_reported.data
-        c = Comment(body=form.body.data,
-                    author=current_user._get_current_object(),
-                    project=project,
-                    date_reported=date(dt.year, dt.month, dt.day))
-        db.session.add(c)
-        db.session.commit()
-        flash('Your comment has been published.', 'green accent-3')
-        return redirect(url_for('main.project_comments', number=project.id))
-    return render_template('project-comment.html',
-                           form=form,
-                           vol=vol,
-                           commentlist=commentlist,
-                           project=project)
 
 
 ###########################  DELETE COMMENT  ###################################

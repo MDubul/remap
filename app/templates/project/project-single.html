@@ -98,7 +98,7 @@
   <div class="col s12">
   <table>
     <tr>
-      <td><a href="{{url_for('main.project_comments', number=project.id)}}" class="btn">Project Notes <i class="material-icons">comment</i></a></td>
+      <td><a href="{{url_for('project.project_comments', number=project.id)}}" class="btn">Project Notes <i class="material-icons">comment</i></a></td>
       {% if project.status == 'Finished' %}
       <td><a href="{{url_for('main.project_solution', number=project.id)}}" class="btn btn-success">Project Solution</a></td>
       {% endif %}

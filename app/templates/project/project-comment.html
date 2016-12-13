@@ -12,7 +12,7 @@
 
 <div class="row">
 
-<form method="POST" action="{{ url_for('main.project_comments', number=project.id)}}">
+<form method="POST" action="{{ url_for('project.project_comments', number=project.id)}}">
   {{form.hidden_tag()}}
 
    <div>
@@ -45,7 +45,7 @@
 
 </div>
 
-{% for comment in commentlist |sort(attribute='first_database_entry',reverse=True)%}
+{% for comment in comment_list |sort(attribute='first_database_entry',reverse=True)%}
 <div class="col s12">
   <ul class="collection">
     <li class="collection-item">

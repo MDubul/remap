@@ -1,7 +1,8 @@
 from . import project
+from ..utils import distination_file
 
 import os
-from datetime import datetime
+from datetime import datetime, date
 
 from app import db
 
@@ -10,10 +11,9 @@ from flask_login import login_required, current_user
 from flask_googlemaps import Map, icons
 from geopy.geocoders import GoogleV3
 
-from ..models import Project, Volunteer
-from ..utils import distination_file
+from ..models import Project, Volunteer, Comment
 
-from .forms import AssignProjectForm
+from .forms import AssignProjectForm, CommentForm
 
 
 @project.route('/', methods=['GET'])
@@ -102,3 +102,25 @@ def take_project(number):
         flash('Volunteer has been assigned.', 'green accent-3')
         return redirect(url_for('project.project_single', number=number))
     return render_template('project/project-assign.html', form=form, project=project_object)
+
+
+@project.route('/project/<number>/comments', methods=['GET', 'POST'])
+@login_required
+def project_comments(number):
+    form = CommentForm()
+    project_object = Project.query.get_or_404(number)
+    comment_list = project_object.comments.all()
+    if request.method == 'POST':
+        dt = form.date_reported.data
+        c = Comment(body=form.body.data,
+                    author=current_user._get_current_object(),
+                    project=project_object,
+                    date_reported=date(dt.year, dt.month, dt.day))
+        db.session.add(c)
+        db.session.commit()
+        flash('Your comment has been published.', 'green accent-3')
+        return redirect(url_for('project.project_comments', number=project_object.id))
+    return render_template('project/project-comment.html',
+                           form=form,
+                           comment_list=comment_list,
+                           project=project_object)

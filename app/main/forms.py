@@ -86,12 +86,6 @@ class ProjectSubmissionForm(Form):
     submit = SubmitField('Submit')
 
 
-class CommentForm(Form):
-    date_reported = DateField('Date Reported', format="%Y-%m-%d")
-    body = TextAreaField('Message')
-    submit = SubmitField('Submit Comment')
-
-
 class ProjectCompletionForm(Form):
     expensehour = IntegerField('Expense Hours', description='How many hours', validators=[Optional()])
     solution = TextAreaField('Project Solution', validators=[Optional()])
