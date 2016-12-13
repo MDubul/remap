@@ -1,23 +1,16 @@
-import os
-import errno
-
-from flask import (render_template, redirect, url_for, flash, abort, request,
-                   current_app)
-
 from . import main
+
+from flask import render_template, redirect, url_for, flash, abort, request, current_app
 from flask_login import login_required, current_user
 
-from .forms import (EditProfileForm, ProjectPdfSelection,
-                    AddNewVolunteerForm, PDFEncryptionForm, MeetingUpdateForm)
+from .forms import (EditProfileForm, ProjectPdfSelection, AddNewVolunteerForm,
+                    PDFEncryptionForm, MeetingUpdateForm)
+from ..models import Project, User, Volunteer, Role, Comment
+from ..project_pdf import make_project_list_pdf, make_detailed_pdf
 
 from app import db
-from app.models import (Project, User, Volunteer, Role, Comment, ProjectPhoto)
 
-from ..utils import distination_file, allowed_file_name
-
-from werkzeug.utils import secure_filename
 from datetime import datetime, date
-from app.project_pdf import make_project_list_pdf, make_detailed_pdf
 import PyPDF2
 
 
@@ -26,9 +19,6 @@ def index():
     return redirect(url_for('auth.user_login'))
 
 
-##################################################################################
-#                                    PROFILE
-##################################################################################
 @main.route('/profiles') # about us page
 def profile():
     page = request.args.get('page', 1, type=int)
@@ -76,7 +66,6 @@ def add_new_volunteer():
     return render_template('profile-new.html', form=form)
 
 
-############################ ADMIN PROFILE EDIT   ##############################
 @main.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_profile_admin(id):
@@ -109,14 +98,6 @@ def edit_profile_admin(id):
     return render_template('profile-edit.html', form=form, vol=vol)
 
 
-
-
-##################################################################################
-#                                    USER
-##################################################################################
-
-
-#######################  ACCESS TO USER INFO VIA ADMIN   ######################
 @main.route('/user/<cli_number>/<project_num>/admin')
 @login_required
 def client_info_admin(cli_number, project_num):
@@ -127,41 +108,6 @@ def client_info_admin(cli_number, project_num):
     except AttributeError:
         referee = None
     return render_template('user-info.html', clie=clie, referee=referee )
-
-
-
-
-
-######################## Admin  UPLOAD PROJECT PHOTOS #################################
-@main.route('/projects/<number>/photos', methods=['GET', 'POST'])
-@login_required
-def project_photos(number):
-    if request.method == 'POST':
-        uploaded_files = request.files.getlist("filesToUpload[]")
-        for file in uploaded_files:
-            if file and allowed_file_name(file.filename):
-                if not os.path.exists(distination_file(number)):
-                    try:
-                        os.makedirs(distination_file(number))
-                    except OSError as exc: # Guard against race condition
-                        if exc.errno != errno.EEXIST:
-                            raise
-                app = current_app._get_current_object()
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(distination_file(number), filename))
-                caption = request.form.getlist('cappy')
-                p = ProjectPhoto(location=os.path.join(distination_file(number), filename), caption=caption[0])
-                pro = Project.query.filter_by(id=number).first()
-                pro.photos.append(p)
-                pro.last_edited = datetime.utcnow()
-                db.session.add_all([p, pro])
-        db.session.commit()
-        flash('Your photos has been uploaded', 'green accent-3')
-        return redirect(url_for('main.project_single', number=number))
-    return render_template('project-photo.html', number=number)
-
-
-######################## DELETE PROJECT PHOTOS #################################
 
 
 @main.route('/project/pdf', methods=['GET', 'POST'])

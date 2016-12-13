@@ -15,7 +15,7 @@ from flask_login import login_required, current_user
 from flask_googlemaps import Map, icons
 from geopy.geocoders import GoogleV3
 
-from ..models import Project, Volunteer, Comment, SolutionPhotos, User, Referal
+from ..models import Project, Volunteer, Comment, SolutionPhotos, User, Referal, ProjectPhoto
 
 from .forms import (AssignProjectForm, CommentForm, ProjectCompletionForm,
                     ProjectCloseForm, ProjectSubmissionForm, EditProjectForm)
@@ -335,5 +335,34 @@ def edit_project(number):
     form.whom_donation_discussed.data = project_object.whom_donation_discussed
     form.whom_data_protection_discussed.data = project_object.whom_data_protection_discussed
     return render_template('project/project-edit.html', form=form, project=project_object)
+
+
+@project.route('/<number>/photos', methods=['GET', 'POST'])
+@login_required
+def project_photos(number):
+    if request.method == 'POST':
+        uploaded_files = request.files.getlist("filesToUpload[]")
+        for file in uploaded_files:
+            if file and allowed_file_name(file.filename):
+                if not os.path.exists(distination_file(number)):
+                    try:
+                        os.makedirs(distination_file(number))
+                    except OSError as exc: # Guard against race condition
+                        if exc.errno != errno.EEXIST:
+                            raise
+                #app = current_app._get_current_object()
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(distination_file(number), filename))
+                caption = request.form.getlist('cappy')
+                photo_object = ProjectPhoto(location=os.path.join(distination_file(number), filename),
+                                            caption=caption[0])
+                project_object = Project.query.filter_by(id=number).first()
+                project_object.photos.append(photo_object)
+                project_object.last_edited = datetime.utcnow()
+                db.session.add_all([photo_object, project_object])
+        db.session.commit()
+        flash('Your photos has been uploaded', 'green accent-3')
+        return redirect(url_for('project.project_single', number=number))
+    return render_template('project/project-photo.html', number=number)
 
 
