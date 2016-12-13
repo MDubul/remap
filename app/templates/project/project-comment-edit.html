@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col s12">
 
-    <form method='POST' action="{{ url_for('main.edit_comment_admin', id=com_id, number=pro_num)}}">
+    <form method='POST' action="{{ url_for('project.edit_comment_admin', number=project_number, id=comment_id)}}">
       {{form.hidden_tag()}}
       <div class="row">
         <div class="input-field">

@@ -104,7 +104,7 @@ def take_project(number):
     return render_template('project/project-assign.html', form=form, project=project_object)
 
 
-@project.route('/project/<number>/comments', methods=['GET', 'POST'])
+@project.route('/<number>/comments', methods=['GET', 'POST'])
 @login_required
 def project_comments(number):
     form = CommentForm()
@@ -126,7 +126,7 @@ def project_comments(number):
                            project=project_object)
 
 
-@project.route('/project/comments/<int:id>/', methods=['GET', 'POST'])
+@project.route('/comments/<int:id>/', methods=['GET', 'POST'])
 @login_required
 def delete_comment(id):
     pro = Comment.query.filter_by(id=id).first().project_id
@@ -134,3 +134,23 @@ def delete_comment(id):
     db.session.commit()
     flash('Comment deleted.', 'green accent-3')
     return redirect(url_for('project.project_comments', number=pro))
+
+
+@project.route('/<number>/comments/<int:id>/admin', methods=['GET', 'POST'])
+@login_required
+def edit_comment_admin(number, id):
+    form = CommentForm()
+    comment = Comment.query.get_or_404(id)
+    if request.method == 'POST':
+        comment.body = form.body.data
+        comment.last_edited = datetime.utcnow()
+        db.session.add(comment)
+        db.session.commit()
+        flash('The post has been updated.', 'green accent-3')
+        return redirect(url_for('project.project_comments', number=number))
+    form.body.data = comment.body
+    return render_template('project/project-comment-edit.html',
+                           form=form,
+                           comment=comment,
+                           project_number=number,
+                           comment_id=id)

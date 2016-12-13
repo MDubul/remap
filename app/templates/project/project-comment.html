@@ -52,7 +52,7 @@
 
       <span class="title">{{comment.author.name}}</span>
 
-      <span><a href="{{url_for('main.edit_comment_admin', id=comment.id, number=project.id)}}"><i class="material-icons">mode_edit</i></a></span>
+      <span><a href="{{url_for('project.edit_comment_admin', id=comment.id, number=project.id)}}"><i class="material-icons">mode_edit</i></a></span>
 
       <p> {{comment.body}}</p>
 

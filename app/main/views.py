@@ -28,8 +28,6 @@ def index():
     return redirect(url_for('auth.user_login'))
 
 
-
-
 ##################################################################################
 #                                    PROFILE
 ##################################################################################
@@ -112,31 +110,6 @@ def edit_profile_admin(id):
     form.volunteer_profile.data = vol.volunteer_profile
     return render_template('profile-edit.html', form=form, vol=vol)
 
-
-
-
-
-########################### ADMIN EDIT COMMENT ################################
-@main.route('/project/<number>/comments/<int:id>/admin', methods=['GET', 'POST'])
-@login_required
-def edit_comment_admin(number, id):
-    form = CommentForm()
-    comment = Comment.query.get_or_404(id)
-    pro_num = number
-    com_id = id
-    if request.method == 'POST':
-        comment.body = form.body.data
-        comment.last_edited = datetime.utcnow()
-        db.session.add(comment)
-        db.session.commit()
-        flash('The post has been updated.','green accent-3')
-        return redirect(url_for('main.project_comments', number=number))
-    form.body.data = comment.body
-    return render_template('project-comment-edit.html',
-                           form=form,
-                           comment=comment,
-                           pro_num=pro_num,
-                           com_id=com_id)
 
 
 ###############################################################################
@@ -309,8 +282,6 @@ def client_info_admin(cli_number, project_num):
         referee = None
     return render_template('user-info.html', clie=clie, referee=referee )
 
-
-################    USER PROJECT [PORTAL TO UPLOAD PHOTOS]    ##################
 
 ##################  EDITING PROJECT SUBMISSION FOR DIRECT USER  ################
 
