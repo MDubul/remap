@@ -15,13 +15,11 @@ from app import db
 from app.models import (Project, User, Volunteer, Role, Comment, ProjectPhoto, Referal,
                         SolutionPhotos)
 
-from geopy.geocoders import GoogleV3
 
 from werkzeug.utils import secure_filename
 from datetime import datetime, date
 from app.project_pdf import make_project_list_pdf, make_detailed_pdf
 import PyPDF2
-from flask_googlemaps import Map, icons
 
 
 @main.route('/')
@@ -32,21 +30,7 @@ def index():
 ################################################################################
 #                         OUT OF BOX FUNCTIONS
 ################################################################################
-def distination(number):
-    uploadfolder = current_app.config['PROJECT_UPLOAD']
-    appex = '/' + str(number)
-    return uploadfolder + appex
 
-
-def solutionDestination(number):
-    uploadfolder = current_app.config['PROJECT_SOLUTION']
-    appex = '/' + str(number)
-    return uploadfolder + appex
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1] in current_app.config['ALLOWED_EXTENSIONS']
 
 
 ##################################################################################
@@ -130,61 +114,6 @@ def edit_profile_admin(id):
     form.postcode.data = vol.postcode
     form.volunteer_profile.data = vol.volunteer_profile
     return render_template('profile-edit.html', form=form, vol=vol)
-
-
-
-###########################  PROJECT SINGLE  ###################################
-@main.route('/project/<number>', methods=['GET'])
-@login_required
-def project_single(number):
-    app = current_app._get_current_object()
-
-    geolocator = GoogleV3(api_key=app.config['MAP_KEY'], domain='maps.google.co.uk' )
-    proj = Project.query.filter_by(id=number).first()
-    try:
-        cli_location = geolocator.geocode(proj.user.first().postcode,  timeout=10)
-        vol_location = geolocator.geocode(current_user.postcode, timeout=10)
-    except Exception as e:
-        cli_location = None
-        vol_location = None
-        print(str(e))
-
-    pro_folder = distination(number)
-
-    MAP_API_KEY = app.config['BROWSER_KEY']
-
-    if os.path.exists(pro_folder):
-        pro_folder_items = os.listdir(pro_folder)
-    else:
-        pro_folder_items = None
-
-    the_map = Map(
-            identifier="the_map",
-            varname="the_map",
-            lat=vol_location.latitude,
-            lng=vol_location.longitude,
-            collapsible=True,
-            style='height:400px;width:800px;margin:50;',
-            zoom=12,
-            markers=[
-                    {
-                        'icon': icons.alpha.V,
-                        'lat': vol_location.latitude,
-                        'lng': vol_location.longitude,
-                        'infobox': 'Your Location',
-                    },
-                    {
-                        'icon': icons.alpha.C,
-                        'lat': cli_location.latitude,
-                        'lng': cli_location.longitude,
-                        'infobox': 'User Location',
-                    }
-                 ]
-
-                )
-
-    return render_template('project-single.html', proj=proj, API_KEY=MAP_API_KEY,
-                           pro_folder_items=pro_folder_items, the_map=the_map)
 
 
 ###########################  Assign project to volunteer4  ##########################

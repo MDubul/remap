@@ -1,29 +1,29 @@
-{% for pro in pro_all | sort(attribute='id', reverse = True)%}
+{% for project in pro_all | sort(attribute='id', reverse = True)%}
 
-    {% if pro.status == 'Awaiting Volunteer' %}
+    {% if project.status == 'Awaiting Volunteer' %}
       {% set stat = 'danger'%}
-    {% elif pro.status == 'Ongoing' %}
+    {% elif project.status == 'Ongoing' %}
       {% set stat = '' %}
-    {% elif pro.status == 'Finished' or 'Closed' %}
+    {% elif project.status == 'Finished' or 'Closed' %}
       {% set stat = 'success'%}
     {% endif %}
 
 <tr class="{{stat}}">
-  <td><a href="{{url_for('main.project_single',number=pro.id)}}" class="waves-effect waves-light btn">{{pro.id}}</a></td>
-  {% if pro.volunteer.first()== None %}
+  <td><a href="{{url_for('project.project_single',number=project.id)}}" class="waves-effect waves-light btn">{{project.id}}</a></td>
+  {% if project.volunteer.first()== None %}
     <td ></td>
   {% else %}
-    <td >{{pro.volunteer.first().name}}</td>
+    <td >{{project.volunteer.first().name}}</td>
   {% endif %}
-    <td >{{pro.user.first().postcode}}</td>
-    <td >{{pro.date_first_contacted.strftime('%d-%b-%Y')}}</td>
-    <td >{{pro.request_title}}</td>
-    <td >{{pro.status}}</td>
-  {% if pro.end_date == None %}
+    <td >{{project.user.first().postcode}}</td>
+    <td >{{project.date_first_contacted.strftime('%d-%b-%Y')}}</td>
+    <td >{{project.request_title}}</td>
+    <td >{{project.status}}</td>
+  {% if project.end_date == None %}
     <td></td>
   {% else%}
-    <td>{{pro.end_date.strftime('%d-%b-%Y')}}</td>
+    <td>{{project.end_date.strftime('%d-%b-%Y')}}</td>
   {% endif %}
-  <td class="text-right"><a href="{{url_for('main.detailed_pdf', number=pro.id)}}" class="waves-effect waves-light btn red darken-4">PDF</a></td>
+  <td class="text-right"><a href="{{url_for('main.detailed_pdf', number=project.id)}}" class="waves-effect waves-light btn red darken-4">PDF</a></td>
 </tr>
 {% endfor%}

@@ -1,0 +1,162 @@
+{% extends "base-material.html" %}
+
+{% block title %}REMAP - Project  {% endblock %}
+
+{% block head %}
+{{ super() }}
+
+  {{the_map.js}}
+
+{% endblock %}
+
+{% block page_content %}
+
+<div class="row">
+
+  <div class="col s12">
+    <h3>Project Number : {{project.id}}</h3>
+  </div>
+
+  <div class="col s4">
+    <table>
+      <tr>
+        <td><a href="{{url_for('main.client_info_admin', cli_number=project.user.first().id, project_num=project.id )}}" class="btn-floating btn-large red"><i class="material-icons">perm_identity</i></a></td>
+
+        <td><a href="{{url_for('main.edit_project', number=project.id)}}" class="btn-floating light-blue darken-3 btn-large "><i class="material-icons ">mode_edit</i></a></td>
+
+        <td><a href="{{url_for('main.project_photos', number=project.id)}}" class="btn-floating light-blue darken-3 btn-large"><i class="material-icons">attach_file</i></a></td>
+
+        <td><button class="btn-floating light-blue darken-3 btn-large" id="the_map_collapse"><i class="large material-icons">location_on</i>MAP</button></td>
+
+        {% if project.photos.first() %}
+        <td>
+          <a id="button" href="#" class="btn-floating light-blue darken-3 btn-large"><i class="material-icons">image</i>Photos</a>
+        </td>
+        {% endif %}
+
+      </tr>
+    </table>
+   </div>
+
+</div>
+
+
+<div class="row">
+  <div class="col s12">
+    <table class="bordered">
+      <tr>
+        <th>Location</th>
+        <td>{{project.user.first().postcode}}</td>
+      </tr>
+      <tr>
+        <th>Data Recieved</th>
+        <td>{{project.date_first_contacted.strftime('%B %d %Y')}}</td>
+      </tr>
+      <tr>
+        <th>Project Title</th>
+        <td>{{project.request_title }}</td>
+      </tr>
+      <tr>
+        <th>Project Request</th>
+        <td>{{project.request_body}}</td>
+      </tr>
+      {% if project.user.first().service_user_condition %}
+      <tr>
+        <th>Service user condition</th>
+        <td>{{project.user.first().service_user_condition }}</td>
+      </tr>
+      {% endif %}
+      <tr>
+        <th>Status</th>
+        <td>{{project.status}}</td>
+        {% if project.status == 'Finished' and project.solutionphotos %}
+        <td><a href="{{url_for('main.summery_pdf', number=project.id)}}" class="btn">PDF </a>
+        {% endif %}</td>
+      </tr>
+      <tr>
+        <th>Assigned Volunteer</th>
+          {% if project.volunteer.first().name %}
+            <td>{{project.volunteer.first().name}}</td>
+          {% else%}
+          <td><a href="{{url_for('main.take_project', number=project.id)}}" class="btn"> Assign Project</a></td>
+        {% endif %}
+
+      </tr>
+      <tr>
+        <th>Closed Date</th>
+        {% if project.end_date == None%}
+          <td></td>
+        {% else%}
+          <td>{{project.end_date.strftime('%B %d %Y')}}</td>
+        {% endif %}
+      </tr>
+      </table>
+    </div>
+  </div>
+
+<div class="row">
+  <div class="col s12">
+  <table>
+    <tr>
+      <td><a href="{{url_for('main.project_comments', number=project.id)}}" class="btn">Project Notes <i class="material-icons">comment</i></a></td>
+      {% if project.status == 'Finished' %}
+      <td><a href="{{url_for('main.project_solution', number=project.id)}}" class="btn btn-success">Project Solution</a></td>
+      {% endif %}
+      {% if (project.status == 'Awaiting Volunteer') or (project.status == 'Ongoing')  %}
+      <td><a href="{{url_for('main.end_project', number=project.id, way='Close')}}" class="btn deep-purple darken-3">Close Project</a></td>
+      {% endif %}
+
+      <td><a href="{{url_for('main.end_project', number=project.id, way='Finish')}}" class="btn deep-purple darken-3">Finish Project</a></td>
+
+    </tr>
+  </table>
+</div>
+</div>
+
+
+    <div class="row" id="item">
+    <div class="col s12 left-align">
+      {% for x in project.photos %}
+        {% set item = pro_folder_items[loop.index0] | string%}
+        {% set num = project.id | string %}
+        {% set numx = '/'+ num %}
+        {% set folder = 'img/projectPhotos' + numx %}
+        {% set path = folder + '/' + item %}
+        <div class="col s4">
+          <div class="card hoverable">
+            <div class="card-image">
+              <img class="materialboxed" data-caption="{{project.photos.first().caption }}" src="{{url_for('static', filename=path)}}"  >
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+     {{the_map.html}}
+   </div>
+  </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+
+
+$(function(){
+    $("#item").hide();
+    $("#button").on("click", function(){
+        $("#item").toggle();
+    });
+});
+
+
+</script>
+
+
+{% endblock %}
