@@ -3,10 +3,9 @@ from . import main
 from flask import render_template, redirect, url_for, flash, abort, request, current_app
 from flask_login import login_required, current_user
 
-from .forms import (EditProfileForm, ProjectPdfSelection, AddNewVolunteerForm,
+from .forms import (EditProfileForm, AddNewVolunteerForm,
                     PDFEncryptionForm, MeetingUpdateForm)
 from ..models import Project, User, Volunteer, Role, Comment
-from ..project_pdf import make_project_list_pdf, make_detailed_pdf
 
 from app import db
 
@@ -109,30 +108,6 @@ def client_info_admin(cli_number, project_num):
         referee = None
     return render_template('user-info.html', clie=clie, referee=referee )
 
-
-@main.route('/project/pdf', methods=['GET', 'POST'])
-@login_required
-def pdf_page():
-    form = ProjectPdfSelection()
-    if request.method == 'POST':
-        return redirect(url_for('main.pdf', respon=form.selection.data))
-    return render_template('project-list-make-PDF.html', form=form)
-
-
-@main.route('/project/pdf/list/<respon>')
-@login_required
-def pdf(respon):
-    make_project_list_pdf(respon)
-    flash('PDF is being made in the background', 'green accent-3')
-    return redirect(url_for('main.index'))
-
-
-@main.route('/project/pdf/single/<number>')
-@login_required
-def detailed_pdf(number):
-    make_detailed_pdf(number)
-    flash('PDF is being made in the background', 'green accent-3')
-    return redirect(url_for('main.index'))
 
 
 @main.route('/project/pdf/encrypt/', methods=['GET', 'POST'])

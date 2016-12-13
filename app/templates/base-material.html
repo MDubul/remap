@@ -34,7 +34,7 @@
       <ul class="right hide-on-med-and-down">
         <ul class="right hide-on-med-and-down">
           <li><a href="{{ url_for('main.encrypt_pdf')}}">Encrypt PDF</a></li>
-          <li ><a href="{{ url_for('main.pdf_page')}}">Create PDF</a></li>
+          <li ><a href="{{ url_for('project.pdf_page')}}">Create PDF</a></li>
 
            <li><a href="{{url_for('main.profile')}}">Remap Panel</a></li>
            <li><a href="{{url_for('main.meeting')}}">Meeting</a></li>
@@ -54,7 +54,7 @@
       {% if current_user.is_authenticated %}
       <ul id="nav-mobile" class="side-nav">
 
-        <li><a href="{{ url_for('main.pdf_page')}}">Create PDF</a></li>
+        <li><a href="{{ url_for('project.pdf_page')}}">Create PDF</a></li>
         <li><a href="{{ url_for('main.encrypt_pdf')}}">Encrypt PDF</a></li>
             <li class="divider"></li>
         <li><a href="{{url_for('main.profile')}}">Remap Panel</a></li>

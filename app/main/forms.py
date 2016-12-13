@@ -31,15 +31,6 @@ class EditProfileForm(Form):
             raise ValidationError('Email already registered.')
 
 
-
-class ProjectPdfSelection(Form):
-    selection = SelectField('Create PDF', choices=[('1', 'All'), ('2', 'Ongoing or Awaiting volunteer'),
-                                                   ('3', 'Awaiting Volunteer'), ('4', 'Ongoing'),
-                                                   ('5', 'Finished or Closed'), ('6', 'Finished'),
-                                                   ('7', 'Closed')])
-    submit = SubmitField('Download PDF')
-
-
 class AddNewVolunteerForm(Form):
     name = StringField('Name:', validators=[DataRequired()])
     role = SelectField('Role', coerce=int)

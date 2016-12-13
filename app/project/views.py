@@ -1,24 +1,30 @@
 from . import project
 from ..utils import distination_file, solution_destination, allowed_file_name
+from ..project_pdf import make_project_list_pdf, make_detailed_pdf
 
-import os
-import errno
+from ..models import (Project, Volunteer, Comment, SolutionPhotos,
+                      User, Referal, ProjectPhoto)
+
+from .forms import (AssignProjectForm, CommentForm, ProjectCompletionForm,
+                    ProjectCloseForm, ProjectSubmissionForm, EditProjectForm,
+                    ProjectPdfSelection)
+
 
 from datetime import datetime, date
 
 from app import db
 
-from flask import render_template, request, current_app, redirect, url_for, flash, abort
+from flask import (render_template, request, current_app,
+                   redirect, url_for, flash, abort)
+
 from werkzeug.utils import secure_filename
 
 from flask_login import login_required, current_user
 from flask_googlemaps import Map, icons
 from geopy.geocoders import GoogleV3
 
-from ..models import Project, Volunteer, Comment, SolutionPhotos, User, Referal, ProjectPhoto
-
-from .forms import (AssignProjectForm, CommentForm, ProjectCompletionForm,
-                    ProjectCloseForm, ProjectSubmissionForm, EditProjectForm)
+import os
+import errno
 
 
 @project.route('/', methods=['GET'])
@@ -88,7 +94,8 @@ def project_single(number):
 
                 )
 
-    return render_template('project/project-single.html', project=project_object, API_KEY=MAP_API_KEY,
+    return render_template('project/project-single.html',
+                           project=project_object, API_KEY=MAP_API_KEY,
                            pro_folder_items=pro_folder_items, the_map=the_map)
 
 
@@ -106,7 +113,8 @@ def take_project(number):
         db.session.commit()
         flash('Volunteer has been assigned.', 'green accent-3')
         return redirect(url_for('project.project_single', number=number))
-    return render_template('project/project-assign.html', form=form, project=project_object)
+    return render_template('project/project-assign.html',
+                           form=form, project=project_object)
 
 
 @project.route('/<number>/comments', methods=['GET', 'POST'])
@@ -161,7 +169,7 @@ def edit_comment_admin(number, id):
                            comment_id=id)
 
 
-@project.route('/<number>/<way>', methods=['GET','POST'])
+@project.route('/<number>/<way>', methods=['GET', 'POST'])
 @login_required
 def end_project(number, way):
     if way == 'Finish':
@@ -366,3 +374,26 @@ def project_photos(number):
     return render_template('project/project-photo.html', number=number)
 
 
+@project.route('/pdf', methods=['GET', 'POST'])
+@login_required
+def pdf_page():
+    form = ProjectPdfSelection()
+    if request.method == 'POST':
+        return redirect(url_for('project.pdf', respon=form.selection.data))
+    return render_template('project/project-list-make-PDF.html', form=form)
+
+
+@project.route('/pdf/list/<respon>')
+@login_required
+def pdf(respon):
+    make_project_list_pdf(respon)
+    flash('PDF is being made in the background', 'green accent-3')
+    return redirect(url_for('main.index'))
+
+
+@project.route('/pdf/single/<number>')
+@login_required
+def detailed_pdf(number):
+    make_detailed_pdf(number)
+    flash('PDF is being made in the background', 'green accent-3')
+    return redirect(url_for('main.index'))
