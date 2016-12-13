@@ -31,16 +31,6 @@ class EditProfileForm(Form):
             raise ValidationError('Email already registered.')
 
 
-class AssignProjectForm(Form):
-    vol = SelectField('Volunteer', coerce=int)
-    confirmed = BooleanField('Confirmed')
-    submit = SubmitField('Submit')
-
-    def __init__(self, *args, **kwargs):
-        super(AssignProjectForm, self).__init__(*args, **kwargs)
-        self.vol.choices = [(vol.id, vol.name) for vol in Volunteer.query.order_by(Volunteer.name).all()]
-
-
 class EditProjectForm(Form):
     request_title = StringField('Project Title')
     request_body = TextAreaField('Project Request',  description='Describe your problem',

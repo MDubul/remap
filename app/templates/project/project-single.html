@@ -78,7 +78,7 @@
           {% if project.volunteer.first().name %}
             <td>{{project.volunteer.first().name}}</td>
           {% else%}
-          <td><a href="{{url_for('main.take_project', number=project.id)}}" class="btn"> Assign Project</a></td>
+          <td><a href="{{url_for('project.take_project', number=project.id)}}" class="btn"> Assign Project</a></td>
         {% endif %}
 
       </tr>

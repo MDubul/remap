@@ -8,13 +8,14 @@ from . import main
 from flask_login import login_required, current_user
 
 from .forms import (EditProfileForm, EditProjectForm, CommentForm, ProjectSubmissionForm,
-                    ProjectCompletionForm, ProjectCloseForm, AssignProjectForm, ProjectPdfSelection,
+                    ProjectCompletionForm, ProjectCloseForm, ProjectPdfSelection,
                     AddNewVolunteerForm, PDFEncryptionForm, MeetingUpdateForm)
 
 from app import db
 from app.models import (Project, User, Volunteer, Role, Comment, ProjectPhoto, Referal,
                         SolutionPhotos)
 
+from ..utils import distination_file, solution_destination, allowed_file_name
 
 from werkzeug.utils import secure_filename
 from datetime import datetime, date
@@ -26,10 +27,6 @@ import PyPDF2
 def index():
     return redirect(url_for('auth.user_login'))
 
-
-################################################################################
-#                         OUT OF BOX FUNCTIONS
-################################################################################
 
 
 
@@ -116,23 +113,6 @@ def edit_profile_admin(id):
     return render_template('profile-edit.html', form=form, vol=vol)
 
 
-###########################  Assign project to volunteer4  ##########################
-@main.route('/take_project/<number>', methods=['GET', 'POST'])
-@login_required
-def take_project(number):
-    form = AssignProjectForm()
-    pro = Project.query.filter_by(id=number).first()
-    if request.method == 'POST':
-        vol = Volunteer.query.filter_by(id=form.vol.data).first()
-        pro.volunteer.append(vol)
-        pro.last_edited = datetime.utcnow()
-        pro.status = 'Ongoing'
-        db.session.add_all([pro, vol])
-        db.session.commit()
-        flash('Volunteer has been assigned.', 'green accent-3')
-        return redirect(url_for('main.project_single', number=number))
-    return render_template('project-assign.html', form=form, pro=pro)
-
 
 ################################################################################
 #                            PROJECT COMMENTS                                  #
@@ -215,26 +195,26 @@ def end_project(number, way):
             uploaded_files = request.files.getlist("imageupload")
             first = True
             for file in uploaded_files:
-                if file and allowed_file(file.filename):
-                    if not os.path.exists(solutionDestination(number)):
+                if file and allowed_file_name(file.filename):
+                    if not os.path.exists(solution_destination(number)):
                         try:
-                            os.makedirs(solutionDestination(number))
+                            os.makedirs(solution_destination(number))
                         except OSError as exc: # Guard against race condition
                             if exc.errno != errno.EEXIST:
                                 raise
                     app = current_app._get_current_object()
                     filename = secure_filename(file.filename)
-                    file.save(os.path.join(solutionDestination(number), filename))
+                    file.save(os.path.join(solution_destination(number), filename))
                     caption = request.form.getlist('caption')
                     if first:
-                        p = SolutionPhotos(location=os.path.join(solutionDestination(number), filename),
+                        p = SolutionPhotos(location=os.path.join(solution_destination(number), filename),
                                            caption=caption[0])
                         first = False
                         pro = Project.query.filter_by(id=number).first()
                         pro.solutionphotos.append(p)
                         db.session.add_all([p, pro])
                     else:
-                        p = SolutionPhotos(location=os.path.join(solutionDestination(number), filename))
+                        p = SolutionPhotos(location=os.path.join(solution_destination(number), filename))
                         pro = Project.query.filter_by(id=number).first()
                         pro.solutionphotos.append(p)
                         db.session.add_all([p, pro])
@@ -279,7 +259,7 @@ def end_project(number, way):
 def project_solution(number):
     pro = Project.query.filter_by(id=number).first()
     if pro.status == 'Finished':
-        pro_folder = solutionDestination(number)
+        pro_folder = solution_destination(number)
         if os.path.exists(pro_folder):
             pro_folder_items = os.listdir(pro_folder)
         else:
@@ -408,18 +388,18 @@ def project_photos(number):
     if request.method == 'POST':
         uploaded_files = request.files.getlist("filesToUpload[]")
         for file in uploaded_files:
-            if file and allowed_file(file.filename):
-                if not os.path.exists(distination(number)):
+            if file and allowed_file_name(file.filename):
+                if not os.path.exists(distination_file(number)):
                     try:
-                        os.makedirs(distination(number))
+                        os.makedirs(distination_file(number))
                     except OSError as exc: # Guard against race condition
                         if exc.errno != errno.EEXIST:
                             raise
                 app = current_app._get_current_object()
                 filename = secure_filename(file.filename)
-                file.save(os.path.join(distination(number), filename))
+                file.save(os.path.join(distination_file(number), filename))
                 caption = request.form.getlist('cappy')
-                p = ProjectPhoto(location=os.path.join(distination(number), filename), caption=caption[0])
+                p = ProjectPhoto(location=os.path.join(distination_file(number), filename), caption=caption[0])
                 pro = Project.query.filter_by(id=number).first()
                 pro.photos.append(p)
                 pro.last_edited = datetime.utcnow()

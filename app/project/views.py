@@ -1,13 +1,19 @@
-import os
-from flask import render_template, request, current_app
 from . import project
-from ..models import Project
-from ..utils import distination_file
 
+import os
+from datetime import datetime
+
+from app import db
+
+from flask import render_template, request, current_app, redirect, url_for, flash
 from flask_login import login_required, current_user
+from flask_googlemaps import Map, icons
 from geopy.geocoders import GoogleV3
 
-from flask_googlemaps import Map, icons
+from ..models import Project, Volunteer
+from ..utils import distination_file
+
+from .forms import AssignProjectForm
 
 
 @project.route('/', methods=['GET'])
@@ -79,3 +85,20 @@ def project_single(number):
 
     return render_template('project/project-single.html', project=project_object, API_KEY=MAP_API_KEY,
                            pro_folder_items=pro_folder_items, the_map=the_map)
+
+
+@project.route('/take_project/<number>', methods=['GET', 'POST'])
+@login_required
+def take_project(number):
+    form = AssignProjectForm()
+    project_object = Project.query.filter_by(id=number).first()
+    if request.method == 'POST':
+        vol = Volunteer.query.filter_by(id=form.vol.data).first()
+        project_object.volunteer.append(vol)
+        project_object.last_edited = datetime.utcnow()
+        project_object.status = 'Ongoing'
+        db.session.add_all([project_object, vol])
+        db.session.commit()
+        flash('Volunteer has been assigned.', 'green accent-3')
+        return redirect(url_for('project.project_single', number=number))
+    return render_template('project/project-assign.html', form=form, project=project_object)
