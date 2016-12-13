@@ -114,16 +114,6 @@ def edit_profile_admin(id):
 
 
 
-###########################  DELETE COMMENT  ###################################
-@main.route('/project/comments/<int:id>/', methods=['GET', 'POST'])
-@login_required
-def delete_comment(id):
-    comment = Comment.query.filter_by(id=id).first()
-    pro = comment.project_id
-    comment = Comment.query.filter_by(id=id).delete()  # im doing some rather redundant stuff here ¯\_(ツ)_/¯
-    db.session.commit()
-    flash('Comment deleted.', 'green accent-3')
-    return redirect(url_for('main.project_comments', number=pro))
 
 
 ########################### ADMIN EDIT COMMENT ################################

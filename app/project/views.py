@@ -124,3 +124,13 @@ def project_comments(number):
                            form=form,
                            comment_list=comment_list,
                            project=project_object)
+
+
+@project.route('/project/comments/<int:id>/', methods=['GET', 'POST'])
+@login_required
+def delete_comment(id):
+    pro = Comment.query.filter_by(id=id).first().project_id
+    Comment.query.filter_by(id=id).delete()
+    db.session.commit()
+    flash('Comment deleted.', 'green accent-3')
+    return redirect(url_for('project.project_comments', number=pro))
