@@ -3,14 +3,12 @@ from . import main
 from flask import render_template, redirect, url_for, flash, abort, request, current_app
 from flask_login import login_required, current_user
 
-from .forms import (EditProfileForm, AddNewVolunteerForm,
-                    PDFEncryptionForm, MeetingUpdateForm)
+from .forms import (EditProfileForm, AddNewVolunteerForm, MeetingUpdateForm)
 from ..models import Project, User, Volunteer, Role, Comment
 
 from app import db
 
 from datetime import datetime, date
-import PyPDF2
 
 
 @main.route('/')
@@ -100,43 +98,13 @@ def edit_profile_admin(id):
 @main.route('/user/<cli_number>/<project_num>/admin')
 @login_required
 def client_info_admin(cli_number, project_num):
-    clie = User.query.filter_by(id=cli_number).first()
+    client_object = User.query.filter_by(id=cli_number).first()
     pro = Project.query.filter_by(id=project_num).first()
     try:
         referee = pro.user.first().referee.first().referee
     except AttributeError:
         referee = None
-    return render_template('user-info.html', clie=clie, referee=referee )
-
-
-
-@main.route('/project/pdf/encrypt/', methods=['GET', 'POST'])
-@login_required
-def encrypt_pdf():
-    form = PDFEncryptionForm()
-    if request.method == 'POST':
-        filename = request.files['PdfFile'].filename
-        password = form.password.data
-
-        with open(filename, 'rb') as pdfFile:
-            pdf_reader = PyPDF2.PdfFileReader(pdfFile)
-            pdf_writer = PyPDF2.PdfFileWriter()
-            for pageNum in range(pdf_reader.numPages):
-                pdf_writer.addPage(pdf_reader.getPage(pageNum))
-            pdf_writer.encrypt(password)
-            result_pdf = open('E-'+filename, 'wb')
-            pdf_writer.write(result_pdf)
-            result_pdf.close()
-            flash('PDF is being made in the background', 'green accent-3')
-            return redirect(url_for('main.index'))
-    return render_template('project-encrypt-pdf.html', form=form)
-
-
-@main.route('/project/pdf/summery/<number>')
-@login_required
-def summery_pdf(number):
-    #make_detailed_pdf(number)
-    return redirect(url_for('main.index'))
+    return render_template('user-info.html', clie=client_object, referee=referee)
 
 
 @main.route('/meeting', methods=['GET', 'POST'])

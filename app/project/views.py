@@ -7,7 +7,7 @@ from ..models import (Project, Volunteer, Comment, SolutionPhotos,
 
 from .forms import (AssignProjectForm, CommentForm, ProjectCompletionForm,
                     ProjectCloseForm, ProjectSubmissionForm, EditProjectForm,
-                    ProjectPdfSelection)
+                    ProjectPdfSelection, PDFEncryptionForm)
 
 
 from datetime import datetime, date
@@ -22,6 +22,7 @@ from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
 from flask_googlemaps import Map, icons
 from geopy.geocoders import GoogleV3
+import PyPDF2
 
 import os
 import errno
@@ -396,4 +397,33 @@ def pdf(respon):
 def detailed_pdf(number):
     make_detailed_pdf(number)
     flash('PDF is being made in the background', 'green accent-3')
+    return redirect(url_for('main.index'))
+
+
+@project.route('/pdf/encrypt/', methods=['GET', 'POST'])
+@login_required
+def encrypt_pdf():
+    form = PDFEncryptionForm()
+    if request.method == 'POST':
+        filename = request.files['PdfFile'].filename
+        password = form.password.data
+
+        with open(filename, 'rb') as pdfFile:
+            pdf_reader = PyPDF2.PdfFileReader(pdfFile)
+            pdf_writer = PyPDF2.PdfFileWriter()
+            for pageNum in range(pdf_reader.numPages):
+                pdf_writer.addPage(pdf_reader.getPage(pageNum))
+            pdf_writer.encrypt(password)
+            result_pdf = open('E-'+filename, 'wb')
+            pdf_writer.write(result_pdf)
+            result_pdf.close()
+            flash('PDF is being made in the background', 'green accent-3')
+            return redirect(url_for('main.index'))
+    return render_template('project/project-encrypt-pdf.html', form=form)
+
+
+@project.route('/pdf/summery/<number>')
+@login_required
+def summery_pdf(number):
+    #make_detailed_pdf(number)
     return redirect(url_for('main.index'))

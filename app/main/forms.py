@@ -53,12 +53,6 @@ class AddNewVolunteerForm(Form):
             raise ValidationError('Email already registered.')
 
 
-class PDFEncryptionForm(Form):
-    PdfFile = FileField('Your PDF File')
-    password = StringField('Enter Password for Encryption:', validators=[DataRequired()])
-    submit = SubmitField('Submit')
-
-
 class MeetingUpdateForm(Form):
 
     date = StringField('Date')

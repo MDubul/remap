@@ -99,3 +99,10 @@ class ProjectPdfSelection(Form):
                                                    ('5', 'Finished or Closed'), ('6', 'Finished'),
                                                    ('7', 'Closed')])
     submit = SubmitField('Download PDF')
+
+
+class PDFEncryptionForm(Form):
+    PdfFile = FileField('Your PDF File')
+    password = StringField('Enter Password for Encryption:', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
