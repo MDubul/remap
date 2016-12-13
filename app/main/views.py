@@ -7,7 +7,7 @@ from flask import (render_template, redirect, url_for, flash, abort, request,
 from . import main
 from flask_login import login_required, current_user
 
-from .forms import (EditProfileForm, EditProjectForm, ProjectPdfSelection,
+from .forms import (EditProfileForm, ProjectPdfSelection,
                     AddNewVolunteerForm, PDFEncryptionForm, MeetingUpdateForm)
 
 from app import db
@@ -129,36 +129,7 @@ def client_info_admin(cli_number, project_num):
     return render_template('user-info.html', clie=clie, referee=referee )
 
 
-##################  EDITING PROJECT SUBMISSION FOR DIRECT USER  ################
 
-@main.route('/edit-project/<number>', methods=['GET', 'POST'])
-@login_required
-def edit_project(number):
-    pro = Project.query.filter_by(id=number).first()
-    form = EditProjectForm()
-    if request.method == 'POST':
-        pro.request_title = form.request_title.data
-        pro.request_body = form.request_body.data
-        pro.Donation_discussed = form.donation_discussed.data
-        pro.donation_outcome = form.donation_outcome.data
-        pro.data_protection = form.data_protection.data
-        pro.dat_protection_outcome = form.dat_protection_outcome.data
-        pro.whom_donation_discussed = form.whom_donation_discussed.data
-        pro.whom_data_protection_discussed = form.whom_data_protection_discussed.data
-        pro.last_edited = datetime.utcnow()
-        db.session.add(pro)
-        db.session.commit()
-        flash('Project has been edited', 'green accent-3')
-        return redirect(url_for('main.project_single', number=pro.id))
-    form.request_title.data = pro.request_title
-    form.request_body.data = pro.request_body
-    form.donation_discussed.data = pro.Donation_discussed
-    form.donation_outcome.data = pro.donation_outcome
-    form.data_protection.data = pro.data_protection
-    form.dat_protection_outcome.data = pro.dat_protection_outcome
-    form.whom_donation_discussed.data = pro.whom_donation_discussed
-    form.whom_data_protection_discussed.data = pro.whom_data_protection_discussed
-    return render_template('project-edit.html', form=form, pro=pro)
 
 
 ######################## Admin  UPLOAD PROJECT PHOTOS #################################

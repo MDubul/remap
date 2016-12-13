@@ -17,7 +17,8 @@ from geopy.geocoders import GoogleV3
 
 from ..models import Project, Volunteer, Comment, SolutionPhotos, User, Referal
 
-from .forms import (AssignProjectForm, CommentForm, ProjectCompletionForm, ProjectCloseForm, ProjectSubmissionForm)
+from .forms import (AssignProjectForm, CommentForm, ProjectCompletionForm,
+                    ProjectCloseForm, ProjectSubmissionForm, EditProjectForm)
 
 
 @project.route('/', methods=['GET'])
@@ -304,3 +305,35 @@ def submit_project():
         flash('Project has been submitted.', 'green accent-3')
         return redirect(url_for('project.projects'))
     return render_template('project/project-submit.html', form=form)
+
+
+@project.route('/edit-project/<number>', methods=['GET', 'POST'])
+@login_required
+def edit_project(number):
+    project_object = Project.query.filter_by(id=number).first()
+    form = EditProjectForm()
+    if request.method == 'POST':
+        project_object.request_title = form.request_title.data
+        project_object.request_body = form.request_body.data
+        project_object.Donation_discussed = form.donation_discussed.data
+        project_object.donation_outcome = form.donation_outcome.data
+        project_object.data_protection = form.data_protection.data
+        project_object.dat_protection_outcome = form.dat_protection_outcome.data
+        project_object.whom_donation_discussed = form.whom_donation_discussed.data
+        project_object.whom_data_protection_discussed = form.whom_data_protection_discussed.data
+        project_object.last_edited = datetime.utcnow()
+        db.session.add(project_object)
+        db.session.commit()
+        flash('Project has been edited', 'green accent-3')
+        return redirect(url_for('project.project_single', number=project_object.id))
+    form.request_title.data = project_object.request_title
+    form.request_body.data = project_object.request_body
+    form.donation_discussed.data = project_object.Donation_discussed
+    form.donation_outcome.data = project_object.donation_outcome
+    form.data_protection.data = project_object.data_protection
+    form.dat_protection_outcome.data = project_object.dat_protection_outcome
+    form.whom_donation_discussed.data = project_object.whom_donation_discussed
+    form.whom_data_protection_discussed.data = project_object.whom_data_protection_discussed
+    return render_template('project/project-edit.html', form=form, project=project_object)
+
+

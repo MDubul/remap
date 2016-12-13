@@ -6,7 +6,7 @@
 
   <div class="row">
     <div class="col s12">
-      <h3  class="center-align">Edit Project Number : {{pro.id}}</h3>
+      <h3  class="center-align">Edit Project Number : {{project.id}}</h3>
     </div>
   </div>
 
@@ -17,7 +17,7 @@
       <div class="card-content black-text">
         <span class="card-title"></span>
 
-          <form action="{{url_for('main.edit_project', number=pro.id)}}" method="POST">
+          <form action="{{url_for('project.edit_project', number=project.id)}}" method="POST">
             {{form.hidden_tag()}}
 
               <div class="row">

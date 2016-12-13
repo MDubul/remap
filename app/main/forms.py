@@ -31,20 +31,6 @@ class EditProfileForm(Form):
             raise ValidationError('Email already registered.')
 
 
-class EditProjectForm(Form):
-    request_title = StringField('Project Title')
-    request_body = TextAreaField('Project Request',  description='Describe your problem',
-                                 validators=[DataRequired()])
-    donation_discussed = BooleanField('Donation/Expenses Discussed?')
-    whom_donation_discussed = StringField('With whom was Donation/Expenses discussed')
-    donation_outcome = TextAreaField('Outcome?', validators=[Optional()])
-    data_protection = BooleanField('Data Protection Discussed?')
-    whom_data_protection_discussed = StringField('With whom was Data Protection Discussed?')
-    dat_protection_outcome = TextAreaField('Outcome?', validators=[Optional()])
-    submit = SubmitField('Submit')
-
-
-
 
 class ProjectPdfSelection(Form):
     selection = SelectField('Create PDF', choices=[('1', 'All'), ('2', 'Ongoing or Awaiting volunteer'),
