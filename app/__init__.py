@@ -1,8 +1,9 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from config import config
-from flask_login import LoginManager
 from flask_googlemaps import GoogleMaps
+from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
+
+from config import config
 
 db = SQLAlchemy()
 
@@ -24,10 +25,13 @@ def create_app(config_name):
 
     login_manager.init_app(app)
 
-    from .main import main as main_blueprint
+    from app.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+    from .project import project as project_blueprint
+    app.register_blueprint(project_blueprint, url_prefix='/project')
 
     return app

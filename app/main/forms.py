@@ -4,7 +4,7 @@ from wtforms import (StringField, TextAreaField, SelectField, RadioField, Submit
                      IntegerField, BooleanField, FileField)
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, Optional, Length
-from ..models import Role, Volunteer, Project
+from app.models import Role, Volunteer, Project
 from sqlalchemy import or_
 
 

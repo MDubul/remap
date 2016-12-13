@@ -11,15 +11,15 @@ from .forms import (EditProfileForm, EditProjectForm, CommentForm, ProjectSubmis
                     ProjectCompletionForm, ProjectCloseForm, AssignProjectForm, ProjectPdfSelection,
                     AddNewVolunteerForm, PDFEncryptionForm, MeetingUpdateForm)
 
-from .. import db
-from ..models import (Project, User, Volunteer, Role, Comment, ProjectPhoto, Referal,
-                      SolutionPhotos)
+from app import db
+from app.models import (Project, User, Volunteer, Role, Comment, ProjectPhoto, Referal,
+                        SolutionPhotos)
 
 from geopy.geocoders import GoogleV3
 
 from werkzeug.utils import secure_filename
 from datetime import datetime, date
-from ..project_pdf import make_project_list_pdf, make_detailed_pdf
+from app.project_pdf import make_project_list_pdf, make_detailed_pdf
 import PyPDF2
 from flask_googlemaps import Map, icons
 
@@ -131,26 +131,6 @@ def edit_profile_admin(id):
     form.volunteer_profile.data = vol.volunteer_profile
     return render_template('profile-edit.html', form=form, vol=vol)
 
-
-################################################################################
-#                               PROJECT                                        #
-################################################################################
-@main.route('/projects', methods=['GET'])
-@login_required
-def projects():
-    page = request.args.get('page', 1, type=int)
-    pagination = Project.query.order_by(Project.id.desc()).paginate(page,
-                                                                    per_page=current_app.config['PROJECT_PER_PAGE'],
-                                                                    error_out=False)
-    pro_all = pagination.items
-    if pagination.pages < 2:
-        page_index = None
-    else:
-        page_index = True
-    return render_template('project-list.html',
-                           pro_all=pro_all,
-                           pagination=pagination,
-                           index=page_index)
 
 
 ###########################  PROJECT SINGLE  ###################################
