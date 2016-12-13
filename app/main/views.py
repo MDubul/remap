@@ -111,23 +111,6 @@ def edit_profile_admin(id):
 
 
 
-######################### VOLUNTEER SOLUTION PHOTOS ###########################
-@main.route('/project/<number>/solution', methods=['GET', 'POST'])
-@login_required
-def project_solution(number):
-    pro = Project.query.filter_by(id=number).first()
-    if pro.status == 'Finished':
-        pro_folder = solution_destination(number)
-        if os.path.exists(pro_folder):
-            pro_folder_items = os.listdir(pro_folder)
-        else:
-            pro_folder_items = None
-        return render_template('project-solution.html',
-                               pro=pro,
-                               pro_folder_items=pro_folder_items)
-    else:
-        abort(404)
-
 ################################################################################
 #                            SUBMIT PROJECT                                   #
 ################################################################################

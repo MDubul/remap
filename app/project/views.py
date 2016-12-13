@@ -232,3 +232,19 @@ def end_project(number, way):
     else:
         abort(404)
 
+
+@project.route('/<number>/solution', methods=['GET', 'POST'])
+@login_required
+def project_solution(number):
+    project_object = Project.query.filter_by(id=number).first()
+    if project_object.status == 'Finished':
+        pro_folder = solution_destination(number)
+        if os.path.exists(pro_folder):
+            pro_folder_items = os.listdir(pro_folder)
+        else:
+            pro_folder_items = None
+        return render_template('project/project-solution.html',
+                               project=project_object,
+                               pro_folder_items=pro_folder_items)
+    else:
+        abort(404)
