@@ -33,4 +33,7 @@ def create_app(config_name):
     from .project import project as project_blueprint
     app.register_blueprint(project_blueprint, url_prefix='/project')
 
+    from .profile import profile as profile_blueprint
+    app.register_blueprint(profile_blueprint, url_prefix='/profile')
+
     return app
