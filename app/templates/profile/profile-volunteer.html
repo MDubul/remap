@@ -1,22 +1,22 @@
 {% extends "base-material.html" %}
 
-{% block title %}REMAP - {{ vol.name }}{% endblock %}
+{% block title %}REMAP - {{ volunteer.name }}{% endblock %}
 
 {% block page_content %}
 
 
     <div class="row">
-      <h2 class="center-align">{{ vol.name }}</h2>
+      <h2 class="center-align">{{ volunteer.name }}</h2>
     </div>
 
     <div class="row">
        <div class="col s3">
          <div class="card">
            <div class="card-image">
-              <img class="img-responsive" src="{{ vol.gravatar(size=300) }}">
+              <img class="img-responsive" src="{{ volunteer.gravatar(size=300) }}">
            </div>
            <div class="card-action">
-             <a href="{{ url_for('.edit_profile_admin', id=vol.id)}}" class="waves-effect waves-teal btn">Edit Profile</a>
+             <a href="{{ url_for('main.edit_profile_admin', id=volunteer.id)}}" class="waves-effect waves-teal btn">Edit Profile</a>
            </div>
          </div>
         </div>
@@ -25,27 +25,27 @@
           <table class="bordered">
             <tr>
               <th>Address Line 1:</th>
-              <td class="text-center">{{vol.address_line_1}}</td>
+              <td class="text-center">{{volunteer.address_line_1}}</td>
             </tr>
             <tr>
               <th>Address Line 2:</th>
-              <td class="text-center">{{vol.address_line_2}}</td>
+              <td class="text-center">{{volunteer.address_line_2}}</td>
             </tr>
             <tr>
               <th>Postcode:</th>
-              <td class="text-center"> {{vol.postcode}}</td>
+              <td class="text-center"> {{volunteer.postcode}}</td>
             </tr>
             <tr>
               <th>Telephone:</th>
-              <td class="text-center"> {{vol.telephone}}</td>
+              <td class="text-center"> {{volunteer.telephone}}</td>
             </tr>
             <tr>
               <th>Mobile:</th>
-              <td class="text-center"> {{vol.mobile}}</td>
+              <td class="text-center"> {{volunteer.mobile}}</td>
             </tr>
             <tr>
               <th>Email:</th>
-              <td class="text-center"><a href="mailto:{{ vol.email }}">{{ vol.email }}</td>
+              <td class="text-center"><a href="mailto:{{ volunteer.email }}">{{ volunteer.email }}</a></td>
             </tr>
 
           </table>
@@ -53,7 +53,7 @@
       </div>
 
 
-{% if vol.project.first() %}
+{% if volunteer.project.first() %}
     <div class="row">
       <table class="striped">
         <thead>
@@ -66,20 +66,20 @@
           </tr>
         </thead>
         <tbody>
-        {% for pro in vol.project.all() | sort (attribute='id', reverse= True)%}
+        {% for project in volunteer.project.all() | sort (attribute='id', reverse= True)%}
           <tr>
             {%if current_user.type == 'volunteers'%}
-            <td><a href="{{url_for('main.project_single', number=pro.id)}}" class="waves-effect waves-light btn">{{pro.id}}</a><td>
+            <td><a href="{{url_for('project.project_single', number=project.id)}}" class="waves-effect waves-light btn">{{project.id}}</a><td>
             {% else%}
-            <td>{{pro.id}}<td>
+            <td>{{project.id}}<td>
             {% endif%}
-            <td>{{ moment(pro.timestamp).format('MMMM Do YYYY')}}</td>
-            <td>{{pro.request_title}}</td>
-            <td>{{pro.status}}</td>
-            {% if pro.end_date == None %}
+            <td>{{ moment(project.timestamp).format('MMMM Do YYYY')}}</td>
+            <td>{{project.request_title}}</td>
+            <td>{{project.status}}</td>
+            {% if project.end_date == None %}
             <td></td>
             {%else%}
-            <td>{{moment(pro.end_date).format('MMMM Do YYYY')}}</td>
+            <td>{{moment(project.end_date).format('MMMM Do YYYY')}}</td>
             {% endif %}
           </tr>
         {% endfor%}

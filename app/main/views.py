@@ -13,14 +13,6 @@ def index():
     return redirect(url_for('auth.user_login'))
 
 
-@main.route('/profile/<name>')
-def profile_user(name):
-    vol = Volunteer.query.filter_by(name=name).first()
-    if vol is None:
-        abort(404)
-    return render_template('profile-volunteer.html', vol=vol)
-
-
 @main.route('/profile/new', methods=['GET', 'POST'])
 def add_new_volunteer():
     form = AddNewVolunteerForm()
