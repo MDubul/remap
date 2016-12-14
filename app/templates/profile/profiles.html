@@ -22,13 +22,13 @@
 
 <div class="row">
 
-     {% include '_profiles.html' %}
+     {% include 'profile/_profiles.html' %}
    
 </div>
 
 {% if index != None %}
 <div class="pagination">
-    {{ macros.pagination_widget(pagination, 'main.profile') }}
+    {{ macros.pagination_widget(pagination, 'profile.profile') }}
 </div>
 {% endif %}
 
