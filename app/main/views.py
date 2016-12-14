@@ -13,18 +13,6 @@ def index():
     return redirect(url_for('auth.user_login'))
 
 
-@main.route('/user/<cli_number>/<project_num>/admin')
-@login_required
-def client_info_admin(cli_number, project_num):
-    client_object = User.query.filter_by(id=cli_number).first()
-    pro = Project.query.filter_by(id=project_num).first()
-    try:
-        referee = pro.user.first().referee.first().referee
-    except AttributeError:
-        referee = None
-    return render_template('user-info.html', clie=client_object, referee=referee)
-
-
 @main.route('/meeting', methods=['GET', 'POST'])
 @login_required
 def meeting():

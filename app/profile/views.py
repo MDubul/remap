@@ -1,6 +1,6 @@
 from . import profile
 from .forms import AddNewVolunteerForm, EditProfileForm
-from ..models import Volunteer, Role
+from ..models import Volunteer, Role, User, Project
 
 from app import db
 from flask import (request, current_app, render_template, abort,
@@ -87,3 +87,15 @@ def edit_profile_admin(id):
     form.postcode.data = volunteer_object.postcode
     form.volunteer_profile.data = volunteer_object.volunteer_profile
     return render_template('profile/profile-edit.html', form=form, volunteer=volunteer_object)
+
+
+@profile.route('/user/<cli_number>/<project_num>/admin')
+@login_required
+def client_info_admin(cli_number, project_num):
+    client_object = User.query.filter_by(id=cli_number).first()
+    project_object = Project.query.filter_by(id=project_num).first()
+    try:
+        referee = project_object.user.first().referee.first().referee
+    except AttributeError:
+        referee = None
+    return render_template('profile/user-info.html', client=client_object, referee=referee)

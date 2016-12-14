@@ -20,7 +20,7 @@
   <div class="col s4">
     <table>
       <tr>
-        <td><a href="{{url_for('main.client_info_admin', cli_number=project.user.first().id, project_num=project.id )}}" class="btn-floating btn-large red"><i class="material-icons">perm_identity</i></a></td>
+        <td><a href="{{url_for('profile.client_info_admin', cli_number=project.user.first().id, project_num=project.id )}}" class="btn-floating btn-large red"><i class="material-icons">perm_identity</i></a></td>
 
         <td><a href="{{url_for('project.edit_project', number=project.id)}}" class="btn-floating light-blue darken-3 btn-large "><i class="material-icons ">mode_edit</i></a></td>
 
