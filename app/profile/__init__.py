@@ -2,4 +2,4 @@ from flask import Blueprint
 
 profile = Blueprint('profile', __name__)
 
-from . import views
+from . import views, errors

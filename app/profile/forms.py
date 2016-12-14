@@ -2,7 +2,7 @@ from ..models import Role, Volunteer
 from flask_wtf import FlaskForm as Form
 
 from wtforms import (StringField, TextAreaField, SelectField, SubmitField, IntegerField)
-from wtforms.validators import DataRequired, Optional, Length
+from wtforms.validators import DataRequired, Optional, Length, ValidationError
 
 class AddNewVolunteerForm(Form):
     name = StringField('Name:', validators=[DataRequired()])
