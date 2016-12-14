@@ -1,38 +1,16 @@
 from . import main
-from .forms import EditProfileForm, AddNewVolunteerForm, MeetingUpdateForm
+from .forms import EditProfileForm, MeetingUpdateForm
 from ..models import Project, User, Volunteer, Role, Comment
 
 from app import db
 from datetime import datetime, date
-from flask import render_template, redirect, url_for, flash, abort, request, current_app
+from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 
 
 @main.route('/')
 def index():
     return redirect(url_for('auth.user_login'))
-
-
-@main.route('/profile/new', methods=['GET', 'POST'])
-def add_new_volunteer():
-    form = AddNewVolunteerForm()
-    if request.method == 'POST':
-        vol = Volunteer(name=form.name.data,
-                        address_line_1=form.address_line_1.data,
-                        address_line_2=form.address_line_2.data,
-                        town_city=form.town_city.data,
-                        postcode=form.postcode.data,
-                        email=form.email.data,
-                        telephone=form.telephone.data,
-                        mobile=form.mobile.data,
-                        role_id=form.role.data,
-                        volunteer_profile=form.volunteer_profile.data,
-                        )
-        db.session.add(vol)
-        db.session.commit()
-        flash('Added a New volunteer.', 'green accent-3')
-        return redirect(url_for('main.profile'))
-    return render_template('profile-new.html', form=form)
 
 
 @main.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
