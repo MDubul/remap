@@ -1,32 +1,8 @@
-from app.models import Role, Volunteer, Project
+from app.models import Project
 from flask_wtf import FlaskForm as Form
 from sqlalchemy import or_
 
-from wtforms import (StringField, TextAreaField, SelectField, SubmitField, IntegerField)
-from wtforms.validators import Length
-
-
-class EditProfileForm(Form):
-    name = StringField('Name', validators=[Length(0, 64)])
-    role = SelectField('Role', coerce=int)
-    postcode = StringField('Postcode')
-    address_line_1 = StringField('Address Line 1')
-    address_line_2 = StringField('Address Line 2')
-    town_city = StringField('Town/City')
-    telephone = StringField('Telephone')
-    mobile = StringField('Mobile')
-    email = StringField('Email')
-    volunteer_profile = TextAreaField('Volunteer Profile')
-    submit = SubmitField('Submit')
-
-    def __init__(self, vol, *args, **kwargs):
-        super(EditProfileForm, self).__init__(*args, **kwargs)
-        self.role.choices = [(role.id, role.name) for role in Role.query.order_by(Role.name).all()]
-        self.vol = vol
-
-    def validate_email(self, field):
-        if field.data != self.vol.email and Volunteer.query.filter_by(email=field.data).first():
-            raise ValidationError('Email already registered.')
+from wtforms import StringField, TextAreaField, SelectField, SubmitField
 
 
 class MeetingUpdateForm(Form):

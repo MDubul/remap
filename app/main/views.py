@@ -1,6 +1,6 @@
 from . import main
-from .forms import EditProfileForm, MeetingUpdateForm
-from ..models import Project, User, Volunteer, Role, Comment
+from .forms import MeetingUpdateForm
+from ..models import Project, User, Comment
 
 from app import db
 from datetime import datetime, date
@@ -11,38 +11,6 @@ from flask_login import login_required, current_user
 @main.route('/')
 def index():
     return redirect(url_for('auth.user_login'))
-
-
-@main.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
-@login_required
-def edit_profile_admin(id):
-    vol = Volunteer.query.filter_by(id=id).first()
-    form = EditProfileForm(vol=vol)
-    if request.method == 'POST':
-        vol.email = form.email.data
-        vol.role = Role.query.get(form.role.data)
-        vol.telephone = form.telephone.data
-        vol.mobile = form.mobile.data
-        vol.address_line_1 = form.address_line_1.data
-        vol.address_line_2 = form.address_line_2.data
-        vol.town_city = form.town_city.data
-        vol.name = form.name.data
-        vol.postcode = form.postcode.data
-        vol.volunteer_profile = form.volunteer_profile.data
-        db.session.add(vol)
-        db.session.commit()
-        flash('The profile has been updated.', 'green accent-3')
-        return redirect(url_for('main.profile', name=vol.name))
-    form.email.data = vol.email
-    form.name.data = vol.name
-    form.address_line_1.data = vol.address_line_1
-    form.address_line_2.data = vol.address_line_2
-    form.town_city.data = vol.town_city
-    form.mobile.data = vol.mobile
-    form.telephone.data = vol.telephone
-    form.postcode.data = vol.postcode
-    form.volunteer_profile.data = vol.volunteer_profile
-    return render_template('profile-edit.html', form=form, vol=vol)
 
 
 @main.route('/user/<cli_number>/<project_num>/admin')
