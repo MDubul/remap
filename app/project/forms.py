@@ -1,10 +1,11 @@
+from ..models import Volunteer
+
 from flask_wtf import FlaskForm as Form
 from wtforms import (StringField, DateField, TextAreaField,
                      SelectField, SubmitField, BooleanField,
                      FileField, IntegerField, RadioField)
 
-from wtforms.validators import Length, DataRequired, Optional
-from ..models import Volunteer, Role
+from wtforms.validators import DataRequired, Optional
 
 
 class AssignProjectForm(Form):

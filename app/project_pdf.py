@@ -1,11 +1,11 @@
-
-from flask import render_template, current_app
-import pdfkit
-from threading import Thread
 from .models import Project, User
 from datetime import datetime
-import random
+from flask import render_template, current_app
 from sqlalchemy import or_
+from threading import Thread
+
+import pdfkit
+import random
 
 
 def config_wkthmltopdf():

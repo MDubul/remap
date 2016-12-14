@@ -1,14 +1,11 @@
 from . import main
-
-from flask import render_template, redirect, url_for, flash, abort, request, current_app
-from flask_login import login_required, current_user
-
-from .forms import (EditProfileForm, AddNewVolunteerForm, MeetingUpdateForm)
+from .forms import EditProfileForm, AddNewVolunteerForm, MeetingUpdateForm
 from ..models import Project, User, Volunteer, Role, Comment
 
 from app import db
-
 from datetime import datetime, date
+from flask import render_template, redirect, url_for, flash, abort, request, current_app
+from flask_login import login_required, current_user
 
 
 @main.route('/')

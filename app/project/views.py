@@ -1,29 +1,23 @@
 from . import project
+from .forms import (AssignProjectForm, CommentForm, ProjectCompletionForm,
+                    ProjectCloseForm, ProjectSubmissionForm, EditProjectForm,
+                    ProjectPdfSelection, PDFEncryptionForm)
+
 from ..utils import distination_file, solution_destination, allowed_file_name
 from ..project_pdf import make_project_list_pdf, make_detailed_pdf
 
 from ..models import (Project, Volunteer, Comment, SolutionPhotos,
                       User, Referal, ProjectPhoto)
 
-from .forms import (AssignProjectForm, CommentForm, ProjectCompletionForm,
-                    ProjectCloseForm, ProjectSubmissionForm, EditProjectForm,
-                    ProjectPdfSelection, PDFEncryptionForm)
-
-
-from datetime import datetime, date
-
 from app import db
-
-from flask import (render_template, request, current_app,
-                   redirect, url_for, flash, abort)
-
-from werkzeug.utils import secure_filename
-
+from datetime import datetime, date
+from geopy.geocoders import GoogleV3
+from flask import render_template, request, current_app, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 from flask_googlemaps import Map, icons
-from geopy.geocoders import GoogleV3
-import PyPDF2
+from werkzeug.utils import secure_filename
 
+import PyPDF2
 import os
 import errno
 

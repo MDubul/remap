@@ -1,11 +1,9 @@
-
-from flask_wtf import FlaskForm as Form
-from wtforms import (StringField, TextAreaField, SelectField, RadioField, SubmitField,
-                     IntegerField, BooleanField, FileField)
-from wtforms.fields.html5 import DateField
-from wtforms.validators import DataRequired, Optional, Length
 from app.models import Role, Volunteer, Project
+from flask_wtf import FlaskForm as Form
 from sqlalchemy import or_
+
+from wtforms import (StringField, TextAreaField, SelectField, SubmitField, IntegerField)
+from wtforms.validators import DataRequired, Optional, Length
 
 
 class EditProfileForm(Form):

@@ -1,8 +1,9 @@
+from . import auth
+from .forms import LoginForm
+from ..models import Volunteer
+
 from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user, login_required, logout_user
-from . import auth
-from ..models import Volunteer
-from .forms import LoginForm
 from flask_login import current_user
 
 
