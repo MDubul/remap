@@ -13,7 +13,7 @@
         <td class=active><b>Project Number</b></td>
         <td class=active><b>Assigned Volunteer</b></td>
         <td class=active><b>Location</b></td>
-        <td class=active><b>Date Recieved</b></td>
+        <td class=active><b>Date Received</b></td>
         <td class=active><b>Project Title</b></td>
         <td class=active><b>Status</b></td>
         <td class=active><b>End Date</b></td>
@@ -39,20 +39,17 @@
       </tr>
 
       {% if pro.comments.all() %}
+        {% for comment in pro.comments.all()  | sort(reverse=True, attribute='date_reported') %}
+          {% if loop.index <= 3 %}
           <tr>
-            <th colspan="7" class="text-center">Project Notes</th>
-              <table class="table-condensed table-bordered">
-                {% for comment in pro.comments.all()  | sort(reverse=True, attribute='date_reported') %}
-                  {% if loop.index <= 3 %}
-                    <tr>
-                      <th> {{comment.date_reported.strftime('%d-%b-%Y')}}</th>
-                      <td>{{ comment.body  }}</td>
-                    </tr>
-                  {% endif %}
-                {% endfor %}
-              </table>
-          </tr>
+            <th colspan="2"> {{comment.date_reported.strftime('%d-%b-%Y')}}</th>
+            <td colspan="5">{{ comment.body  }}</td>
+            </tr>
+                {% endif %}
+              {% endfor %}
+
         {% endif %}
+
       {% endfor%}
     </table>
   </div>
