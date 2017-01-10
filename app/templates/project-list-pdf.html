@@ -37,18 +37,26 @@
           <td>{{pro.end_date.strftime('%d-%b-%Y')}}</td>
         {% endif %}
       </tr>
-
+      <tr>
+         <td colspan="7" align="center"><b>Project Request </b></td>
+      </tr>
+      <tr>
+         <td colspan="7">{{pro.request_body}}</td>
+      </tr>
       {% if pro.comments.all() %}
+        <tr>
+         <td colspan="7" align="center"><b>Notes</b></td>
+        </tr>
         {% for comment in pro.comments.all()  | sort(reverse=True, attribute='date_reported') %}
           {% if loop.index <= 3 %}
           <tr>
             <th colspan="2"> {{comment.date_reported.strftime('%d-%b-%Y')}}</th>
             <td colspan="5">{{ comment.body  }}</td>
             </tr>
-                {% endif %}
-              {% endfor %}
+          {% endif %}
+        {% endfor %}
 
-        {% endif %}
+      {% endif %}
 
       {% endfor%}
     </table>
