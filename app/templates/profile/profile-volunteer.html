@@ -73,13 +73,13 @@
             {% else%}
             <td>{{project.id}}<td>
             {% endif%}
-            <td>{{ moment(project.timestamp).format('MMMM Do YYYY')}}</td>
+            <td>{{project.date_first_contacted.strftime('%d-%b-%Y')}}</td>
             <td>{{project.request_title}}</td>
             <td>{{project.status}}</td>
             {% if project.end_date == None %}
             <td></td>
             {%else%}
-            <td>{{moment(project.end_date).format('MMMM Do YYYY')}}</td>
+            <td>{{project.end_date.strftime('%d-%b-%Y')}}</td>
             {% endif %}
           </tr>
         {% endfor%}

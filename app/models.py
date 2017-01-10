@@ -267,7 +267,7 @@ class Project(db.Model):
     request_title = db.Column(db.String(64))
     status = db.Column(db.String(64), default='Awaiting Volunteer')
     end_date = db.Column(db.DateTime)
-    expense_hours= db.Column(db.Integer)
+    expense_hours = db.Column(db.Integer)
     solution = db.Column(db.Text())
 
     volunteer = db.relationship('Volunteer',
