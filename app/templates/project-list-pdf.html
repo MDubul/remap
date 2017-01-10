@@ -50,7 +50,9 @@
         {% for comment in pro.comments.all()  | sort(reverse=True, attribute='date_reported') %}
           {% if loop.index <= 3 %}
           <tr>
+            {% if comment.date_reported %}
             <th colspan="2"> {{comment.date_reported.strftime('%d-%b-%Y')}}</th>
+            {%endif %}
             <td colspan="5">{{ comment.body  }}</td>
             </tr>
           {% endif %}
