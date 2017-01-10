@@ -40,13 +40,13 @@ def prepare_pdf_for_list(prefix, pro):
 
 def prepare_pdf_for_detailed(prefix, pro, cli, referee):
         app = current_app._get_current_object()
-        logo = current_app.config['LOGO']
+        #logo = current_app.config['LOGO']
         template = render_template('project-detailed-pdf.html',
                                    pro=pro,
                                    cli=cli,
                                    referee=referee,
                                    now=datetime.utcnow(),
-                                   logo=logo)
+                                   )
 
         thr = Thread(target=make_async_pdf, args=[template, app, prefix])
         thr.start()
