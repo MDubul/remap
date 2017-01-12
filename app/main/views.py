@@ -22,6 +22,9 @@ def meeting():
         dat = datetime.strptime(date_reported, '%d-%b-%Y') # put a try and except
         pro = Project.query.filter_by(id=form.project_number.data).first()
         pro.status = form.status.data
+        if form.status.data == 'Closed' or 'Finished':
+            pro.end_date = dat
+
         pro.last_edited = datetime.utcnow()
         c = Comment(body=form.comment.data,
                     author=current_user,
