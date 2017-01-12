@@ -33,7 +33,9 @@ def make_async_pdf(template, app, prefix):
 
 def prepare_pdf_for_list(prefix, pro):
         app = current_app._get_current_object()
-        template = render_template('project-list-pdf.html', pro_all=pro)
+        date_now = datetime.utcnow()
+        date = date_now.strftime('%d-%b-%Y')
+        template = render_template('project-list-pdf.html', pro_all=pro, date=date)
         thr = Thread(target=make_async_pdf, args=[template, app, prefix])
         thr.start()
 
