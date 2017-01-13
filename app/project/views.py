@@ -12,7 +12,7 @@ from ..models import (Project, Volunteer, Comment, SolutionPhotos,
 from app import db
 from datetime import datetime, date
 from geopy.geocoders import GoogleV3
-from flask import render_template, request, current_app, redirect, url_for, flash, abort
+from flask import render_template, request, current_app, redirect, url_for, flash, abort, jsonify
 from flask_login import login_required, current_user
 from flask_googlemaps import Map, icons
 from werkzeug.utils import secure_filename
@@ -386,12 +386,16 @@ def pdf(respon):
     return redirect(url_for('main.index'))
 
 
-@project.route('/pdf/single/<number>', methods=['POST'])
+@project.route('/pdf/single/', methods=['POST'])
 @login_required
-def detailed_pdf(number):
-    make_detailed_pdf(number)
-    flash('PDF is being made in the background', 'green accent-3')
-    return redirect(url_for('main.index'))
+def detailed_pdf():
+
+    number = request.form['number']
+    try:
+        make_detailed_pdf(number)
+        return jsonify({'number': number})
+    except:
+        return jsonify({'error': 'Something went wrong'})
 
 
 @project.route('/pdf/encrypt/', methods=['GET', 'POST'])

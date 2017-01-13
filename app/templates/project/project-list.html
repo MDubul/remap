@@ -49,20 +49,19 @@
 
    $.ajax({
        type:'POST',
-       url:'/project/pdf/single/' + number
+       url:'/project/pdf/single/',
        data:{
             number: link.slice(-1)
        }
        }).done(function(data){
         if (data.error){
-             Materialize.toast('Something went wrong', 1000);
+             Materialize.toast('Something went wrong', 3000, 'red');
            } else {
-               Materialize.toast('PDF is being made in the background', 1000);
+               Materialize.toast('Printing PDF for Project ' + data.number , 3000, 'green');
            }
        });
    });
 
 
-});
 </script>
 {% endblock %}
