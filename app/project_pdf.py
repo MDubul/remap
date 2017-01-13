@@ -35,7 +35,7 @@ def prepare_pdf_for_list(prefix, pro):
         app = current_app._get_current_object()
         date_now = datetime.utcnow()
         date = date_now.strftime('%d-%b-%Y')
-        template = render_template('project-list-pdf.html', pro_all=pro, date=date)
+        template = render_template('project-list-pdf.html', pro_all=pro, date=date, prefix=prefix)
         thr = Thread(target=make_async_pdf, args=[template, app, prefix])
         thr.start()
 
@@ -57,7 +57,7 @@ def prepare_pdf_for_detailed(prefix, pro, cli, referee):
 def make_project_list_pdf(selection):
 
     if selection == '1':
-        prefix = 'All-Project'
+        prefix = 'All-Projects'
         pro_all = Project.query.all()
         prepare_pdf_for_list(prefix, pro_all)
 
