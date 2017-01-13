@@ -374,9 +374,13 @@ def project_photos(number):
 def pdf_page():
     form = ProjectPdfSelection()
     if request.method == 'POST':
-        make_project_list_pdf(form.selection.data)
-        flash('PDF is being made in the background', 'green accent-3')
-        return redirect(url_for('project.pdf_page'))
+        number = request.form['number']
+        pdf_filter = request.form['pdf_filter']
+        try:
+            make_project_list_pdf(number)
+            return jsonify({'filter': pdf_filter})
+        except:
+            return jsonify({'error': 'Something went wrong'})
     return render_template('project/project-list-make-PDF.html', form=form)
 
 
