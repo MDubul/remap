@@ -374,16 +374,10 @@ def project_photos(number):
 def pdf_page():
     form = ProjectPdfSelection()
     if request.method == 'POST':
-        return redirect(url_for('project.pdf', respon=form.selection.data))
+        make_project_list_pdf(form.selection.data)
+        flash('PDF is being made in the background', 'green accent-3')
+        return redirect(url_for('project.pdf_page'))
     return render_template('project/project-list-make-PDF.html', form=form)
-
-
-@project.route('/pdf/list/<respon>')
-@login_required
-def pdf(respon):
-    make_project_list_pdf(respon)
-    flash('PDF is being made in the background', 'green accent-3')
-    return redirect(url_for('main.index'))
 
 
 @project.route('/pdf/single/', methods=['POST'])
