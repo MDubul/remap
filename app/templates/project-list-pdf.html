@@ -10,34 +10,38 @@
   <div class="container">
     <table class="table">
       <tr>
-        <td class=active colspan="5"><b>Remap London South Project List</b></td>
-        <td class=active colspan="2" align="right"><b>{{prefix}}</b></td>
+        <td class="active" colspan="5"><b>Remap London South Project List</b></td>
+        <td class="active" colspan="1"><b>Filter: </b></td>
+
+        <td class="active" colspan="1" align="right"><b>{{prefix}}</b></td>
       </tr>
       <tr>
-        <td class=active colspan="2"><b>Date Printed</b></td>
-        <td class=active colspan="5" align="right"><b>{{date}}</b></td>
+        <td colspan="2"><b>Date Printed</b></td>
+        <td colspan="5" align="right"><b>{{date}}</b></td>
       </tr>
+    </table>
+    <hr>
+    <table class="table table-condensed">
       <tr>
-        <td class=active><b>Project Number</b></td>
-        <td class=active><b>Assigned Volunteer</b></td>
-        <td class=active><b>Location</b></td>
-        <td class=active><b>Date Received</b></td>
-        <td class=active><b>Project Title</b></td>
-        <td class=active><b>Status</b></td>
-        <td class=active><b>End Date</b></td>
+        <td class="active"><b>Project Number</b></td>
+        <td class="active"><b>Assigned Volunteer</b></td>
+        <td class="active"><b>Date Received</b></td>
+        <td class="active" colspan="2"><b>Project Title</b></td>
+        <td class="active"><b>Status</b></td>
+        <td class="active"><b>End Date</b></td>
       </tr>
+
       {% for pro in pro_all | sort(attribute='date_first_contacted', reverse = True)%}
 
       <tr class="active">
-        <td>{{pro.id}}</td>
+        <td><b>{{pro.id}}</b></td>
         {% if pro.volunteer.first()== None %}
           <td ></td>
         {% else %}
           <td >{{pro.volunteer.first().name}}</td>
         {% endif %}
-          <td >{{pro.user.first().postcode}}</td>
           <td >{{pro.date_first_contacted.strftime('%d-%b-%Y')}}</td>
-          <td >{{pro.request_title}}</td>
+          <td colspan="2">{{pro.request_title}}</td>
           <td >{{pro.status}}</td>
         {% if pro.end_date == None %}
           <td></td>
@@ -45,16 +49,16 @@
           <td>{{pro.end_date.strftime('%d-%b-%Y')}}</td>
         {% endif %}
       </tr>
-      <tr>
-         <td colspan="7" align="center"><b>Project Request </b></td>
+      <tr class="active">
+         <td><b>Location</b></td>
+         <td colspan="1">{{pro.user.first().postcode}}</td>
+         <td colspan="6">{{pro.user.first().address_line_1}},  {{pro.user.first().address_line_2}},  {{pro.user.first().town_city}}</td>
       </tr>
       <tr>
          <td colspan="7">{{pro.request_body}}</td>
       </tr>
       {% if pro.comments.all() %}
-        <tr>
-         <td colspan="7" align="center"><b>Notes</b></td>
-        </tr>
+
         {% for comment in pro.comments.all()  | sort(reverse=True, attribute='date_reported') %}
           {% if loop.index <= 3 %}
           <tr>
