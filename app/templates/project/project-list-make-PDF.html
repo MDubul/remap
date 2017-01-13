@@ -16,7 +16,7 @@
     <div class="col s9 offset-s1">
      <div class="card">
       <div class="card-content">
-        <form method="POST" role="form" action="{{ url_for('project.pdf_page')}}">
+        <form id="project_list_pdf_form" method="POST" role="form" action="{{ url_for('project.pdf_page')}}">
           {{form.hidden_tag()}}
 
           <div class="row">
@@ -34,4 +34,36 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts%}
+{{ super() }}
+<script>
+
+  $('#project_list_pdf_form').on('submit', function(e) {
+   e.preventDefault();
+
+   $.ajax({
+
+      type:'POST',
+      url:'/project/pdf',
+      data:{
+        number: $('#selection').val(),
+        pdf_filter:$("#selection option:selected" ).text()
+      }
+      }).done(function(data){
+        if (data.error){
+          Materialize.toast('Something went wrong', 1000, 'red');
+        }
+        else {
+            Materialize.toast('Printing PDF for ' + data.filter + ' Projects', 1000, 'green');
+          }
+      });
+
+   });
+
+
+
+
+</script>
 {% endblock %}
