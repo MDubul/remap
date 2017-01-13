@@ -21,15 +21,13 @@
   <div class="container">
 
     <div class="navbar">
-      <a class="navbar-brand" href="/"><img src="http://www.remap.org.uk/wp-content/themes/remap/images/remap-logo2.png" height='150' width='243'></a>
-      <h1 class="text-right"> Remap South London</h1>
+      <a class="navbar-brand" href="/"><img src="http://www.remap.org.uk/wp-content/themes/remap/images/remap-logo2.png" height='100' width='162'></a>
+      <h1 class="text-centre"> Remap London South </h1>
+      <h3 class="text-right"> Project Notes Document</h3>
+
+      <h4 class="text-right"> <b>Date Printed: {{now.day}}/{{now.month}}/{{now.year}}</b> </h4>
+
     </div>
-
-
-  <div class="row">
-    <h2 class="text-center"> INITIAL CONTACT LOG SHEET </h2>
-  </div>
-
 
   <div class="row">
     <div class="col-md-12">
@@ -37,20 +35,18 @@
       <table class="table table-bordered">
         <tr>
           <th class="active">Project Number Allocated</th>
-          <th class="active">{{ pro.id }} </th>
+          <th class="active"> Date of Initial Contact</th>
+          {% if pro.last_edited%}
+          <th class="active">Last Edited</th>
+          {% endif %}
+          <th class="active">Client Age Group</th>
+        </tr>
         <tr>
-        <tr>
-          <th>Date of Initial Contact</th>
+          <td>{{ pro.id }} </td>
           <td>{{pro.date_first_contacted.strftime('%d-%b-%Y')}}</td>
-        </tr>
-        {% if pro.last_edited%}
-        <tr>
-          <th>Last Edited</th>
+          {% if pro.last_edited%}
           <td>{{pro.last_edited.strftime('%d-%b-%Y')}}</td>
-        </tr>
-        {% endif %}
-        <tr>
-          <th>Client Age Group</th>
+          {% endif %}
           <td>{{pro.user.first().age_range}}</td>
         </tr>
       </table>
@@ -135,14 +131,24 @@
           <th> Relationship to end user?</th>
           <td> {{cli.relation}} </td>
           <td></td>
+        </tr>
       {% endif %}
+        <tr>
+          <th>Service User’s Condition </th>
+          <td colspan="2">{{pro.user.first().service_user_condition}}</td>
         </tr>
 
+
+      <table class="table table-bordered">
+        <tr>
+          <th>Project Title</th>
+          <td>{{pro.request_title}}</td>
+        </tr>
       </table>
 
       <table class="table table-bordered">
-        <tr class="active">
-          <th>Project Request:</th>
+        <tr>
+          <th class="active">Project Request:</th>
         </tr>
         <tr>
           <td>{{pro.request_body}}</td>
@@ -153,49 +159,47 @@
       <table class="table table-bordered">
         <tr>
           <th class="active"> Initial Contact and useful info</th>
-        </tr>
-        <tr>
-          <td>{{cli.initial_contact}}</td>
-        </tr>
-      </table>
-
-      <table class="table table-bordered">
-        <tr>
           <th class="active"> How did they find us?</th>
         </tr>
         <tr>
+          <td>{{cli.initial_contact}}</td>
           <td>{{cli.how_they_find_us}}</td>
         </tr>
+
       </table>
 
       <table class="table table-bordered">
         <tr>
-          <th class="active">Was donation or discussed?</th>
-          <th class="active">Discussed with Whom?</th>
-          <th class="active">Outcome</th>
+          <th class="active">Donation discussed?</th>
+          {% if pro.Donation_discussed %}
+          <td>Yes</td>
+          {% else %}
+          <td>No</td>
+          {% endif%}
+          <th >Discussed with Whom?</th>
+          <td>{{pro.whom_donation_discussed}}</td>
         </tr>
         <tr>
-          <td>{{pro.Donation_discussed}}</td>
-          <td>{{pro.whom_donation_discussed}}
-          <td>{{pro.donation_outcome}}</td>
+          <th >Outcome</th>
+          <td colspan="3">{{pro.donation_outcome}}</td>
         </tr>
+
         <tr>
-          <th class="active">Was Data Protection Discussed?</th>
-          <th class="active">Discussed with Whom?</th>
-          <th class="active">Outcome</th>
-        </tr>
-        <tr>
-          <td>{{pro.data_protection}}</td>
+          <th class="active">Data Protection Discussed?</th>
+           {% if pro.data_protection %}
+          <td>Yes</td>
+          {% else %}
+          <td>No</td>
+          {% endif%}
+          <th >Discussed with Whom?</th>
           <td>{{pro.whom_data_protection_discussed}}</td>
-          <td>{{pro.dat_protection_outcome}}</td>
         </tr>
-      </table>
-      <table>
         <tr>
-          <th class="active">Date Printed:</th>
-          <th class="active" class="text-right"> {{now.day}}/{{now.month}}/{{now.year}}</th>
+          <th >Outcome</th>
+          <td colspan="3">{{pro.dat_protection_outcome}}</td>
         </tr>
       </table>
+
 
     </div>
   </div>
