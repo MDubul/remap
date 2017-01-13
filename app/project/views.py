@@ -386,7 +386,7 @@ def pdf(respon):
     return redirect(url_for('main.index'))
 
 
-@project.route('/pdf/single/<number>')
+@project.route('/pdf/single/<number>', methods=['POST'])
 @login_required
 def detailed_pdf(number):
     make_detailed_pdf(number)

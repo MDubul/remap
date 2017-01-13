@@ -34,5 +34,35 @@
    </div>
 
 {% endif %}
+{% endblock %}
 
+
+{% block scripts%}
+{{ super() }}
+<script>
+
+  $('.pdf_button').on('click', function(e) {
+   e.preventDefault();
+   link = $(this).attr("href");
+   number = link.slice(-1)
+   console.log(number);
+
+   $.ajax({
+       type:'POST',
+       url:'/project/pdf/single/' + number
+       data:{
+            number: link.slice(-1)
+       }
+       }).done(function(data){
+        if (data.error){
+             Materialize.toast('Something went wrong', 1000);
+           } else {
+               Materialize.toast('PDF is being made in the background', 1000);
+           }
+       });
+   });
+
+
+});
+</script>
 {% endblock %}

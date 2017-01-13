@@ -24,6 +24,6 @@
   {% else%}
     <td>{{project.end_date.strftime('%d-%b-%Y')}}</td>
   {% endif %}
-  <td class="text-right"><a href="{{url_for('project.detailed_pdf', number=project.id)}}" class="waves-effect waves-light btn red darken-4">PDF</a></td>
+  <td class="text-right"><a href="{{url_for('project.detailed_pdf', number=project.id)}}" class="pdf_button waves-effect waves-light btn red darken-4">PDF</a></td>
 </tr>
 {% endfor%}
