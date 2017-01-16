@@ -71,7 +71,7 @@
           {% endif %}
         </tr>
         <tr>
-          <th>Name</th>
+          <th>Organisation Name</th>
           <td>{{cli.organisation_name}}</td>
           {% if referee %}
           <td>{{referee.organisation_name}}</td>
@@ -137,33 +137,24 @@
           <th>Service User’s Condition </th>
           <td colspan="2">{{pro.user.first().service_user_condition}}</td>
         </tr>
-
-
-      <table class="table table-bordered">
         <tr>
-          <th>Project Title</th>
-          <td>{{pro.request_title}}</td>
+          <th class="active">Project Title</th>
+          <td colspan="2">{{pro.request_title}}</td>
         </tr>
-      </table>
-
-      <table class="table table-bordered">
         <tr>
           <th class="active">Project Request:</th>
+          <td colspan="2"></td>
         </tr>
         <tr>
-          <td>{{pro.request_body}}</td>
+          <td colspan="3">{{pro.request_body}}</td>
         </tr>
-
-      </table>
-
-      <table class="table table-bordered">
         <tr>
           <th class="active"> Initial Contact and useful info</th>
-          <th class="active"> How did they find us?</th>
+          <td colspan="2">{{cli.initial_contact}}</td>
         </tr>
         <tr>
-          <td>{{cli.initial_contact}}</td>
-          <td>{{cli.how_they_find_us}}</td>
+          <th class="active"> How did they find us?</th>
+          <td colspan="2">{{cli.how_they_find_us}}</td>
         </tr>
 
       </table>
@@ -176,7 +167,7 @@
           {% else %}
           <td>No</td>
           {% endif%}
-          <th class="active">Discussed with Whom?</th>
+          <th class="active">with Whom?</th>
           <td>{{pro.whom_donation_discussed}}</td>
         </tr>
         <tr>
@@ -187,16 +178,16 @@
         <tr>
           <th class="active">Data Protection Discussed?</th>
            {% if pro.data_protection %}
-          <td>Yes</td>
+          <td >Yes</td>
           {% else %}
           <td>No</td>
           {% endif%}
-          <th class="active">Discussed with Whom?</th>
-          <td>{{pro.whom_data_protection_discussed}}</td>
+          <th class="active" colspan="1">With Whom?</th>
+          <td >{{pro.whom_data_protection_discussed}}</td>
         </tr>
         <tr>
-          <th >Outcome</th>
-          <td colspan="3">{{pro.dat_protection_outcome}}</td>
+          <th>Outcome</th>
+          <td>{{pro.dat_protection_outcome}}</td>
         </tr>
       </table>
 
