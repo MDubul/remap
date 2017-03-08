@@ -51,6 +51,15 @@ The individual project page contains several feature, first the admin has the ab
 * Assign volunteer to project
 * Close or Finish project
 
-![Individual Project ](https://github.com/ObsidianRock/remap/blob/master/demo/screenshots/ProjectSingle.JPG]
+![Individual Project](https://github.com/ObsidianRock/remap/blob/master/demo/screenshots/ProjectSingle.JPG]
+
+***
+
+#### PDF Printout
+
+The application has the ability to dynamically print PDF for an individual project or for the whole project list from a filtered selection, for example all project that are currently ongoing, or projects awaiting volunteers.
+
+![PDF Print](https://github.com/ObsidianRock/remap/blob/master/demo/screenshots/PDFprintout.JPG)
+The application can also encrypt PDFs to protect the sensative personal information whenever it is sent via email, this is because the charity neeed to uphold Data Protection requirments set by the The Charity Commission,
 
 ***
