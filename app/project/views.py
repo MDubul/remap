@@ -379,8 +379,8 @@ def pdf_page():
         try:
             make_project_list_pdf(number)
             return jsonify({'filter': pdf_filter})
-        except:
-            return jsonify({'error': 'Something went wrong'})
+        except Exception as e:
+            return jsonify({'error': str(e)})
     return render_template('project/project-list-make-PDF.html', form=form)
 
 
@@ -392,8 +392,8 @@ def detailed_pdf():
     try:
         make_detailed_pdf(number)
         return jsonify({'number': number})
-    except:
-        return jsonify({'error': 'Something went wrong'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 
 @project.route('/pdf/encrypt/', methods=['GET', 'POST'])
