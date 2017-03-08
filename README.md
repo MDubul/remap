@@ -2,7 +2,9 @@
 
 Project management application for REMAP
 
-Check out the [demo page}()
+Check out the [demo page](https://github.com/ObsidianRock/remap/blob/master/demo/Demo.md)
+
+[Demo Video]()
 
 ## Packages Used
 
