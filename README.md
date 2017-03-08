@@ -75,3 +75,4 @@ Open up a web browser and type in the URL bar **localhost:5000**
 * Lose dependency for pdfkit
 * Use AJAX for the forms to reduce page reloads
 * Complete unit testing
+* Project list filter

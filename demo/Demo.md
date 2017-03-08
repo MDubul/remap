@@ -10,5 +10,14 @@ The idea of this application is to provide Remap with a base for better manageme
 
 
 #
+Quick overview of the feature:
 
-SQL Database
+SQL Database which
+Login page providing authorised access to the admin
+
+
+### Project List page:
+
+This page contains all project which are currently awaiting volunteer(Red), ongoing(white), closed(green) or Finished(green) project with the ability later to add a filter.
+
+![Project List page](https://github.com/ObsidianRock/remap/blob/master/demo/screenshots/ProjectList.JPG)
