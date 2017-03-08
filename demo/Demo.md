@@ -8,6 +8,9 @@
 
 The idea of this application is to provide Remap with a base for better management of project and a platform for data gathering.
 
+[Demo Video](https://github.com/ObsidianRock/remap/blob/master/demo/Overview-3.gif)
+
+***
 
 ## Overview of features:
 
@@ -32,7 +35,9 @@ This page contains all project which are currently awaiting volunteer(Red), ongo
 
 #### Project Submission
 
+Each Project is submitted via filling a form with various question pertain to user and user referee contact detail, project decription and some more. Once this form is filled, it is added to the project list page.
 
+***
 
 #### Individual Project Page
 
@@ -46,6 +51,6 @@ The individual project page contains several feature, first the admin has the ab
 * Assign volunteer to project
 * Close or Finish project
 
-[Individual Project Page](https://github.com/ObsidianRock/remap/blob/master/demo/screenshots/ProjectSingle.JPG]
+![Individual Project ](https://github.com/ObsidianRock/remap/blob/master/demo/screenshots/ProjectSingle.JPG]
 
 ***
