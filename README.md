@@ -35,12 +35,17 @@ In the **config.cfg** file add the following setting in the format:
 [setting] = [input]
 
 ### Setting list:
-REMAP_ADMIN
+
 REMAP_ADMIN2 = [email address for admin]
+
 PROJECT_UPLOAD = [where to store uploaded project photos]
+
 PROJECT_SOLUTION [where to store volunteer photo upload]
+
 GOOGLEMAPS_KEY = [Google Maps API key]
+
 BROWSER_KEY = [Browser key for google API]
+
 SQLALCHEMY_DATABASE_URI = [The database URI that should be used for the connection]
 
 ### Initiate Database
