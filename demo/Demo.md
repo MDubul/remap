@@ -75,12 +75,11 @@ The meeting page is designed to be an all-in-one section in which an admin can q
 
 #### Panel Page
 
-The Panel page shows all the voluneers in the group as well as allowing the admin to add new volunteers or edit volunteer contact details.
-
+The Panel page shows all the volunteers in the group as well as allowing the admin to add new volunteers or edit volunteer contact details.
 ![Panel Page](https://github.com/ObsidianRock/remap/blob/master/demo/screenshots/PanelPage.JPG)
 
 
-Each volunteer page contain all the project that the volunteers is assigned to.
+Each profile page contain all the projects that the volunteer is assigned to.
 
 ![Volunteer page](https://github.com/ObsidianRock/remap/blob/master/demo/screenshots/PanelMember.JPG)
 
