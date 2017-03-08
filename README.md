@@ -2,6 +2,8 @@
 
 Project management application for REMAP
 
+Check out the [demo page}()
+
 ## Packages Used
 
 * Flask
