@@ -21,7 +21,7 @@ SQL Database that holds all project, user and volunteer information and user by 
 
 Login page provides authorised access to admin.
 
-![Login page](https://github.com/ObsidianRock/remap/blob/master/demo/screenshots/FrontPage2.JPG)
+![Login page](https://github.com/ObsidianRock/remap/blob/master/demo/screenshots/FrontPage2.jpg)
 
 ***
 
